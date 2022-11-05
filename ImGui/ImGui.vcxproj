@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\jaewo\source\repos\CircuitSimulator\ImGui;C:\Users\jaewo\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\ImGui;C:\Users\jaewo\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\jaewo\source\repos\CircuitSimulator\ImGui;C:\Users\jaewo\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\ImGui;C:\Users\jaewo\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

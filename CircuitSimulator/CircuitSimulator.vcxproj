@@ -103,11 +103,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\jaewo\include;C:\Users\jaewo\source\repos\CircuitSimulator\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\jaewo\include;$(SolutionDir)\ImGui;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\jaewo\lib\debug;$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\jaewo\include;C:\Users\jaewo\source\repos\CircuitSimulator\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\jaewo\include;$(SolutionDir)\ImGui;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\jaewo\lib\debug;$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
