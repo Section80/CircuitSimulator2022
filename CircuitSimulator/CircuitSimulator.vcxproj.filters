@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{cf335240-9d4f-466f-9822-01bbfe151b38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Identifiable">
+      <UniqueIdentifier>{45798785-491b-41b6-a9ef-1c013444d856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Identifiable\Circuit">
+      <UniqueIdentifier>{1dea0ffc-9d9e-4e55-aced-96d7eee3524b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Identifiable\Pin">
+      <UniqueIdentifier>{526c238e-cd9d-4345-a80b-046a6549945c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\main">
+      <UniqueIdentifier>{84afeebe-6084-4e60-a9a7-a0b600d76e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Manager">
+      <UniqueIdentifier>{916625cb-19e0-4e54-98d7-dc1138aea5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Identifiable\Circuit\imple">
+      <UniqueIdentifier>{d9f353ee-1ffe-46b4-b050-14fa7ae806ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Identifiable\Wire">
+      <UniqueIdentifier>{c1bfe6b4-d61f-4d25-a20f-66ebe9d26fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Helper">
+      <UniqueIdentifier>{fd2ce2c4-621c-445b-a57d-696235e11e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Gui">
+      <UniqueIdentifier>{c5777483-5eb2-4abc-b01e-603c685ce7a4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Identifiable.cpp">
+      <Filter>소스 파일\Identifiable</Filter>
+    </ClCompile>
+    <ClCompile Include="CircuitOutput.cpp">
+      <Filter>소스 파일\Identifiable\Circuit</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일\main</Filter>
+    </ClCompile>
+    <ClCompile Include="Pin.cpp">
+      <Filter>소스 파일\Identifiable\Pin</Filter>
+    </ClCompile>
+    <ClCompile Include="Circuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit</Filter>
+    </ClCompile>
+    <ClCompile Include="Wire.cpp">
+      <Filter>소스 파일\Identifiable\Wire</Filter>
+    </ClCompile>
+    <ClCompile Include="AndCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionManager.cpp">
+      <Filter>소스 파일\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayButton.cpp">
+      <Filter>소스 파일\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBulbCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClCompile>
+    <ClCompile Include="NotCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClCompile>
+    <ClCompile Include="OrCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Identifiable.h">
+      <Filter>소스 파일\Identifiable</Filter>
+    </ClInclude>
+    <ClInclude Include="Convert.h">
+      <Filter>소스 파일\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CircuitOutput.h">
+      <Filter>소스 파일\Identifiable\Circuit</Filter>
+    </ClInclude>
+    <ClInclude Include="Pin.h">
+      <Filter>소스 파일\Identifiable\Pin</Filter>
+    </ClInclude>
+    <ClInclude Include="Circuit.h">
+      <Filter>소스 파일\Identifiable\Circuit</Filter>
+    </ClInclude>
+    <ClInclude Include="Wire.h">
+      <Filter>소스 파일\Identifiable\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="AndCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionManager.h">
+      <Filter>소스 파일\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayButton.h">
+      <Filter>소스 파일\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="BitBulbCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClInclude>
+    <ClInclude Include="NotCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClInclude>
+    <ClInclude Include="OrCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
