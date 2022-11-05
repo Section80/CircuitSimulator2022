@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -10,7 +12,9 @@
 #include <Windows.h>    // Sleep()
 #include <assert.h>
 
+#include "PlayButton.h"
 #include "InteractionManager.h"
+
 #include "Circuit.h"
 #include "AndCircuit.h"
 #include "SwitchCircuit.h"
@@ -18,8 +22,9 @@
 #include "NotCircuit.h"
 #include "BufferCircuit.h"
 #include "OrCircuit.h"
+#include "Int32OutCircuit.h"
 
-#include "PlayButton.h"
+#include "RegisterCircuit.h"
 
 namespace ImNode = ax::NodeEditor;
 
@@ -44,9 +49,13 @@ BufferCircuit* pBuffer2;
 OrCircuit* pOr1;
 OrCircuit* pOr2;
 
+Int32OutCircuit* pInt32Out;
+
 void SRLatch(
     OrCircuit* pOr1, OrCircuit* pOr2,
     NotCircuit* pNot1, NotCircuit* pNot2);
+
+RegisterCircuit* pRegFile;
 
 
 int main()
@@ -147,6 +156,10 @@ int main()
     // pNot1->GetOutputPin(0)->ConnectNew(pAnd1->GetInputPin(1));
     // pAnd1->GetOutputPin(0)->ConnectNew(pBitBulb1->GetInputPin(0));
 
+    pRegFile = new RegisterCircuit(0, h);
+
+    pInt32Out = new Int32OutCircuit();
+
     PlayButton playButton;
 
     double lastTime = glfwGetTime();
@@ -165,15 +178,15 @@ int main()
             lastTime = nowTime;
         }
 
-        // Before Render
+        // Before render
         glfwGetFramebufferSize(pWindow, &frameBufferWidth, &frameBufferHeight);
         glViewport(0, 0, frameBufferWidth, frameBufferHeight);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Render OpenGL Here
+        // render OpenGL Here
         // ...
 
-        // Before Render ImGui
+        // Before render ImGui
         auto& io = ImGui::GetIO();
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -185,13 +198,13 @@ int main()
 
         ImGui::Separator();
 
-        // ImGui Render
+        // ImGui render
         playButton.Render();
 
         ImNode::SetCurrentEditor(pNodeContext);
         ImNode::Begin("Node Editor", ImVec2(0.0f, 0.0f));
 
-        // ImNode Render
+        // ImNode render
         Circuit::RenderAll();
         Circuit::RenderAllWires();
 

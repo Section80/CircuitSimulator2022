@@ -9,7 +9,7 @@ class BitBulbCircuit final : public Circuit
 public:
 	BitBulbCircuit();
 
-	void Render() override;
+	void render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

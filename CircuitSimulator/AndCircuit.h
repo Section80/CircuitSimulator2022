@@ -9,7 +9,29 @@ class AndCircuit final : public Circuit
 public: 
 	AndCircuit(float delay);
 
-	void Render() override;
+	void render() override;
+
+	InputPin* GetInputPin(int index) override;
+	OutputPin* GetOutputPin(int index) override;
+
+private:
+	void updateOutput() override;
+
+private:
+	InputPin m_inputPin0;
+	InputPin m_inputPin1;
+	OutputPin m_outputPin;
+
+	bool m_outputBuffer1;
+	bool m_outputBuffer2;
+};
+
+class NandCircuit final : public Circuit
+{
+public:
+	NandCircuit(float delay);
+
+	void render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <assert.h>
 #include <string.h>
 #include "CircuitOutput.h"
@@ -11,6 +12,9 @@ CircuitOutput::CircuitOutput(bool* pBuffer1, bool* pBuffer2, int size)
 	{
 		assert(m_pOldBuffer != nullptr);
 		assert(m_pCurrentBuffer != nullptr);
+
+		memset(m_pOldBuffer, 0, sizeof(bool) * m_size);
+		memset(m_pCurrentBuffer, 0, sizeof(bool) * m_size);
 	}
 }
 

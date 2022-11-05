@@ -13,7 +13,7 @@ public:
 	OutputPin* GetOutputPin(int index) override;
 
 private:
-	void Render() override;
+	void render() override;
 
 private:
 	void updateOutput() override;

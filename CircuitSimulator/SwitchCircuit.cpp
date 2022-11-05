@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "SwitchCircuit.h"
 
 SwitchCircuit::SwitchCircuit()
@@ -9,10 +10,10 @@ SwitchCircuit::SwitchCircuit()
 	, m_buttonId(Identifiable::GetNewId())
 {}
 
-void SwitchCircuit::Render()
+void SwitchCircuit::render()
 {
 	ImNode::BeginNode(GetId());
-	ImGui::Text("Switch");
+	ImGui::Text(GetName());
 	
 	ImGui::PushID(m_buttonId);
 	if (m_val == true)
@@ -61,5 +62,4 @@ OutputPin* SwitchCircuit::GetOutputPin(int index)
 }
 
 void SwitchCircuit::updateOutput()
-{
-}
+{}

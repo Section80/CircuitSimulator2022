@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Pin.h"
 #include "Circuit.h"
 
@@ -58,7 +59,7 @@ void InputPin::Render()
 {
 	ImNode::BeginPin(GetPinId(), ImNode::PinKind::Input);
 	char buffer[64] = { 0 };
-	sprintf_s(buffer, "> %s: [%d]", GetName(), GetWireLineCount());
+	sprintf_s(buffer, "> %s[%d]", GetName(), GetWireLineCount());
 	ImGui::Text(buffer);
 	ImNode::EndPin();
 }
@@ -86,7 +87,7 @@ void OutputPin::Render()
 {
 	ImNode::BeginPin(GetPinId(), ImNode::PinKind::Output);
 	char buffer[64] = { 0 };
-	sprintf_s(buffer, "%s: [%d] >", GetName(), GetWireLineCount());
+	sprintf_s(buffer, "%s[%d] >", GetName(), GetWireLineCount());
 	ImGui::Text(buffer);
 	ImNode::EndPin();
 }

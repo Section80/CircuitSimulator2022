@@ -19,6 +19,8 @@ public:
 	// CurrentBuffer에 쓴다. 
 	void Write(const bool* pData, int offset, int size);
 
+	inline bool* GetCurrentBuffer() { return m_pCurrentBuffer; }
+
 	// OldBuffer, CurrentBuffer에서 offset부터 len 만큼의 값이 변했는지 확인한다. 
 	bool IsChanged(int offset, int len);
 	// 읽기 전용 인터페이스로 캐스팅한다. 

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <imgui_node_editor.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
@@ -33,7 +34,7 @@ void InteractionManager::HandleCreate()
 					showLabel("Input/Output are not match.");
 					ImNode::RejectNewItem(ImColor(255, 0, 0), 2.0f);
 				}
-				else if (p1->GetWireLineCount() != p1->GetWireLineCount())
+				else if (p1->GetWireLineCount() != p2->GetWireLineCount())
 				{
 					showLabel("The wire counts are not match.");
 					ImNode::RejectNewItem(ImColor(255, 0, 0), 2.0f);

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "BufferCircuit.h"
 
 BufferCircuit::BufferCircuit()
@@ -8,7 +9,7 @@ BufferCircuit::BufferCircuit()
 	, m_outBuf2(false)
 {}
 
-void BufferCircuit::Render()
+void BufferCircuit::render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text(GetName());

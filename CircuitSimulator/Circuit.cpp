@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Pin.h"
 #include "Circuit.h"
 
@@ -16,13 +17,13 @@ Circuit::Circuit(
 	, m_inputPinCount(inputPinCount)
 	, m_outputPinCount(outputPinCount)
 	, m_delay(int(delay * 1000000))
-	, m_leftDelay(-1.0f)
-	, m_isJustAwaked(false)
+	, m_leftDelay(-1)
 	, m_isJustResolved(false)
 {
 	if (delay == 0.0f)
 	{
 		m_delay = 0;
+		m_leftDelay = -1;
 	}
 
 	m_nodeId = ImNode::NodeId(GetId());
@@ -38,7 +39,7 @@ Circuit::~Circuit()
 	);
 }
 
-void Circuit::RenderWire()
+void Circuit::renderWire()
 {
 	for (int i = 0; i < m_outputPinCount; i++)
 	{
@@ -69,11 +70,16 @@ bool Circuit::IsResolvable()
 	return true;
 }
 
+void Circuit::SetPos(float x, float y)
+{
+	ImNode::SetNodePosition(GetNodeId(), ImVec2(x, y));
+}
+
 // static
 void Circuit::UpdateAll(double _dt)
 {
 	// printf("UpdateAll \n");
-	int dt = _dt * 1000000;
+	int dt = int(_dt * 1000000.0);
 
 	while (dt != 0)
 	{
@@ -83,7 +89,6 @@ void Circuit::UpdateAll(double _dt)
 		{
 			Circuit& c = *pCircuit;
 
-			c.m_isJustAwaked = false;
 			c.m_isJustResolved = false;
 
 			bool c1 = c.IsResolvable();
@@ -149,7 +154,6 @@ void Circuit::UpdateAll(double _dt)
 					c.m_circuitOutput.Swap();
 					c.updateOutput();
 					c.afterUpdateOutput();
-					c.m_isJustAwaked = true;
 				}
 				else {
 					if (!c.m_isJustResolved)
@@ -168,7 +172,7 @@ void Circuit::RenderAll()
 {
 	for (Circuit* pCircuit : s_pCircuits)
 	{
-		pCircuit->Render();
+		pCircuit->render();
 	}
 }
 
@@ -176,7 +180,7 @@ void Circuit::RenderAllWires()
 {
 	for (Circuit* pCircuit : s_pCircuits)
 	{
-		pCircuit->RenderWire();
+		pCircuit->renderWire();
 	}
 }
 
@@ -190,6 +194,13 @@ void Circuit::setOutputData(int outputPinIndex, const bool* pData)
 		op->GetOutputOffset(),
 		op->GetWireLineCount()
 	);
+}
+
+bool* Circuit::getOutputDataBuffer(int outputPinIndex)
+{
+	bool* buffer = m_circuitOutput.GetCurrentBuffer();
+	int offset = GetOutputPin(outputPinIndex)->GetOutputOffset();
+	return &buffer[offset];
 }
 
 void Circuit::afterUpdateOutput()
@@ -237,10 +248,8 @@ void Circuit::onInputChanged()
 	}
 }
 
-void Circuit::resolveConnected(float _dt)
+void Circuit::resolveConnected(int dt_naosec)
 {
-	int dt = int(_dt * 1000000);
-
 	// 연결된 모든 Circuit을 순회한다. 
 	for (int i = 0; i < m_outputPinCount; i++)
 	{
@@ -251,17 +260,20 @@ void Circuit::resolveConnected(float _dt)
 			{
 				// 연결된 Circuit
 				Circuit& connected = wire.GetTo()->GetOwner();
-				if (connected.m_delay == 0)
-				{
-					connected.swapCircuitOutput();
-					connected.updateOutput();
-					connected.afterUpdateOutput();
-				}
-				else {
+				
+				// delay가 0인 circuit의 경우, 입력(caller의 출력)이 변하지 않았기 때문에 
+				// 업데이트할 필요가 없다. 
+				// if (connected.m_delay == 0)
+				// {
+				//	connected.swapCircuitOutput();
+				// 	connected.updateOutput();
+				// 	connected.afterUpdateOutput();
+				// }
+
+				if (connected.m_delay != 0) {
 					bool condition =
-						connected.m_leftDelay <= dt &&
-						!connected.m_isJustAwaked &&
-						connected.m_isJustResolved;
+						connected.m_leftDelay <= dt_naosec &&
+						!connected.m_isJustResolved;
 
 					if (condition)
 					{

@@ -9,7 +9,7 @@ class BufferCircuit final : public Circuit
 public:
 	BufferCircuit();
 
-	void Render() override;
+	void render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

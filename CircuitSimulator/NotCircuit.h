@@ -9,7 +9,7 @@ class NotCircuit final : public Circuit
 public:
 	NotCircuit();
 
-	void Render() override;
+	void render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "BitBulbCircuit.h"
 
 BitBulbCircuit::BitBulbCircuit()
@@ -6,7 +7,7 @@ BitBulbCircuit::BitBulbCircuit()
 {
 }
 
-void BitBulbCircuit::Render()
+void BitBulbCircuit::render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text("Bulb");

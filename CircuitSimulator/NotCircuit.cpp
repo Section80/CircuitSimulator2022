@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "NotCircuit.h"
 
 NotCircuit::NotCircuit()
@@ -8,7 +9,7 @@ NotCircuit::NotCircuit()
 	, m_outBuf2(false)
 {}
 
-void NotCircuit::Render()
+void NotCircuit::render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text(GetName());
