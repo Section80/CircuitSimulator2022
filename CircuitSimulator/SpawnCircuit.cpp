@@ -12,6 +12,7 @@
 #include "DisplayInt32Circuit.h"
 #include "RegIdxOutCircuit.h"
 #include "RegisterCircuit.h"
+#include "DataMemoryCircuit.h"
 
 void SpawnTestRegisterFile(float x, float y, std::vector<Circuit*> pCircuits)
 {
@@ -45,4 +46,11 @@ void SpawnTestRegisterFile(float x, float y, std::vector<Circuit*> pCircuits)
 	pCircuits.push_back(i2);
 	r->GetOutputPin(0)->ConnectNew(i1->GetInputPin(0));
 	r->GetOutputPin(1)->ConnectNew(i2->GetInputPin(0));
+
+
+	// etc
+	SwitchCircuit* s3 = new SwitchCircuit(x -400, y + 190);
+	pCircuits.push_back(s3);
+	DataMemoryCircuit* d = new DataMemoryCircuit(x, y - 150 );
+	pCircuits.push_back(d);
 }

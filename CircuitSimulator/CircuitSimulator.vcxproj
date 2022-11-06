@@ -30,6 +30,7 @@
     <ClCompile Include="Int32OutCircuit.cpp" />
     <ClCompile Include="InteractionManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="DataMemoryCircuit.cpp" />
     <ClCompile Include="NotCircuit.cpp" />
     <ClCompile Include="OrCircuit.cpp" />
     <ClCompile Include="Pin.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Identifiable.h" />
     <ClInclude Include="Int32OutCircuit.h" />
     <ClInclude Include="InteractionManager.h" />
+    <ClInclude Include="DataMemoryCircuit.h" />
     <ClInclude Include="NotCircuit.h" />
     <ClInclude Include="OrCircuit.h" />
     <ClInclude Include="Pin.h" />

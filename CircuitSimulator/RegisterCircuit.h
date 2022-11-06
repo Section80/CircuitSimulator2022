@@ -25,18 +25,18 @@ private:
 	InputPin m_wReg;
 	InputPin m_wData;
 
-	// clock signal
-	InputPin m_clockInput;
-	bool m_bLastClock;
-
 	// control signal
 	InputPin m_regWrite;
+
+	// clock signal
+	InputPin m_clock;
+	bool m_bLastClock;
 
 	OutputPin m_readData1;
 	OutputPin m_readData2;
 
-	bool m_outBuffuer1[64];
-	bool m_outBuffer2[64];
+	bool m_outBuf1[64];
+	bool m_outBuf2[64];
 
 	uint32_t m_registers[32];
 };

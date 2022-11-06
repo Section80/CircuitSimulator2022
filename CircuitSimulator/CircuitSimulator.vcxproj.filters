@@ -112,6 +112,9 @@
     <ClCompile Include="SpawnCircuit.cpp">
       <Filter>소스 파일\Helper</Filter>
     </ClCompile>
+    <ClCompile Include="DataMemoryCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -173,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="SpawnCircuit.h">
       <Filter>소스 파일\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DataMemoryCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

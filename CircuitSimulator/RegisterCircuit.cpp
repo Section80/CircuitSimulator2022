@@ -4,12 +4,12 @@
 
 
 RegisterCircuit::RegisterCircuit()
-	: Circuit("RegisterFile", 6, 2, m_outBuffuer1, m_outBuffer2, 64, 1.0)
+	: Circuit("RegisterFile", 6, 2, m_outBuf1, m_outBuf2, 64, 1.0)
 	, m_rReg1(*this, "rReg1", 5)
 	, m_rReg2(*this, "rReg2", 5)
 	, m_wReg(*this, "wReg", 5)
 	, m_wData(*this, "wData", 32)
-	, m_clockInput(*this, "clock", 1)
+	, m_clock(*this, "clock", 1)
 	, m_regWrite(*this, "regWrite", 1)
 	, m_readData1(*this, "rData1", 0, 32)
 	, m_readData2(*this, "rData2", 32, 32)
@@ -39,7 +39,7 @@ void RegisterCircuit::render()
 
 		m_wReg.Render();
 		m_wData.Render();
-		m_clockInput.Render();
+		m_clock.Render();
 		m_regWrite.Render();
 	ImNode::EndNode();
 }
@@ -57,9 +57,9 @@ InputPin* RegisterCircuit::GetInputPin(int index)
 	case 3:
 		return &m_wData;
 	case 4:
-		return &m_clockInput;
-	case 5:
 		return &m_regWrite;
+	case 5:
+		return &m_clock;
 	default:
 		assert(false);
 	}
@@ -84,19 +84,19 @@ OutputPin* RegisterCircuit::GetOutputPin(int index)
 
 void RegisterCircuit::updateOutput()
 {
-	bool bClock = m_clockInput.ReadAt(0);
+	bool bClock = m_clock.ReadAt(0);
 	bool bRisingEdge = false;
 	bool bFallingEdge = false;
 	if (m_bLastClock != bClock)
 	{
 		if (bClock)
 		{
-			if (m_regWrite.ReadAt(0))	// rising edge
-			{
-				bRisingEdge = true;
-			}
+			// rising edge
+			bRisingEdge = true;
 		}
-		else {	// falling edge
+		else 
+		{	
+			// falling edge
 			bFallingEdge = true;
 		}
 	}
@@ -134,14 +134,17 @@ void RegisterCircuit::updateOutput()
 		// 여기서 변화시킨 상태는 다음 입력 변화 시 출력으로 적용될 것이다. 
 		// 그것은 falling edge일 수도 있고, 다른 입력일 수도 있다. 
 
-		// update edge triggred part here
-		uint32_t idx = ReadToUint32(m_wReg, 5);
-		assert(idx < 32);
-		int val = ReadToUint32(m_wData, 32);
-		m_registers[idx] = val;
+		if (m_regWrite.ReadAt(0))
+		{
+			// update edge triggred part here
+			uint32_t idx = ReadToUint32(m_wReg, 5);
+			assert(idx < 32);
+			int val = ReadToUint32(m_wData, 32);
+			m_registers[idx] = val;
 
-		// 입력이 변하지 않더라도 출력을 업데이트하도록
-		// 남은 딜레이를 리셋시킨다. 
-		resetDelay();
+			// 입력이 변하지 않더라도 출력을 업데이트하도록
+			// 남은 딜레이를 리셋시킨다. 
+			resetDelay();
+		}
 	}
 }
