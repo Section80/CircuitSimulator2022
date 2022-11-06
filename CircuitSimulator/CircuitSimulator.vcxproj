@@ -24,7 +24,7 @@
     <ClCompile Include="BufferCircuit.cpp" />
     <ClCompile Include="Circuit.cpp" />
     <ClCompile Include="CircuitOutput.cpp" />
-    <ClCompile Include="Conversion.cpp" />
+    <ClCompile Include="Convert.cpp" />
     <ClCompile Include="DisplayInt32Circuit.cpp" />
     <ClCompile Include="Identifiable.cpp" />
     <ClCompile Include="Int32OutCircuit.cpp" />
@@ -35,6 +35,8 @@
     <ClCompile Include="Pin.cpp" />
     <ClCompile Include="PlayButton.cpp" />
     <ClCompile Include="RegisterCircuit.cpp" />
+    <ClCompile Include="RegIdxOutCircuit.cpp" />
+    <ClCompile Include="SpawnCircuit.cpp" />
     <ClCompile Include="SwitchCircuit.cpp" />
     <ClCompile Include="Wire.cpp" />
   </ItemGroup>
@@ -44,7 +46,7 @@
     <ClInclude Include="BufferCircuit.h" />
     <ClInclude Include="Circuit.h" />
     <ClInclude Include="CircuitOutput.h" />
-    <ClInclude Include="Conversion.h" />
+    <ClInclude Include="Convert.h" />
     <ClInclude Include="DisplayInt32Circuit.h" />
     <ClInclude Include="Identifiable.h" />
     <ClInclude Include="Int32OutCircuit.h" />
@@ -54,6 +56,8 @@
     <ClInclude Include="Pin.h" />
     <ClInclude Include="PlayButton.h" />
     <ClInclude Include="RegisterCircuit.h" />
+    <ClInclude Include="RegIdxOutCircuit.h" />
+    <ClInclude Include="SpawnCircuit.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SwitchCircuit.h" />
     <ClInclude Include="Wire.h" />

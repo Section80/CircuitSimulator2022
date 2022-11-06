@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <ctype.h>
-#include "Conversion.h"
+#include "Convert.h"
 #include "Int32OutCircuit.h"
 
 
@@ -10,6 +10,12 @@ Int32OutCircuit::Int32OutCircuit()
 	, m_textInputId(Identifiable::GetNewId())
 	, m_val(0)
 {}
+
+Int32OutCircuit::Int32OutCircuit(float x, float y)
+	: Int32OutCircuit()
+{
+	SetPos(x, y);
+}
 
 InputPin* Int32OutCircuit::GetInputPin(int index)
 {
@@ -36,6 +42,7 @@ void Int32OutCircuit::render()
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());
 
+		ImGui::PushID(m_textInputId);
 		ImGui::PushItemWidth(100.0f);
 		bool bInput = ImGui::InputInt(
 			"", &m_val, 1, 100
@@ -49,6 +56,7 @@ void Int32OutCircuit::render()
 			afterUpdateOutput();
 		}
 		ImGui::PopItemWidth();
+		ImGui::PopID();
 		ImGui::SameLine();
 		m_outputPin.Render();
 	ImNode::EndNode();
@@ -56,22 +64,3 @@ void Int32OutCircuit::render()
 
 void Int32OutCircuit::updateOutput()
 {}
-
-
-int Int32OutCircuit::inputTextCallback(ImGuiInputTextCallbackData* pData)
-{
-	if (isdigit(pData->Buf[0]))
-	{
-		/*
-		Int32OutCircuit* c = (Int32OutCircuit*)pData->UserData;
-		c->swapCircuitOutput();
-		int val = atoi(c->m_inputBuffer);
-		printf("Int32Out Val: %d\n", val);
-		bool* outputBuffer = c->getOutputDataBuffer(0);
-		Uint32ToBoolArray(val, outputBuffer);
-		c->afterUpdateOutput();
-		*/
-	}
-
-	return 0;
-}

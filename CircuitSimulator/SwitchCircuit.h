@@ -8,6 +8,7 @@ class SwitchCircuit final : public Circuit
 {
 public:
 	SwitchCircuit();
+	SwitchCircuit(float x, float y);
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

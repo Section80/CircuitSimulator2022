@@ -229,6 +229,14 @@ void Circuit::afterUpdateOutput()
 	}
 }
 
+void Circuit::resetDelay()
+{
+	m_leftDelay = m_delay;
+}
+
+void Circuit::updateOutput()
+{}
+
 void Circuit::onInputChanged()
 {
 	printf("onInputChanged: %s \n", GetName());

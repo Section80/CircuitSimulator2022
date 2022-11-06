@@ -27,6 +27,7 @@ private:
 
 	// clock signal
 	InputPin m_clockInput;
+	bool m_bLastClock;
 
 	// control signal
 	InputPin m_regWrite;

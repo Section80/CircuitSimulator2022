@@ -22,6 +22,10 @@ void BitBulbCircuit::render()
 				ImGui::Text("0");
 			}
 		}
+		else
+		{
+			ImGui::Text("None");
+		}
 		m_inputPin.Render();
 	ImNode::EndNode();
 }

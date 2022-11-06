@@ -128,6 +128,7 @@ bool OutputPin::CanConnectNew()
 bool OutputPin::ConnectNew(InputPin* pInputPin)
 {
 	assert(pInputPin != nullptr);
+	assert(GetWireLineCount() == pInputPin->GetWireLineCount());
 
 	for (int i = 0; i < MAX_WIRE_IN_OUTPUTPIN; i++)
 	{

@@ -8,6 +8,7 @@ class Int32OutCircuit final : public Circuit
 {
 public:
 	Int32OutCircuit();
+	Int32OutCircuit(float x, float y);
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -17,9 +18,6 @@ private:
 
 private:
 	void updateOutput() override;
-
-private:
-	static int inputTextCallback(ImGuiInputTextCallbackData* pData);
 
 private:
 	OutputPin m_outputPin;

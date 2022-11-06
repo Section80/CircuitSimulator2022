@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <assert.h>
-#include "Conversion.h"
+#include "Convert.h"
 
 #pragma region BitMask
 #define MASK_ALL_ZERO	0b00000000000000000000000000000000
@@ -8,7 +8,7 @@
 #define MASK_1			0b00000000000000000000000000000010
 #define MASK_2			0b00000000000000000000000000000100
 #define MASK_3			0b00000000000000000000000000001000
-#define MASK_4			0b00000000000000000000000000010001
+#define MASK_4			0b00000000000000000000000000010000
 #define MASK_5			0b00000000000000000000000000100000
 #define MASK_6			0b00000000000000000000000001000000
 #define MASK_7			0b00000000000000000000000010000000
@@ -135,9 +135,9 @@ bool ReadBitAt(uint32_t bits, int index)
 	return false;
 }
 
-void Uint32ToBoolArray(uint32_t bits, bool* pOut)
+void Uint32ToBoolArray(uint32_t bits, bool* pOut, int len)
 {
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < len; i++)
 	{
 		pOut[i] = ReadBitAt(bits, i);
 	}

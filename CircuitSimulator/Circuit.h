@@ -11,6 +11,13 @@ namespace ImNode = ax::NodeEditor;
 class Pin;
 class OutputPin;
 
+// 생각하기
+// 딜레이가 1초인 and gate의 1번 입력이 true, 2번 입력은 0.1초마다 true, false가 바뀐다고 해보자. 
+// 현실에서 이 회로의 출력은 어떻게 될까? 
+// undefined일까? 아니면 1초가 지난 후 부터는 0.1초마다 출력이 변할까? 
+// 내가 디자인한 모델에서는 남은 delay보다 빠르게 입력이 변한 경우, 기존의 입력은 무시된다. 덮어써버린다.  
+// 그리고 새로운 입력에 대한 업데이트는 무조건 delay만큼 시간이 흐른 후에만 적용된다. 
+
 class Circuit abstract : public Identifiable
 {
 public:
@@ -72,6 +79,9 @@ protected:
 	// 각 outputPin의 출력이 변한 경우, 연결된 circuit의 onInputChagned()를 호출한다. 
 	void afterUpdateOutput();
 
+	// Edge-Triggered 회로 구현에 사용한다. 
+	void resetDelay();
+
 private:
 	static std::vector<Circuit*> s_pCircuits;
 
@@ -80,7 +90,8 @@ private:
 	// 현재 입력에 기반해 outputPin을 모두 업데이트한다. 
 	// InputPin::ReadAt(int wireLinIndex), Circuit::setOutputData(int outputPinindex, const bool* pData) 함수를 사용해 구현한다. 
 	// 주의: afterUpdateOutput()를 호출하지 말 것! 해당 함수는 맥락에 따라 알아서 호출됨. 
-	virtual void updateOutput() = 0;
+	// Default: 아무것도 안함.
+	virtual void updateOutput();
 
 	void onInputChanged();
 

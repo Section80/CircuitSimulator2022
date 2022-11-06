@@ -15,52 +15,13 @@
 #include "PlayButton.h"
 #include "InteractionManager.h"
 
-#include "Circuit.h"
-#include "AndCircuit.h"
-#include "SwitchCircuit.h"
-#include "BitBulbCircuit.h"
-#include "NotCircuit.h"
-#include "BufferCircuit.h"
-#include "OrCircuit.h"
-#include "Int32OutCircuit.h"
-
-#include "RegisterCircuit.h"
+#include "SpawnCircuit.h"
 
 namespace ImNode = ax::NodeEditor;
 
-AndCircuit* pAnd1;
-// AndCircuit* pAnd2;
-// AndCircuit* pAnd3;
-// AndCircuit* pAnd4;
-// AndCircuit* pAnd5;
-
-SwitchCircuit* pSwitch1;
-SwitchCircuit* pSwitch2;
-
-BitBulbCircuit* pBitBulb1;
-BitBulbCircuit* pBitBulb2;
-
-NotCircuit* pNot1;
-NotCircuit* pNot2;
-
-BufferCircuit* pBuffer1;
-BufferCircuit* pBuffer2;
-
-OrCircuit* pOr1;
-OrCircuit* pOr2;
-
-Int32OutCircuit* pInt32Out;
-
-void SRLatch(
-    OrCircuit* pOr1, OrCircuit* pOr2,
-    NotCircuit* pNot1, NotCircuit* pNot2);
-
-RegisterCircuit* pRegFile;
-
-
 int main()
 {
-    printf("Start \n");
+    printf("======== Init ======== \n");
 
     // init Glfw
     if (!glfwInit())
@@ -105,60 +66,10 @@ int main()
     float h = 0.0f;
     float hGap = 80.0f;
     Pin::InitVector();
-    pAnd1 = new AndCircuit(5.0f);
-    ImNode::SetNodePosition(pAnd1->GetNodeId(), ImVec2(0, h));
-    // pAnd2 = new AndCircuit(5.0f);;
-    // ImNode::SetNodePosition(pAnd2->GetNodeId(), ImVec2(300, 0));
-    // pAnd3 = new AndCircuit(5.0f);;
-    // ImNode::SetNodePosition(pAnd3->GetNodeId(), ImVec2(600, 0));
-    // pAnd4 = new AndCircuit(5.0f);;
-    // ImNode::SetNodePosition(pAnd4->GetNodeId(), ImVec2(0, 100));
-    // pAnd5 = new AndCircuit(5.0f);;
-    // ImNode::SetNodePosition(pAnd5->GetNodeId(), ImVec2(300, 100));
     
-    pSwitch1 = new SwitchCircuit();
-    ImNode::SetNodePosition(pSwitch1->GetNodeId(), ImVec2(0, h += hGap));
-    pSwitch2 = new SwitchCircuit();
-    ImNode::SetNodePosition(pSwitch2->GetNodeId(), ImVec2(300, h));
-
-    pBitBulb1 = new BitBulbCircuit();
-    ImNode::SetNodePosition(pBitBulb1->GetNodeId(), ImVec2(0, h += hGap));
-
-    pBitBulb2 = new BitBulbCircuit();
-    ImNode::SetNodePosition(pBitBulb2->GetNodeId(), ImVec2(300, h));
-
-    pNot1 = new NotCircuit();
-    ImNode::SetNodePosition(pNot1->GetNodeId(), ImVec2(0, h += hGap));
-
-    pNot2 = new NotCircuit();
-    ImNode::SetNodePosition(pNot2->GetNodeId(), ImVec2(300, h));
-
-    pBuffer1 = new BufferCircuit();
-    ImNode::SetNodePosition(pBuffer1->GetNodeId(), ImVec2(0, h += hGap));
-
-    pBuffer2 = new BufferCircuit();
-    ImNode::SetNodePosition(pBuffer2->GetNodeId(), ImVec2(300, h));
-
-    pOr1 = new OrCircuit();
-    ImNode::SetNodePosition(pOr1->GetNodeId(), ImVec2(0, h += hGap));
-
-    pOr2 = new OrCircuit();
-    ImNode::SetNodePosition(pOr2->GetNodeId(), ImVec2(300, h));
-
-    SRLatch(pOr1, pOr2, pNot1, pNot2);
-    pSwitch1->GetOutputPin(0)->ConnectNew(pOr1->GetInputPin(0));
-    pSwitch2->GetOutputPin(0)->ConnectNew(pOr2->GetInputPin(1));
-    pNot1->GetOutputPin(0)->ConnectNew(pBitBulb1->GetInputPin(0));
-    pNot2->GetOutputPin(0)->ConnectNew(pBitBulb2->GetInputPin(0));
-
-    // pSwitch1->GetOutputPin(0)->ConnectNew(pAnd1->GetInputPin(0));
-    // pAnd1->GetOutputPin(0)->ConnectNew(pNot1->GetInputPin(0));
-    // pNot1->GetOutputPin(0)->ConnectNew(pAnd1->GetInputPin(1));
-    // pAnd1->GetOutputPin(0)->ConnectNew(pBitBulb1->GetInputPin(0));
-
-    pRegFile = new RegisterCircuit(0, h);
-
-    pInt32Out = new Int32OutCircuit();
+    // Spawn Circuits
+    std::vector<Circuit*> pCircuits;
+    SpawnTestRegisterFile(0, 0, pCircuits);
 
     PlayButton playButton;
 
@@ -227,6 +138,11 @@ int main()
     }
 
     // Clean Up
+    for (Circuit* pCircuit : pCircuits)
+    {
+        delete pCircuit;
+    }
+
     glfwTerminate();
 
     ImNode::DestroyEditor(pNodeContext);

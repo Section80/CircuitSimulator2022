@@ -10,6 +10,12 @@ SwitchCircuit::SwitchCircuit()
 	, m_buttonId(Identifiable::GetNewId())
 {}
 
+SwitchCircuit::SwitchCircuit(float x, float y)
+	: SwitchCircuit()
+{
+	SetPos(x, y);
+}
+
 void SwitchCircuit::render()
 {
 	ImNode::BeginNode(GetId());
