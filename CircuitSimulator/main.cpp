@@ -68,8 +68,9 @@ int main()
     Pin::InitVector();
     
     // Spawn Circuits
-    std::vector<Circuit*> pCircuits;
-    SpawnTestRegisterFile(0, 0, pCircuits);
+    std::vector<Circuit*>* pCircuits = new std::vector<Circuit*>();
+    // SpawnTestRegisterFile(0, 0, pCircuits);
+    SpawnSimple1(0, 0, pCircuits);
 
     PlayButton playButton;
 
@@ -79,15 +80,14 @@ int main()
     // Main Loop
     while (!glfwWindowShouldClose(pWindow))
     {
-        // Update Here
+        nowTime = glfwGetTime();
         if (playButton.IsStarted())
         {
-            nowTime = glfwGetTime();
             // Circuit::UpdateAll(0.05f);
             Circuit::UpdateAll(nowTime - lastTime);
             // Sleep((int)(1.0f / 60.0f) * 1000);
-            lastTime = nowTime;
         }
+        lastTime = nowTime;
 
         // Before render
         glfwGetFramebufferSize(pWindow, &frameBufferWidth, &frameBufferHeight);
@@ -138,7 +138,8 @@ int main()
     }
 
     // Clean Up
-    for (Circuit* pCircuit : pCircuits)
+    std::vector<Circuit*>& circuits = *pCircuits;
+    for (Circuit* pCircuit : circuits)
     {
         delete pCircuit;
     }

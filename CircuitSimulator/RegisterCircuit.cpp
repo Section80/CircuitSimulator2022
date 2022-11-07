@@ -4,7 +4,7 @@
 
 
 RegisterCircuit::RegisterCircuit()
-	: Circuit("RegisterFile", 6, 2, m_outBuf1, m_outBuf2, 64, 1.0)
+	: Circuit("Register File", 6, 2, m_outBuf1, m_outBuf2, 64, 0.5f)
 	, m_rReg1(*this, "rReg1", 5)
 	, m_rReg2(*this, "rReg2", 5)
 	, m_wReg(*this, "wReg", 5)
@@ -28,7 +28,8 @@ void RegisterCircuit::render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());
-	
+		renderDelay(160.0f);
+
 		m_rReg1.Render();
 		ImGui::SameLine();
 		m_readData1.Render();
@@ -39,8 +40,8 @@ void RegisterCircuit::render()
 
 		m_wReg.Render();
 		m_wData.Render();
-		m_clock.Render();
 		m_regWrite.Render();
+		m_clock.Render();
 	ImNode::EndNode();
 }
 

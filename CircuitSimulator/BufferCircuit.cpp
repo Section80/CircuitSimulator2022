@@ -9,6 +9,12 @@ BufferCircuit::BufferCircuit()
 	, m_outBuf2(false)
 {}
 
+BufferCircuit::BufferCircuit(float x, float y)
+	: BufferCircuit()
+{
+	SetPos(x, y);
+}
+
 void BufferCircuit::render()
 {
 	ImNode::BeginNode(GetNodeId());

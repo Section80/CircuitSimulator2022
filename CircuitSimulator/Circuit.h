@@ -82,6 +82,8 @@ protected:
 	// Edge-Triggered 회로 구현에 사용한다. 
 	void resetDelay();
 
+	void renderDelay(float w = 100.0f);
+
 private:
 	static std::vector<Circuit*> s_pCircuits;
 

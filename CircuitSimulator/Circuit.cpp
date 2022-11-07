@@ -234,6 +234,19 @@ void Circuit::resetDelay()
 	m_leftDelay = m_delay;
 }
 
+void Circuit::renderDelay(float w)
+{
+	if (m_delay != 0)
+	{
+		float p = 0.0f;
+		if (IsResolvable())
+		{
+			p = (float)(m_delay - m_leftDelay) / (float)m_delay;
+		}
+		ImGui::ProgressBar(p, ImVec2(w, 0.0f));
+	}
+}
+
 void Circuit::updateOutput()
 {}
 
@@ -280,6 +293,7 @@ void Circuit::resolveConnected(int dt_naosec)
 
 				if (connected.m_delay != 0) {
 					bool condition =
+						connected.IsResolvable() &&
 						connected.m_leftDelay <= dt_naosec &&
 						!connected.m_isJustResolved;
 

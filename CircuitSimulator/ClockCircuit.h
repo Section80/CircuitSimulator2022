@@ -1,14 +1,14 @@
-#ifndef BUFFER_CIRCUIT_H
-#define BUFFER_CIRCUIT_H
+#ifndef CLOCK_CIRCUIT_H
+#define CLOCK_CIRCUIT_H
 
 #include "Circuit.h"
 #include "Pin.h"
 
-class BufferCircuit final : public Circuit
+class ClockCircuit final : public Circuit
 {
 public:
-	BufferCircuit();
-	BufferCircuit(float x, float y);
+	ClockCircuit();
+	ClockCircuit(float x, float y);
 
 	void render() override;
 
@@ -19,11 +19,13 @@ private:
 	void updateOutput() override;
 
 private:
-	InputPin m_inputPin;
-	OutputPin m_outputPin;
+	OutputPin m_out;
 
 	bool m_outBuf1;
 	bool m_outBuf2;
+
+	bool m_bVal;
 };
 
-#endif
+
+#endif 

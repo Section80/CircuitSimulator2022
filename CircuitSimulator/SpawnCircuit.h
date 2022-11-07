@@ -7,6 +7,8 @@ class Circuit;
 
 // void SpawnTestSRLatch(std::vector<Circuit*> pCircuits);
 
-void SpawnTestRegisterFile(float x, float y, std::vector<Circuit*> pCircuits);
+void SpawnTestRegisterFile(float x, float y, std::vector<Circuit*>* pCircuits);
+
+void SpawnSimple1(float x, float y, std::vector<Circuit*>* pCircuits);
 
 #endif

@@ -3,7 +3,7 @@
 #include "DataMemoryCircuit.h"
 
 DataMemoryCircuit::DataMemoryCircuit()
-	: Circuit("Data Memory", 5, 1, m_outBuf1, m_outBuf2, 32, 1.0f)
+	: Circuit("Data Memory", 5, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_addr(*this, "addr", 32)
 	, m_wData(*this, "wData", 32)
 	, m_clock(*this, "clock", 1)
@@ -23,6 +23,7 @@ void DataMemoryCircuit::render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());
+		renderDelay(160.0f);
 
 		m_addr.Render();
 		ImGui::SameLine();

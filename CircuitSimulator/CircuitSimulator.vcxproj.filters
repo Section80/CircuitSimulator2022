@@ -115,6 +115,24 @@
     <ClCompile Include="DataMemoryCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
     </ClCompile>
+    <ClCompile Include="Add32Circuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgramCounterCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClCompile>
+    <ClCompile Include="ClockCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClCompile>
+    <ClCompile Include="InstructionMemory.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClCompile>
+    <ClCompile Include="Instruction.cpp">
+      <Filter>소스 파일\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="testInstructionMain.cpp">
+      <Filter>소스 파일\main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -179,6 +197,21 @@
     </ClInclude>
     <ClInclude Include="DataMemoryCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClInclude>
+    <ClInclude Include="Add32Circuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgramCounterCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClInclude>
+    <ClInclude Include="ClockCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClInclude>
+    <ClInclude Include="InstructionMemory.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClInclude>
+    <ClInclude Include="Instruction.h">
+      <Filter>소스 파일\Helper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
