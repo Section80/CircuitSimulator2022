@@ -17,6 +17,10 @@
 #include "ProgramCounterCircuit.h"
 #include "Add32Circuit.h"
 #include "InstructionMemory.h"
+#include "SignExtensionCircuit.h"
+#include "ShiftLeftCircuit.h"
+#include "MuxCircuit.h"
+#include "AluCircuit.h"
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
 
@@ -96,6 +100,16 @@ void SpawnSimple1(float x, float y, std::vector<Circuit*>* pCircuits)
 	AddXY(dataMem, DataMemoryCircuit, x + 450.0f, y);
 	connect(exe, 0, dataMem, 0);
 	connect(clock, 0, dataMem, 4);
+
+	AddXY(signEx, SignExtensionCircuit, x, y + 250.0f);
+	AddXY(shift, ShiftLeftCircuit, x + 100.0f, y + 250.0f);
+	AddXY(mux, Mux21Circuit, x + 200.0f, y + 250.0f);
+	
+	AddXY(i1, Int32OutCircuit, x - 100.0f, y + 250.0f);
+	AddXY(i2, Int32OutCircuit, x - 200.0f, y + 250.0f);
+	AddXY(alu, AluCircuit, x + 300.0f, y + 250.0f);
+	AddXY(display_i, DisplayInt32Circuit, x - 300.0f, y + 250.0f);
+	AddXY(aluOp, AluOperationCircuit, x - 400.0f, y + 250.0f);
 
 	// AddXY(buf, BufferCircuit, x + 250, y + 100.0f);
 	// connect(dataMem, 0, buf, 0);

@@ -1,14 +1,14 @@
-#ifndef MUX_CIRCUIT
-#define MUX_CIRCUIT
+#ifndef SHIFT_LEFT_CIRCUIT_H
+#define SHIFT_LEFT_CIRCUIT_H
 
 #include "Circuit.h"
 #include "Pin.h"
 
-class Mux21Circuit final : public Circuit
+class ShiftLeftCircuit final : public Circuit
 {
 public:
-	Mux21Circuit();
-	Mux21Circuit(float x, float y);
+	ShiftLeftCircuit();
+	ShiftLeftCircuit(float x, float y);
 
 	void render() override;
 
@@ -19,14 +19,12 @@ private:
 	void updateOutput() override;
 
 private:
-	InputPin m_in0;
-	InputPin m_in1;
-	InputPin m_select;
-
+	InputPin m_in;
 	OutputPin m_out;
 
 	bool m_outBuf1[32];
 	bool m_outBuf2[32];
 };
+
 
 #endif

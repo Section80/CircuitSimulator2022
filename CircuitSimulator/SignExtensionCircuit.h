@@ -19,6 +19,11 @@ private:
 	void updateOutput() override;
 
 private:
+	InputPin m_in;
+	OutputPin m_out;
+
+	bool m_outBuf1[32];
+	bool m_outBuf2[32];
 };
 
 #endif

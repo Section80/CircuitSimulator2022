@@ -78,10 +78,12 @@ namespace glfw_imgui
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // before render imgui
+            auto& io = ImGui::GetIO();
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            // ImGui::Begin(config.Title, nullptr);
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(io.DisplaySize);
             ImGui::Begin("Content", nullptr);
 
             // update & render

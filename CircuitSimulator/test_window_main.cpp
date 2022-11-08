@@ -59,10 +59,6 @@ void onUpdate(double dt)
 	playButton.Render();
 
 	// Before ImNode Render
-	auto& io = ImGui::GetIO();
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(io.DisplaySize);
-
 	ImNode::SetCurrentEditor(pNodeContext);
 	ImNode::Begin("Node Editor", ImVec2(0.0f, 0.0f));
 

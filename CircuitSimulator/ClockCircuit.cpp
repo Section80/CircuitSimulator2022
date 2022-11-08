@@ -19,7 +19,6 @@ ClockCircuit::ClockCircuit(float x, float y)
 void ClockCircuit::render()
 {
 	ImNode::BeginNode(GetId());
-
 	ImGui::Text(GetName());
 
 	renderDelay(70.0f);
