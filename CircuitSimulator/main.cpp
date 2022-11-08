@@ -138,11 +138,14 @@ int main()
     }
 
     // Clean Up
+    printf("======== CleanUp ======== \n");
+
     std::vector<Circuit*>& circuits = *pCircuits;
     for (Circuit* pCircuit : circuits)
     {
         delete pCircuit;
     }
+    delete pCircuits;
 
     glfwTerminate();
 

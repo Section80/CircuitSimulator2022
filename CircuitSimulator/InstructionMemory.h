@@ -10,6 +10,7 @@ class InstructionMemoryCircuit final : public Circuit
 public:
 	InstructionMemoryCircuit();
 	InstructionMemoryCircuit(float x, float y);
+	virtual ~InstructionMemoryCircuit();
 	
 	void render() override;
 

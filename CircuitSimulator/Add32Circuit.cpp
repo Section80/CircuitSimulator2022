@@ -19,6 +19,7 @@ void Add32Circuit::render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());
+		renderDelay(140.0f);
 		m_in1.Render();
 		ImGui::SameLine();
 		m_out.Render();

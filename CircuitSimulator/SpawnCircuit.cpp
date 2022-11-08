@@ -80,7 +80,6 @@ void SpawnSimple1(float x, float y, std::vector<Circuit*>* pCircuits)
 	AddXY(pcWrite, SwitchCircuit, x - 500.0f, y);
 	connect(pcWrite, 0, pc, 1);
 
-
 	AddXY(instMem, InstructionMemoryCircuit, x - 150.0f, y);
 	connect(pc, 0, instMem, 0);
 

@@ -24,6 +24,10 @@ InstructionMemoryCircuit::InstructionMemoryCircuit(float x, float y)
 	SetPos(x, y);
 }
 
+InstructionMemoryCircuit::~InstructionMemoryCircuit()
+{
+}
+
 void InstructionMemoryCircuit::render()
 {
 	ImNode::BeginNode(GetId());
@@ -96,6 +100,11 @@ void InstructionMemoryCircuit::updateOutput()
 	}
 	
 
-	bool* buf = getOutputDataBuffer(0);
+	// 왜 0번이 아니라 3번을 가져올까? 
+	// 0번은 offset이 21이다. 
+	// 21부터 32비트를 쓰면 뒤에 있는 m_map을 침범한다. 
+	// 그래서 실제로 detor에서 에러가 발생했다...
+	// 오버런 조심할 것. 
+	bool* buf = getOutputDataBuffer(3);
 	Uint32ToBoolArray(m_val, buf);
 }

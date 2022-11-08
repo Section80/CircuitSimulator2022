@@ -20,7 +20,7 @@ void PlayButton::Render()
 	{
 		if (ImGui::Button("Start"))
 		{
-			printf("======== Start ======== \n");
+			printf("======== Play ======== \n");
 			m_isStarted = true;
 		}
 	}

@@ -145,7 +145,7 @@ void Circuit::UpdateAll(double _dt)
 				// 출력을 업데이트해야 하는 경우
 				if (minLeftDelay >= c.m_leftDelay)
 				{
-					printf("UpdateAll updateOutput: %s \n", c.GetName());
+					// printf("UpdateAll updateOutput: %s \n", c.GetName());
 					// 출력 업데이트 전 
 					c.resolveConnected(minLeftDelay);
 					c.m_leftDelay = -1;	// 중요! 반드시 여기에 있어야 함! 
@@ -205,7 +205,7 @@ bool* Circuit::getOutputDataBuffer(int outputPinIndex)
 
 void Circuit::afterUpdateOutput()
 {
-	printf("afterOutputChanged: %s \n", GetName());
+	// printf("afterOutputChanged: %s \n", GetName());
 
 	// outputPin을 순회하면서 해당하는 출력이 변했다면 연결된 circuit에게 통지한다. 
 	for (int i = 0; i < m_outputPinCount; i++)
@@ -222,7 +222,10 @@ void Circuit::afterUpdateOutput()
 				if (wire.GetTo() != nullptr)
 				{
 					Circuit& inputCircuit = wire.GetTo()->GetOwner();
-					inputCircuit.onInputChanged();
+					if (inputCircuit.IsResolvable())
+					{
+						inputCircuit.onInputChanged();
+					}
 				}
 			}
 		}
@@ -238,6 +241,12 @@ void Circuit::renderDelay(float w)
 {
 	if (m_delay != 0)
 	{
+		if (m_leftDelay == -1)
+		{
+			ImGui::ProgressBar(0.0f, ImVec2(w, 0.0f));
+			return;
+		}
+
 		float p = 0.0f;
 		if (IsResolvable())
 		{
@@ -252,11 +261,11 @@ void Circuit::updateOutput()
 
 void Circuit::onInputChanged()
 {
-	printf("onInputChanged: %s \n", GetName());
+	// printf("onInputChanged: %s \n", GetName());
 	// Instance Circuit인 경우
 	if (m_delay == 0)
 	{
-		printf(" - update and alert \n");
+		// printf(" - update and alert \n");
 		m_circuitOutput.Swap();
 		// 출력이 업데이트되고 바로 전파된다. 
 		updateOutput();
@@ -265,7 +274,7 @@ void Circuit::onInputChanged()
 	else {
 		// delay를 초기화한다. 
 		m_leftDelay = m_delay;
-		printf(" - delay reset: %d \n", m_leftDelay);
+		// printf(" - delay reset: %d \n", m_leftDelay);
 	}
 }
 

@@ -94,9 +94,12 @@ void ProgramCounterCircuit::updateOutput()
 	{
 		if (m_write.ReadAt(0))
 		{
-			m_addr = ReadToUint32(m_inAddr, 32);
-
-			resetDelay();
+			uint32_t newAddr = ReadToUint32(m_inAddr, 32);
+			if (m_addr != newAddr)
+			{
+				m_addr = newAddr;
+				resetDelay();
+			}
 		}
 	}
 }
