@@ -2,11 +2,11 @@
 #include "BufferCircuit.h"
 
 BufferCircuit::BufferCircuit()
-	: Circuit("Buffer", 1, 1, &m_outBuf1, &m_outBuf1, 1, 0.0f)
+	: Circuit("Buffer", 1, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
 	, m_inputPin(*this, "in", 1)
 	, m_outputPin(*this, "out", 0, 1)
-	, m_outBuf1(false)
-	, m_outBuf2(false)
+	, m_reverse(false)
+	, m_wireLineCount(1)
 {}
 
 BufferCircuit::BufferCircuit(float x, float y)
@@ -19,9 +19,58 @@ void BufferCircuit::render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text(GetName());
-		m_inputPin.Render();
+		if (m_reverse)
+		{
+			m_outputPin.Render(true);
+			ImGui::SameLine();
+			m_inputPin.Render(true);
+		}
+		else
+		{
+			m_inputPin.Render(false);
+			ImGui::SameLine();
+			m_outputPin.Render(false);
+		}
+
+		if (ImGui::Button("Swap"))
+		{
+			m_reverse = !m_reverse;
+		}
 		ImGui::SameLine();
-		m_outputPin.Render();
+
+		int oldCount = m_wireLineCount;
+		ImGui::PushItemWidth(40.0f);
+		bool bRet = ImGui::InputInt(
+			"count",
+			&m_wireLineCount, 0, 0,
+			ImGuiInputTextFlags_EnterReturnsTrue
+		);
+		ImGui::PopItemWidth();
+		if (bRet)
+		{
+			if (m_wireLineCount < 1) m_wireLineCount = 1;
+			if (m_wireLineCount > 32) m_wireLineCount = 32;
+
+			if (m_wireLineCount != oldCount)
+			{
+				if (m_inputPin.GetFrom() != nullptr)
+				{
+					m_inputPin.GetFrom()->Disconnect(&m_inputPin);
+				}
+				m_inputPin.setWireLineCount(m_wireLineCount);
+
+				for (int i = 0; i < MAX_WIRE_IN_OUTPUTPIN; i++)
+				{
+					Wire& w = m_outputPin.m_wires[i];
+					if (w.GetTo() != nullptr)
+					{
+						m_outputPin.Disconnect(w.GetTo());
+					}
+				}
+				m_outputPin.setWireLineCount(m_wireLineCount);
+			}
+		}
+
 	ImNode::EndNode();
 }
 
@@ -53,6 +102,17 @@ OutputPin* BufferCircuit::GetOutputPin(int index)
 
 void BufferCircuit::updateOutput()
 {
-	bool b = m_inputPin.ReadAt(0);
-	setOutputData(0, &b);
+	bool buf[32] = { 0 };
+	for (int i = 0; i < m_wireLineCount; i ++)
+	{
+		buf[i] = m_inputPin.ReadAt(i);
+	}
+	setOutputData(0, buf);
+}
+
+void BufferCircuit::SetWireLineCount(int count)
+{
+	if (count < 1) count = 1;
+	else if (count > 32) count = 32;
+	m_wireLineCount = count;
 }

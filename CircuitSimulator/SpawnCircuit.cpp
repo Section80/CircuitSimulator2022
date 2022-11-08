@@ -111,6 +111,8 @@ void SpawnSimple1(float x, float y, std::vector<Circuit*>* pCircuits)
 	AddXY(display_i, DisplayInt32Circuit, x - 300.0f, y + 250.0f);
 	AddXY(aluOp, AluOperationCircuit, x - 400.0f, y + 250.0f);
 
+	AddXY(buf, BufferCircuit, x - 500.0f, y + 250.0f);
+
 	// AddXY(buf, BufferCircuit, x + 250, y + 100.0f);
 	// connect(dataMem, 0, buf, 0);
 	// connect(buf, 0, regFile, 3);

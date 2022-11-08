@@ -14,14 +14,18 @@ class Circuit;
 class Pin;
 class InputPin;
 class OutputPin;
+class BufferCircuit;
 
 class Pin abstract : public Identifiable
 {
 public:
+	class BufferCircuit;
+
+public:
 	Pin(Circuit& owner, const char* name, ImNode::PinKind pinkind, int wireLineCount);
 	virtual ~Pin();
 
-	virtual void Render() = 0;
+	virtual void Render(bool reverse = false) = 0;
 
 	inline ImNode::PinId GetPinId() { return m_pinId; };
 	inline Circuit& GetOwner() { return m_owner; }
@@ -33,6 +37,10 @@ public:
 public:
 	static Pin* GetPinById(ImNode::PinId pinId);
 	static void InitVector();
+
+protected:
+	inline void setWireLineCount(int count) { m_wireLineCount = count; }
+
 private:
 	static std::vector<Pin*> s_pPins;
 
@@ -50,15 +58,21 @@ class InputPin final : public Pin
 {
 public:
 	friend class OutputPin;
+	// https ://stackoverflow.com/questions/28307374/friend-class-not-working
+	friend class ::BufferCircuit;	// for setWireLineCount();
+
 public:
 	InputPin(Circuit& owner, const char* name, int wireLineCount);
 	virtual ~InputPin();
 
-	void Render() override;
+	void Render(bool reverse = false) override;
 
 	inline OutputPin* GetFrom() { return m_from; }
 	// InputPin의 wire들 중 해당하는 index에 있는 값을 읽는다. 
 	bool ReadAt(int wireLinIndex);
+
+private:
+	inline void setWireLineCount(int count) { Pin::setWireLineCount(count); }
 
 private:
 	OutputPin* m_from;
@@ -68,10 +82,14 @@ private:
 class OutputPin final : public Pin
 {
 public:
+	// https ://stackoverflow.com/questions/28307374/friend-class-not-working
+	friend class ::BufferCircuit;	// for setWireLineCount();
+
+public:
 	OutputPin(Circuit& owner, const char* name, int dataOffset, int wireLineCount);
 	~OutputPin();
 
-	void Render();
+	void Render(bool reverse = false) override;
 	void RenderWire();
 
 	inline int GetOutputOffset() { return m_dataOffset; }
@@ -81,6 +99,9 @@ public:
 	bool CanConnectNew();
 	bool ConnectNew(InputPin* pInputPin);
 	bool Disconnect(InputPin* pInputPin);
+
+private:
+	inline void setWireLineCount(int count) { Pin::setWireLineCount(count); }
 
 private:
 	// Owner Circuit의 Output에서의 Offset

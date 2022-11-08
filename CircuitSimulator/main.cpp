@@ -73,6 +73,7 @@ int main()
     SpawnSimple1(0, 0, pCircuits);
 
     PlayButton playButton;
+    float skip_sec = 0.0f;
 
     double lastTime = glfwGetTime();
     double nowTime = lastTime;
@@ -111,6 +112,17 @@ int main()
 
         // ImGui render
         playButton.Render();
+        ImGui::SameLine();
+
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputFloat("sec", &skip_sec, 0, 0);
+        ImGui::PopItemWidth();
+
+        ImGui::SameLine();
+        if (ImGui::Button("Skip"))
+        {
+            Circuit::UpdateAll(skip_sec);
+        }
 
         ImNode::SetCurrentEditor(pNodeContext);
         ImNode::Begin("Node Editor", ImVec2(0.0f, 0.0f));

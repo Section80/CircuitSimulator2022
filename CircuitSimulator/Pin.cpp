@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Pin.h"
 #include "Circuit.h"
+#include "BufferCircuit.h"
 
 std::vector<Pin*> Pin::s_pPins;
 
@@ -55,11 +56,19 @@ InputPin::InputPin(Circuit& owner, const char* name, int wireLineCount)
 InputPin::~InputPin()
 {}
 
-void InputPin::Render()
+void InputPin::Render(bool reverse)
 {
 	ImNode::BeginPin(GetPinId(), ImNode::PinKind::Input);
 	char buffer[64] = { 0 };
-	sprintf_s(buffer, "> %s[%d]", GetName(), GetWireLineCount());
+	if (reverse)
+	{
+		sprintf_s(buffer, "%s[%d] <", GetName(), GetWireLineCount());
+	}
+	else
+	{
+		sprintf_s(buffer, "> %s[%d]", GetName(), GetWireLineCount());
+	}
+	
 	ImGui::Text(buffer);
 	ImNode::EndPin();
 }
@@ -83,11 +92,18 @@ OutputPin::OutputPin(Circuit& owner, const char* name, int dataOffset, int wireL
 OutputPin::~OutputPin()
 {}
 
-void OutputPin::Render()
+void OutputPin::Render(bool reverse)
 {
 	ImNode::BeginPin(GetPinId(), ImNode::PinKind::Output);
 	char buffer[64] = { 0 };
-	sprintf_s(buffer, "%s[%d] >", GetName(), GetWireLineCount());
+	if (reverse)
+	{
+		sprintf_s(buffer, "< %s[%d]", GetName(), GetWireLineCount());
+	}
+	else
+	{
+		sprintf_s(buffer, "%s[%d] >", GetName(), GetWireLineCount());
+	}
 	ImGui::Text(buffer);
 	ImNode::EndPin();
 }

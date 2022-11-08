@@ -41,11 +41,14 @@ void RegIdxOutCircuit::render()
 	ImGui::Text(GetName());
 
 	ImGui::PushID(m_textInputId);
+	
 	ImGui::PushItemWidth(100.0f);
 	bool bInput = ImGui::InputInt(
 		"", (int*)&m_val, 1, 1
 		, ImGuiInputTextFlags_EnterReturnsTrue
 	);
+	ImGui::PopItemWidth();
+	
 	if (bInput)
 	{
 		if (m_val < 0) m_val = 0;

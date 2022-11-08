@@ -15,6 +15,8 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	void SetWireLineCount(int count);
+	
 private:
 	void updateOutput() override;
 
@@ -22,8 +24,11 @@ private:
 	InputPin m_inputPin;
 	OutputPin m_outputPin;
 
-	bool m_outBuf1;
-	bool m_outBuf2;
+	bool m_outBuf1[32];
+	bool m_outBuf2[32];
+
+	bool m_reverse = false;
+	int m_wireLineCount;
 };
 
 #endif

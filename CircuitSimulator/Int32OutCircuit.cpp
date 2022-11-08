@@ -43,11 +43,14 @@ void Int32OutCircuit::render()
 		ImGui::Text(GetName());
 
 		ImGui::PushID(m_textInputId);
+		
 		ImGui::PushItemWidth(100.0f);
 		bool bInput = ImGui::InputInt(
 			"", &m_val, 1, 100
 			, ImGuiInputTextFlags_EnterReturnsTrue
 		);
+		ImGui::PopItemWidth();
+
 		if (bInput)
 		{
 			swapCircuitOutput();
@@ -55,7 +58,6 @@ void Int32OutCircuit::render()
 			Uint32ToBoolArray(m_val, outputBuffer);
 			afterUpdateOutput();
 		}
-		ImGui::PopItemWidth();
 		ImGui::PopID();
 		ImGui::SameLine();
 		m_outputPin.Render();

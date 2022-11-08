@@ -75,30 +75,24 @@ void AluCircuit::updateOutput()
 
 	uint32_t res = 0;
 
-	switch (op)
+	switch ((EAluOperation)op)
 	{
-	case 0:		// AND
-		printf("AND \n");
+	case EAluOperation::And:
 		res = in1 & in2;
 		break;
-	case 1:		// OR
-		printf("OR \n");
+	case EAluOperation::Or:
 		res = in1 | in2;
 		break;
-	case 2:		// ADD
-		printf("ADD \n");
+	case EAluOperation::Add:
 		res = in1 + in2;
 		break;
-	case 6:		// SUB
-		printf("SUB \n");
+	case EAluOperation::Sub:
 		res = in1 - in2;
 		break;
-	case 7:		// SET LSS THAN
-		printf("SLT \n");
+	case EAluOperation::Slt:
 		(in1 < in2) ? res = 1 : res = 0;
 		break;
-	case 12:	// NOR
-		printf("NOR \n");
+	case EAluOperation::Nor:
 		res = ~(in1 | in2);
 		break;
 	default:
