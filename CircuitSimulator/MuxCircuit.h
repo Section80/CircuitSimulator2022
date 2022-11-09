@@ -27,6 +27,9 @@ private:
 
 	bool m_outBuf1[32];
 	bool m_outBuf2[32];
+
+	int m_intInputId;
+	int m_wireLineCount;
 };
 
 #endif

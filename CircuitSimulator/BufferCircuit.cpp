@@ -7,6 +7,7 @@ BufferCircuit::BufferCircuit()
 	, m_outputPin(*this, "out", 0, 1)
 	, m_reverse(false)
 	, m_wireLineCount(1)
+	, m_inputIntId(Identifiable::GetNewId())
 {}
 
 BufferCircuit::BufferCircuit(float x, float y)
@@ -39,13 +40,15 @@ void BufferCircuit::render()
 		ImGui::SameLine();
 
 		int oldCount = m_wireLineCount;
-		ImGui::PushItemWidth(40.0f);
-		bool bRet = ImGui::InputInt(
-			"count",
-			&m_wireLineCount, 0, 0,
-			ImGuiInputTextFlags_EnterReturnsTrue
-		);
-		ImGui::PopItemWidth();
+		ImGui::PushID(m_inputIntId);
+			ImGui::PushItemWidth(40.0f);
+			bool bRet = ImGui::InputInt(
+				"count",
+				&m_wireLineCount, 0, 0,
+				ImGuiInputTextFlags_EnterReturnsTrue
+			);
+			ImGui::PopItemWidth();
+		ImGui::PopID();
 		if (bRet)
 		{
 			if (m_wireLineCount < 1) m_wireLineCount = 1;

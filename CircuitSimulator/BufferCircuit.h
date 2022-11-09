@@ -27,8 +27,9 @@ private:
 	bool m_outBuf1[32];
 	bool m_outBuf2[32];
 
-	bool m_reverse = false;
+	bool m_reverse;
 	int m_wireLineCount;
+	int m_inputIntId;
 };
 
 #endif

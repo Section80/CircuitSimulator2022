@@ -21,6 +21,8 @@
 #include "ShiftLeftCircuit.h"
 #include "MuxCircuit.h"
 #include "AluCircuit.h"
+#include "AluControlCircuit.h"
+#include "ControlUnitCircuit.h"
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
 
@@ -110,8 +112,9 @@ void SpawnSimple1(float x, float y, std::vector<Circuit*>* pCircuits)
 	AddXY(alu, AluCircuit, x + 300.0f, y + 250.0f);
 	AddXY(display_i, DisplayInt32Circuit, x - 300.0f, y + 250.0f);
 	AddXY(aluOp, AluOperationCircuit, x - 400.0f, y + 250.0f);
-
 	AddXY(buf, BufferCircuit, x - 500.0f, y + 250.0f);
+	AddXY(aluCtrl, AluControlCircuit, x - 600.0f, y + 250.0f);
+	AddXY(ctrlUnit, ControlUnitCircuit, x - 700.0f, y + 250.0f);
 
 	// AddXY(buf, BufferCircuit, x + 250, y + 100.0f);
 	// connect(dataMem, 0, buf, 0);

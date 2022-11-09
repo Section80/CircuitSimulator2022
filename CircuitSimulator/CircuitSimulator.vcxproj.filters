@@ -130,17 +130,11 @@
     <ClCompile Include="ClockCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
     </ClCompile>
-    <ClCompile Include="InstructionMemory.cpp">
-      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
-    </ClCompile>
     <ClCompile Include="Instruction.cpp">
       <Filter>소스 파일\Helper</Filter>
     </ClCompile>
     <ClCompile Include="test_instruction_main.cpp">
       <Filter>소스 파일\main</Filter>
-    </ClCompile>
-    <ClCompile Include="ControlUnitCircuit.cpp">
-      <Filter>소스 파일\TODO</Filter>
     </ClCompile>
     <ClCompile Include="ExMemRegisterCircuit.cpp">
       <Filter>소스 파일\TODO\PipelineRegister</Filter>
@@ -166,10 +160,17 @@
     <ClCompile Include="ShiftLeftCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
-    <ClCompile Include="MuxCircuit.cpp">
+    <ClCompile Include="AluCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
-    <ClCompile Include="AluCircuit.cpp">
+    <ClCompile Include="InstructionMemory.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClCompile>
+    <ClCompile Include="AluControlCircuit.cpp" />
+    <ClCompile Include="MuxCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlUnitCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
   </ItemGroup>
@@ -246,14 +247,8 @@
     <ClInclude Include="ClockCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
     </ClInclude>
-    <ClInclude Include="InstructionMemory.h">
-      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
-    </ClInclude>
     <ClInclude Include="Instruction.h">
       <Filter>소스 파일\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="ControlUnitCircuit.h">
-      <Filter>소스 파일\TODO</Filter>
     </ClInclude>
     <ClInclude Include="ExMemRegisterCircuit.h">
       <Filter>소스 파일\TODO\PipelineRegister</Filter>
@@ -276,10 +271,19 @@
     <ClInclude Include="ShiftLeftCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
-    <ClInclude Include="MuxCircuit.h">
+    <ClInclude Include="AluCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
-    <ClInclude Include="AluCircuit.h">
+    <ClInclude Include="InstructionMemory.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClInclude>
+    <ClInclude Include="AluControlCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClInclude>
+    <ClInclude Include="MuxCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlUnitCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
   </ItemGroup>

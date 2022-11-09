@@ -4,11 +4,13 @@
 #include "InstructionMemory.h"
 
 InstructionMemoryCircuit::InstructionMemoryCircuit()
-	: Circuit("Instruction Memory", 1, 4, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Instruction Memory", 1, 6, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_addr(*this, "addr", 32)
+	, m_op(*this, "op", 26, 5)
 	, m_rs(*this, "rs", 21, 5)
 	, m_rt(*this, "rt", 16, 5)
 	, m_rd(*this, "rd", 11, 5)
+	, m_funct(*this, "funt", 0, 5)
 	, m_low16(*this, "low16", 0, 16)
 	, m_val(0)
 {
@@ -40,14 +42,16 @@ void InstructionMemoryCircuit::render()
 
 	ImGui::BeginHorizontal("IO");
 
-		ImGui::BeginVertical("Inputs");
+		ImGui::BeginVertical("Input");
 		m_addr.Render();
 		ImGui::EndVertical();
 
-		ImGui::BeginVertical("outputs");
+		ImGui::BeginVertical("output");
+		m_op.Render();
 		m_rs.Render();
 		m_rt.Render();
 		m_rd.Render();
+		m_funct.Render();
 		m_low16.Render();
 		ImGui::EndVertical();
 
@@ -74,12 +78,16 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 	switch (index)
 	{
 	case 0:
-		return &m_rs;
+		return &m_op;
 	case 1:
-		return &m_rt;
+		return &m_rs;
 	case 2:
-		return &m_rd;
+		return &m_rt;
 	case 3:
+		return &m_rd;
+	case 4:
+		return &m_funct;
+	case 5:
 		return &m_low16;
 	default:
 		assert(false);

@@ -23,9 +23,11 @@ private:
 private:
 	InputPin m_addr;
 	
+	OutputPin m_op;		// 5bit
 	OutputPin m_rs;		// 5bit
 	OutputPin m_rt;		// 5bit
 	OutputPin m_rd;		// 5bit
+	OutputPin m_funct;	// 5bit
 	OutputPin m_low16;	// 16bit
 
 	bool m_outBuf1[32];
