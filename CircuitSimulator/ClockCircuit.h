@@ -15,6 +15,9 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+protected:
+	void afterUpdateOutput() override;
+
 private:
 	void updateOutput() override;
 

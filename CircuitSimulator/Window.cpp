@@ -34,7 +34,7 @@ namespace glfw_imgui
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        GLFWwindow* pWindow = glfwCreateWindow(1280, 720, "OMG", NULL, NULL);
+        GLFWwindow* pWindow = glfwCreateWindow(1280, 720, config.Title, NULL, NULL);
         if (!pWindow) {
             glfwTerminate();
         }

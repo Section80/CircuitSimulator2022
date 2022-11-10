@@ -56,6 +56,21 @@ OutputPin* ClockCircuit::GetOutputPin(int index)
 	return nullptr;
 }
 
+void ClockCircuit::afterUpdateOutput()
+{
+	// clock signal이 true일 때만 출력을 전파한다. 
+	// 왜? falling edge에 rising edge triggered 회로의 delay를 초기화하지 않기 위함이다. 
+	// 대신 falling edge triggered 회로는 falling edge를 전파받을 수 없다. 
+	// double date rate나 falling edge triggred는 구현할 생각이 없으니 당장 해결할 필요는 없다. 
+	// 그래도 문제를 해결하려면, 신호를 보내는 쪽(clock)이 아닌 받는 쪽에서 onInputChanged()에서
+	// 딜레이 초기화 여부를 판단하게 할 수도 있다. 
+	// onInputChanged()를 override하는 클래스(EdgeTriggeredCircuit)를 만들면 좋을 것 같다. 
+	if (m_bVal == true)
+	{
+		Circuit::afterUpdateOutput();
+	}
+}
+
 void ClockCircuit::updateOutput()
 {
 	if (m_bVal)

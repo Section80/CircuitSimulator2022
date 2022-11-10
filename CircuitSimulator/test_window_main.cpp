@@ -3,6 +3,7 @@
 #include <vector>
 #include <imgui_node_editor.h>
 #include "Window.h"
+#include "InteractionManager.h"
 #include "SpawnCircuit.h"
 #include "PlayButton.h"
 
@@ -22,7 +23,7 @@ int main()
 	{
 		1280, 720,
 		false, 
-		"Hello World", 
+		"Test Window Main", 
 		onStart,
 		onUpdate,
 		onEnd
@@ -65,6 +66,8 @@ void onUpdate(double dt)
 	// ImNode Render
 	Circuit::RenderAll();
 	Circuit::RenderAllWires();
+
+	InteractionManager::Update();
 
 	// After ImNode Render
 	ImNode::End();

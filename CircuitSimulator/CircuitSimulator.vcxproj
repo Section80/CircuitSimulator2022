@@ -37,6 +37,7 @@
     </ClCompile>
     <ClCompile Include="Convert.cpp" />
     <ClCompile Include="DisplayInt32Circuit.cpp" />
+    <ClCompile Include="EdgeSenstiveCircuit.cpp" />
     <ClCompile Include="ExMemRegisterCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -53,7 +54,7 @@
     <ClCompile Include="InteractionManager.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="DataMemoryCircuit.cpp" />
     <ClCompile Include="MemWbRegisterCircuit.cpp">
@@ -83,7 +84,7 @@
     </ClCompile>
     <ClCompile Include="test_window_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Wire.cpp" />
@@ -107,6 +108,7 @@
     </ClInclude>
     <ClInclude Include="Convert.h" />
     <ClInclude Include="DisplayInt32Circuit.h" />
+    <ClInclude Include="EdgeSenstiveCircuit.h" />
     <ClInclude Include="ExMemRegisterCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>

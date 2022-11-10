@@ -1,7 +1,7 @@
 #ifndef MEMORY_CIRCUIT_H
 #define MEMORY_CIRCUIT_H
 
-#include <unordered_map>
+#include <map>	// iteration 할 때 메모리 순으로 정렬
 #include "Circuit.h"
 #include "Pin.h"
 
@@ -36,7 +36,7 @@ private:
 	bool m_outBuf1[32];
 	bool m_outBuf2[32];
 
-	std::unordered_map<int, int> m_data;
+	std::map<int, int> m_data;
 };
 
 #endif

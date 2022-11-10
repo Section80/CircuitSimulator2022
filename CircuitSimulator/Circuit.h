@@ -77,7 +77,8 @@ protected:
 	bool* getOutputDataBuffer(int outputPinIndex);
 
 	// 각 outputPin의 출력이 변한 경우, 연결된 circuit의 onInputChagned()를 호출한다. 
-	void afterUpdateOutput();
+	// 왜 virtual일까? ClockCircuit::afterUpdateOutput() 참고
+	virtual void afterUpdateOutput();
 
 	// Edge-Triggered 회로 구현에 사용한다. 
 	void resetDelay();
@@ -95,7 +96,8 @@ private:
 	// Default: 아무것도 안함.
 	virtual void updateOutput();
 
-	void onInputChanged();
+	// 왜 virtual일까? EdgeSenstiveCircuit 참고
+	virtual void onInputChanged();
 
 	// 출력단에 연결된 m_delay가 0이 아닌 circuit 중 m_leftDelay가 dt보다 작은 것이 있으면
 	// 출력을 업데이트하고 전파시킨다. 
