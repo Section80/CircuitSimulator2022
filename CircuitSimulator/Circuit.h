@@ -50,6 +50,8 @@ public:
 
 	inline const char* GetName() { return m_name; }
 	inline ImNode::NodeId GetNodeId() { return m_nodeId; }
+	inline int GetOutputPinCount() { return m_outputPinCount; }
+	inline int GetInputPinCount() { return m_inputPinCount; }
 	bool GetOutputData(int index);
 
 	// 입력핀이 모두 연결되어있는지 확인한다. 
@@ -76,6 +78,9 @@ protected:
 	// [WARNING]outputPin의 WireLineCount보다 많이 쓰면 안된다!!
 	bool* getOutputDataBuffer(int outputPinIndex);
 
+	// 왜 virtual일까? EdgeTriggeredCircuit 참고
+	virtual void onInputChanged();
+
 	// 각 outputPin의 출력이 변한 경우, 연결된 circuit의 onInputChagned()를 호출한다. 
 	// 왜 virtual일까? ClockCircuit::afterUpdateOutput() 참고
 	virtual void afterUpdateOutput();
@@ -84,6 +89,7 @@ protected:
 	void resetDelay();
 
 	void renderDelay(float w = 100.0f);
+	void renderIOGroup(const char* title, int index, int count);
 
 private:
 	static std::vector<Circuit*> s_pCircuits;
@@ -95,9 +101,6 @@ private:
 	// 주의: afterUpdateOutput()를 호출하지 말 것! 해당 함수는 맥락에 따라 알아서 호출됨. 
 	// Default: 아무것도 안함.
 	virtual void updateOutput();
-
-	// 왜 virtual일까? EdgeSenstiveCircuit 참고
-	virtual void onInputChanged();
 
 	// 출력단에 연결된 m_delay가 0이 아닌 circuit 중 m_leftDelay가 dt보다 작은 것이 있으면
 	// 출력을 업데이트하고 전파시킨다. 

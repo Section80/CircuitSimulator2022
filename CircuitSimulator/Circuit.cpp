@@ -256,6 +256,28 @@ void Circuit::renderDelay(float w)
 	}
 }
 
+void Circuit::renderIOGroup(const char* title, int index, int count)
+{
+	ImGui::Text(title);
+
+	ImGui::BeginHorizontal("IO");
+	ImGui::BeginVertical("Input");
+	for (int i = index; i < index + count; i++)
+	{
+		InputPin* in = GetInputPin(i);
+		in->Render();
+	}
+	ImGui::EndVertical();
+	ImGui::BeginVertical("Output");
+	for (int i = index; i < index + count; i++)
+	{
+		OutputPin* in = GetOutputPin(i);
+		in->Render();
+	}
+	ImGui::EndVertical();
+	ImGui::EndHorizontal();
+}
+
 void Circuit::updateOutput()
 {}
 

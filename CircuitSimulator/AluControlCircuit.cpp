@@ -5,7 +5,7 @@
 AluControlCircuit::AluControlCircuit()
 	: Circuit("ALU Control", 2, 1, m_outBuf1, m_outBuf2, 4, 0.5f)
 	, m_op(*this, "op", 2)
-	, m_funct(*this, "funct", 5)
+	, m_funct(*this, "funct", 6)
 	, m_control(*this, "ALU Ctrl", 0, 4)
 {}
 
@@ -76,6 +76,7 @@ void AluControlCircuit::updateOutput()
 		bool f1 = m_funct.ReadAt(1);
 		bool f2 = m_funct.ReadAt(2);
 		bool f3 = m_funct.ReadAt(3);
+		// f4, f5ดย don't care
 
 		if (!f3 && !f2 && !f1 && !f0)		// 0000
 		{

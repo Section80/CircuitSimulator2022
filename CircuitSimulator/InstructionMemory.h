@@ -1,7 +1,7 @@
 #ifndef INSTRUCTION_MEMORY_H
 #define INSTRUCTION_MEMORY_H
 
-#include <unordered_map>
+#include <map>
 #include "Circuit.h"
 #include "Pin.h"
 
@@ -23,11 +23,11 @@ private:
 private:
 	InputPin m_addr;
 	
-	OutputPin m_op;		// 5bit
+	OutputPin m_op;		// 6bit
 	OutputPin m_rs;		// 5bit
 	OutputPin m_rt;		// 5bit
 	OutputPin m_rd;		// 5bit
-	OutputPin m_funct;	// 5bit
+	OutputPin m_funct;	// 6bit
 	OutputPin m_low16;	// 16bit
 
 	bool m_outBuf1[32];

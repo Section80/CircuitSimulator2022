@@ -56,6 +56,9 @@
     <Filter Include="소스 파일\TODO\PipelineRegister">
       <UniqueIdentifier>{e822253c-c1c5-4f1f-8755-85fa26d04a40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register">
+      <UniqueIdentifier>{09024ca8-89ac-41ba-ab31-c84f71a23f70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Identifiable.cpp">
@@ -124,9 +127,6 @@
     <ClCompile Include="Add32Circuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
-    <ClCompile Include="ProgramCounterCircuit.cpp">
-      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
-    </ClCompile>
     <ClCompile Include="ClockCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
     </ClCompile>
@@ -135,18 +135,6 @@
     </ClCompile>
     <ClCompile Include="test_instruction_main.cpp">
       <Filter>소스 파일\main</Filter>
-    </ClCompile>
-    <ClCompile Include="ExMemRegisterCircuit.cpp">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
-    </ClCompile>
-    <ClCompile Include="IdExRegisterCircuit.cpp">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
-    </ClCompile>
-    <ClCompile Include="IfIdRegisterCircuit.cpp">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
-    </ClCompile>
-    <ClCompile Include="MemWbRegisterCircuit.cpp">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>소스 파일\Helper</Filter>
@@ -173,8 +161,20 @@
     <ClCompile Include="ControlUnitCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
-    <ClCompile Include="EdgeSenstiveCircuit.cpp">
+    <ClCompile Include="ProgramCounterCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClCompile>
+    <ClCompile Include="IfIdRegisterCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClCompile>
+    <ClCompile Include="IdExRegisterCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClCompile>
+    <ClCompile Include="ExMemRegisterCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClCompile>
+    <ClCompile Include="MemWbRegisterCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,26 +244,11 @@
     <ClInclude Include="Add32Circuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
-    <ClInclude Include="ProgramCounterCircuit.h">
-      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
-    </ClInclude>
     <ClInclude Include="ClockCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
     </ClInclude>
     <ClInclude Include="Instruction.h">
       <Filter>소스 파일\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="ExMemRegisterCircuit.h">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
-    </ClInclude>
-    <ClInclude Include="IdExRegisterCircuit.h">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
-    </ClInclude>
-    <ClInclude Include="IfIdRegisterCircuit.h">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
-    </ClInclude>
-    <ClInclude Include="MemWbRegisterCircuit.h">
-      <Filter>소스 파일\TODO\PipelineRegister</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>소스 파일\Helper</Filter>
@@ -289,8 +274,20 @@
     <ClInclude Include="ControlUnitCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
-    <ClInclude Include="EdgeSenstiveCircuit.h">
+    <ClInclude Include="ProgramCounterCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential</Filter>
+    </ClInclude>
+    <ClInclude Include="IfIdRegisterCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClInclude>
+    <ClInclude Include="IdExRegisterCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClInclude>
+    <ClInclude Include="ExMemRegisterCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClInclude>
+    <ClInclude Include="MemWbRegisterCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

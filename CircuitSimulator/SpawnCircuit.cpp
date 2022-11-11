@@ -23,6 +23,10 @@
 #include "AluCircuit.h"
 #include "AluControlCircuit.h"
 #include "ControlUnitCircuit.h"
+#include "IfIdRegisterCircuit.h"
+#include "IdExRegisterCircuit.h"
+#include "ExMemRegisterCircuit.h"
+#include "MemWbRegisterCircuit.h"
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
 
@@ -67,55 +71,58 @@ void SpawnTestRegisterFile(float x, float y, std::vector<Circuit*>* pCircuits)
 	pCircuits->push_back(d);
 }
 
-#define AddXY(name, clss, x, y) ;clss* name = new clss(x, y); (pCircuits)->push_back(name);
+#define AddXY(name, clss, _x, _y) ;clss* name = new clss(x + (_x), y + (_y)); (pCircuits)->push_back(name);
 
 
 
 void SpawnSimple1(float x, float y, std::vector<Circuit*>* pCircuits)
 {
-	AddXY(clock, ClockCircuit, x - 200.0f, y + 150.0f);
-	AddXY(pc, ProgramCounterCircuit, x - 350.0f, y);
+	AddXY(clock, ClockCircuit, -200.0f, 150.0f);
+	AddXY(pc, ProgramCounterCircuit, -350.0f, 0);
 	connect(clock, 0, pc, 2);
 
-	AddXY(iVal4, Int32OutCircuit, x - 600.0f, y - 150.0f);
-	AddXY(pcAdd, Add32Circuit, x - 350.0f, y - 100.0f);
+	AddXY(iVal4, Int32OutCircuit, -600.0f, -150.0f);
+	AddXY(pcAdd, Add32Circuit, -350.0f, -100.0f);
 	connect(iVal4, 0, pcAdd, 0);
 	connect(pc, 0, pcAdd, 1);
 	connect(pcAdd, 0, pc, 0);
 
-	AddXY(pcWrite, SwitchCircuit, x - 500.0f, y);
+	AddXY(pcWrite, SwitchCircuit, - 500.0f, 0);
 	connect(pcWrite, 0, pc, 1);
 
-	AddXY(instMem, InstructionMemoryCircuit, x - 150.0f, y);
+	AddXY(instMem, InstructionMemoryCircuit, -150.0f, 0);
 	connect(pc, 0, instMem, 0);
 
-	AddXY(regFile, RegisterCircuit, x + 50.0f, y);
-	connect(instMem, 0, regFile, 0);
-	connect(instMem, 1, regFile, 1);
-	connect(instMem, 2, regFile, 2);
+	AddXY(regFile, RegisterCircuit, 50.0f, 0);
+	connect(instMem, 1, regFile, 0);
+	connect(instMem, 2, regFile, 1);
+	connect(instMem, 3, regFile, 2);
 	connect(clock, 0, regFile, 5);
 	
-	AddXY(exe, Add32Circuit, x + 250, y);
+	AddXY(exe, Add32Circuit, 250, 0);
 	connect(regFile, 0, exe, 0);
 	connect(regFile, 1, exe, 1);
 
-	AddXY(dataMem, DataMemoryCircuit, x + 450.0f, y);
+	AddXY(dataMem, DataMemoryCircuit, 450.0f, 0);
 	connect(exe, 0, dataMem, 0);
 	connect(clock, 0, dataMem, 4);
 
-	AddXY(signEx, SignExtensionCircuit, x, y + 250.0f);
-	AddXY(shift, ShiftLeftCircuit, x + 100.0f, y + 250.0f);
-	AddXY(mux, Mux21Circuit, x + 200.0f, y + 250.0f);
+	AddXY(signEx, SignExtensionCircuit, 0, 250.0f);
+	AddXY(shift, ShiftLeftCircuit, 100.0f, 250.0f);
+	AddXY(mux, Mux21Circuit, 200.0f, 250.0f);
 	
-	AddXY(i1, Int32OutCircuit, x - 100.0f, y + 250.0f);
-	AddXY(i2, Int32OutCircuit, x - 200.0f, y + 250.0f);
-	AddXY(alu, AluCircuit, x + 300.0f, y + 250.0f);
-	AddXY(display_i, DisplayInt32Circuit, x - 300.0f, y + 250.0f);
-	AddXY(aluOp, AluOperationCircuit, x - 400.0f, y + 250.0f);
-	AddXY(buf, BufferCircuit, x - 500.0f, y + 250.0f);
-	AddXY(aluCtrl, AluControlCircuit, x - 600.0f, y + 250.0f);
-	AddXY(ctrlUnit, ControlUnitCircuit, x - 700.0f, y + 250.0f);
-
+	AddXY(i1, Int32OutCircuit, 100.0f, 250.0f);
+	AddXY(i2, Int32OutCircuit, 200.0f, 250.0f);
+	AddXY(alu, AluCircuit, 300.0f, 250.0f);
+	AddXY(display_i, DisplayInt32Circuit, 300.0f, 250.0f);
+	AddXY(aluOp, AluOperationCircuit, 400.0f, 250.0f);
+	AddXY(buf, BufferCircuit, 500.0f, 250.0f);
+	AddXY(aluCtrl, AluControlCircuit, 600.0f, 250.0f);
+	AddXY(ctrlUnit, ControlUnitCircuit, 700.0f, 250.0f);
+	AddXY(ifid, IfIdRegisterCircuit, -700.0f, 350.0f);
+	AddXY(idex, IdExRegisterCircuit, -600.0f, 350.0f);
+	AddXY(exMem, ExMemRegisterCircuit, -500.0f, 350.0f);
+	AddXY(memWb, MemWbRegisterCircuit, -400.0f, 350.0f);
 	// AddXY(buf, BufferCircuit, x + 250, y + 100.0f);
 	// connect(dataMem, 0, buf, 0);
 	// connect(buf, 0, regFile, 3);

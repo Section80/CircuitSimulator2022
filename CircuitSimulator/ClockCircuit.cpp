@@ -65,6 +65,7 @@ void ClockCircuit::afterUpdateOutput()
 	// 그래도 문제를 해결하려면, 신호를 보내는 쪽(clock)이 아닌 받는 쪽에서 onInputChanged()에서
 	// 딜레이 초기화 여부를 판단하게 할 수도 있다. 
 	// onInputChanged()를 override하는 클래스(EdgeTriggeredCircuit)를 만들면 좋을 것 같다. 
+	// 해봤는데 생각보다 어렵다. 오래 걸릴 것 같아서 패스.. 
 	if (m_bVal == true)
 	{
 		Circuit::afterUpdateOutput();

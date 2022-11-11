@@ -6,11 +6,11 @@
 InstructionMemoryCircuit::InstructionMemoryCircuit()
 	: Circuit("Instruction Memory", 1, 6, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_addr(*this, "addr", 32)
-	, m_op(*this, "op", 26, 5)
+	, m_op(*this, "op", 26, 6)
 	, m_rs(*this, "rs", 21, 5)
 	, m_rt(*this, "rt", 16, 5)
 	, m_rd(*this, "rd", 11, 5)
-	, m_funct(*this, "funt", 0, 5)
+	, m_funct(*this, "funt", 0, 6)
 	, m_low16(*this, "low16", 0, 16)
 	, m_val(0)
 {

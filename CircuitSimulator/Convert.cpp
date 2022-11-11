@@ -142,3 +142,9 @@ void Uint32ToBoolArray(uint32_t bits, bool* pOut, int len)
 		pOut[i] = ReadBitAt(bits, i);
 	}
 }
+
+void Copy(InputPin& inputPin, bool* pOut, int len)
+{
+	uint32_t val =ReadToUint32(inputPin, len);
+	Uint32ToBoolArray(val, pOut, len);
+}

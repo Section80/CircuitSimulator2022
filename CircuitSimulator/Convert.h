@@ -10,4 +10,6 @@ bool ReadBitAt(uint32_t bits, int index);
 
 void Uint32ToBoolArray(uint32_t bits, bool* pOut, int len = 32);
 
+void Copy(InputPin& inputPin, bool* pOut, int len);
+
 #endif
