@@ -5,7 +5,7 @@
 
 
 Int32OutCircuit::Int32OutCircuit()
-	:Circuit("Int32", 0, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
+	:Circuit("Int32", ECircuitType::Int32Out, 0, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
 	, m_outputPin(*this, "out", 0, 32)
 	, m_textInputId(Identifiable::GetNewId())
 	, m_val(0)

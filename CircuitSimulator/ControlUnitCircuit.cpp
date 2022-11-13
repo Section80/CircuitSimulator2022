@@ -3,7 +3,7 @@
 #include "ControlUnitCircuit.h"
 
 ControlUnitCircuit::ControlUnitCircuit()
-	: Circuit("Control Unit", 1, 8, m_outBuf1, m_outBuf2, 7, 0.1f)
+	: Circuit("Control Unit", ECircuitType::ControlUnit, 1, 8, m_outBuf1, m_outBuf2, 7, 0.1f)
 	, m_op(*this, "op", 6)
 	, m_regDest(*this, "regDest", 8, 1)
 	, m_aluSrc(*this, "aluSrc", 7, 1)

@@ -2,7 +2,7 @@
 #include "SignExtensionCircuit.h"
 
 SignExtensionCircuit::SignExtensionCircuit()
-	: Circuit("Sign Extension", 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Sign Extension", ECircuitType::SignExtention, 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_in(*this, "in", 16)
 	, m_out(*this, "out", 0, 32)
 {}

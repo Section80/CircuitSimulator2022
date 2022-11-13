@@ -176,6 +176,12 @@
     <ClCompile Include="MemWbRegisterCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
     </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>소스 파일\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -288,6 +294,15 @@
     </ClInclude>
     <ClInclude Include="MemWbRegisterCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register</Filter>
+    </ClInclude>
+    <ClInclude Include="CircuitType.h">
+      <Filter>소스 파일\Identifiable\Circuit</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>소스 파일\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,10 +10,10 @@ namespace ImNode = ax::NodeEditor;
 
 void showLabel(const char* label, ImColor color = ImColor(45, 32, 32, 180));
 
-void InteractionManager::Update()
+void InteractionManager::Update(std::vector<Circuit*>* pCircuits)
 {
 	HandleCreate();
-	HandleDelete();
+	HandleDelete(pCircuits);
 }
 
 void InteractionManager::HandleCreate()
@@ -78,7 +78,7 @@ void InteractionManager::HandleCreate()
 	ImNode::EndCreate();
 }
 
-void InteractionManager::HandleDelete()
+void InteractionManager::HandleDelete(std::vector<Circuit*>* pCircuits)
 {
 	if (ImNode::BeginDelete())
 	{
@@ -98,7 +98,13 @@ void InteractionManager::HandleDelete()
 		ImNode::NodeId nodeId = 0;
 		while (ImNode::QueryDeletedNode(&nodeId))
 		{
-			// TODO: Handle this case
+			Circuit* pCircuit = Circuit::GetCircuitById(nodeId);
+			pCircuit->Isolate();
+			delete pCircuit;
+			pCircuits->erase(
+				std::remove(pCircuits->begin(), pCircuits->end(), pCircuit),
+				pCircuits->end()
+			);
 		}
 	}
 	ImNode::EndDelete();

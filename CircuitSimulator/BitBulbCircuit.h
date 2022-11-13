@@ -8,6 +8,7 @@ class BitBulbCircuit final : public Circuit
 {
 public:
 	BitBulbCircuit();
+	BitBulbCircuit(float x, float y);
 
 	void render() override;
 

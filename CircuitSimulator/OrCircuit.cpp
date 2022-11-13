@@ -2,11 +2,17 @@
 #include "OrCircuit.h"
 
 OrCircuit::OrCircuit()
-	: Circuit("Or", 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
+	: Circuit("Or", ECircuitType::Or, 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
 	, m_inputPin0(*this, "in1", 1)
 	, m_inputPin1(*this, "in2", 1)
 	, m_outputPin(*this, "out", 0, 1)
 {}
+
+OrCircuit::OrCircuit(float x, float y)
+	: OrCircuit()
+{
+	SetPos(x, y);
+}
 
 void OrCircuit::render()
 {
@@ -62,11 +68,17 @@ void OrCircuit::updateOutput()
 
 
 NorCircuit::NorCircuit()
-	: Circuit("Nor", 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
+	: Circuit("Nor", ECircuitType::Not, 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
 	, m_inputPin0(*this, "in1", 1)
 	, m_inputPin1(*this, "in2", 1)
 	, m_outputPin(*this, "out", 0, 1)
 {}
+
+NorCircuit::NorCircuit(float x, float y)
+	: NorCircuit()
+{
+	SetPos(x, y);
+}
 
 void NorCircuit::render()
 {

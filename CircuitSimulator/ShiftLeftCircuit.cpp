@@ -2,7 +2,7 @@
 #include "ShiftLeftCircuit.h"
 
 ShiftLeftCircuit::ShiftLeftCircuit()
-	: Circuit("Shift Left 2", 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Shift Left 2", ECircuitType::ShiftLeft, 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_in(*this, "in", 32)
 	, m_out(*this, "out", 0, 32)
 {}

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <imgui_node_editor.h>
+#include "CircuitType.h"
 #include "CircuitOutput.h"
 #include "Wire.h"
 
@@ -25,7 +26,7 @@ public:
 
 public:
 	Circuit(
-		const char* name,
+		const char* name, ECircuitType circuitType,
 		int inputPinCount, int outputPinCount,
 		bool* outputBuffer1, bool* outputBuffer2,
 		int outputSize, 
@@ -58,11 +59,17 @@ public:
 	bool IsResolvable();
 
 	void SetPos(float x, float y);
+	ImVec2 GetPos();
+	inline ECircuitType GetType() { return m_type; }
+
+	void Isolate();
 
 public:
 	static void UpdateAll(double dt);
 	static void RenderAll();
 	static void RenderAllWires();
+
+	static Circuit* GetCircuitById(ImNode::NodeId nodeId);
 
 protected:
 	inline void swapCircuitOutput() { m_circuitOutput.Swap(); }
@@ -109,8 +116,9 @@ private:
 private:
 	ImNode::NodeId m_nodeId;
 	const char* m_name;
+	ECircuitType m_type;
 	CircuitOutput m_circuitOutput;
-	
+
 	int m_inputPinCount;
 	int m_outputPinCount;
 

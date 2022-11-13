@@ -4,14 +4,9 @@
 #include "InstructionMemory.h"
 
 InstructionMemoryCircuit::InstructionMemoryCircuit()
-	: Circuit("Instruction Memory", 1, 6, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Instruction Memory", ECircuitType::InstructionMemory, 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_addr(*this, "addr", 32)
-	, m_op(*this, "op", 26, 6)
-	, m_rs(*this, "rs", 21, 5)
-	, m_rt(*this, "rt", 16, 5)
-	, m_rd(*this, "rd", 11, 5)
-	, m_funct(*this, "funt", 0, 6)
-	, m_low16(*this, "low16", 0, 16)
+	, m_out(*this, "out", 0, 32)
 	, m_val(0)
 {
 	for (int i = 0; i < 100; i++)
@@ -47,12 +42,7 @@ void InstructionMemoryCircuit::render()
 		ImGui::EndVertical();
 
 		ImGui::BeginVertical("output");
-		m_op.Render();
-		m_rs.Render();
-		m_rt.Render();
-		m_rd.Render();
-		m_funct.Render();
-		m_low16.Render();
+		m_out.Render();
 		ImGui::EndVertical();
 
 	ImGui::EndHorizontal();
@@ -78,17 +68,7 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 	switch (index)
 	{
 	case 0:
-		return &m_op;
-	case 1:
-		return &m_rs;
-	case 2:
-		return &m_rt;
-	case 3:
-		return &m_rd;
-	case 4:
-		return &m_funct;
-	case 5:
-		return &m_low16;
+		return &m_out;
 	default:
 		assert(false);
 	}
@@ -120,6 +100,8 @@ void InstructionMemoryCircuit::updateOutput()
 	// 그래서 더이상 3번 output은 offset이 0이 아니다. 
 	// 기존의 3번을 쓰려면 4를 쓰거나,
 	// 마지막에 추가된 5를 써도 된다. 5도 offset이 0이다. 
-	bool* buf = getOutputDataBuffer(5);
+
+	// # 출력을 32bit 하나로 바꿨다. 
+	bool* buf = getOutputDataBuffer(0);
 	Uint32ToBoolArray(m_val, buf);
 }

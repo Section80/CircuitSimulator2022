@@ -3,12 +3,16 @@
 #include "MemWbRegisterCircuit.h"
 
 MemWbRegisterCircuit::MemWbRegisterCircuit()
-	: Circuit("MEM/WB Register", 3, 2, m_outBuf1, m_outBuf2, 64, 0.1f)
+	: Circuit("MEM/WB Register", ECircuitType::MemWb, 5, 4, m_outBuf1, m_outBuf2, 66, 0.1f)
+	, m_regWrite_in(*this, "regWrite", 1)
+	, m_memToReg_in(*this, "memToReg", 1)
 	, m_readData_in(*this, "rData", 32)
 	, m_aluResult_in(*this, "aluRes", 32)
 	, m_clock(*this, "clock", 1)
-	, m_readData_out(*this, "rData", 0, 32)
-	, m_aluResult_out(*this, "aluRes", 32, 32)
+	, m_regWrite_out(*this, "regWrite", 65, 1)
+	, m_memToReg_out(*this, "memToReg", 64, 1)
+	, m_readData_out(*this, "rData", 32, 32)
+	, m_aluResult_out(*this, "aluRes", 0, 32)
 {
 	memset(m_data, 0, sizeof(uint32_t) * 2);
 }
@@ -25,26 +29,10 @@ void MemWbRegisterCircuit::render()
 	ImGui::Text(GetName());
 
 	renderDelay(180.0f);
-	ImGui::BeginHorizontal("IO");
-	ImGui::BeginVertical("in");
-
-	for (int i = 0; i < GetInputPinCount(); i++)
-	{
-		InputPin* in = GetInputPin(i);
-		in->Render();
-	}
-
-	ImGui::EndVertical();
-	ImGui::BeginVertical("out");
-
-	for (int i = 0; i < GetOutputPinCount(); i++)
-	{
-		OutputPin* in = GetOutputPin(i);
-		in->Render();
-	}
-
-	ImGui::EndVertical();
-	ImGui::EndHorizontal();
+	
+	renderIOGroup("======== WB ========", 0, 2);
+	renderIOGroup("======== MEM/WB ========", 2, 2);
+	m_clock.Render();
 
 	ImNode::EndNode();
 }
@@ -53,11 +41,15 @@ InputPin* MemWbRegisterCircuit::GetInputPin(int index)
 {
 	switch (index)
 	{
-	case 0:
-		return &m_readData_in;
+	case 0: 
+		return &m_regWrite_in;
 	case 1:
-		return &m_aluResult_in;
+		return &m_memToReg_in;
 	case 2:
+		return &m_readData_in;
+	case 3:
+		return &m_aluResult_in;
+	case 4:
 		return &m_clock;
 	}
 	return nullptr;
@@ -68,8 +60,12 @@ OutputPin* MemWbRegisterCircuit::GetOutputPin(int index)
 	switch (index)
 	{
 	case 0:
-		return &m_readData_out;
+		return &m_regWrite_out;
 	case 1:
+		return &m_memToReg_out;
+	case 2:
+		return &m_readData_out;
+	case 3:
 		return &m_aluResult_out;
 	}
 	return nullptr;

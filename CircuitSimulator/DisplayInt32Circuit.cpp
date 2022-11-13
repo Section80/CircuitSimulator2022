@@ -3,7 +3,7 @@
 #include "DisplayInt32Circuit.h"
 
 DisplayInt32Circuit::DisplayInt32Circuit()
-	: Circuit("Display Int32", 1, 0, nullptr, nullptr, 0, 0.0f)
+	: Circuit("Display Int32", ECircuitType::DisplayInt32, 1, 0, nullptr, nullptr, 0, 0.0f)
 	, m_inputPin(*this, "in", 32)
 {
 	memset(m_buffer, 0, sizeof(char) * 32);

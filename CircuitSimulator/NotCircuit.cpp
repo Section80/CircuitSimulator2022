@@ -2,12 +2,18 @@
 #include "NotCircuit.h"
 
 NotCircuit::NotCircuit()
-	: Circuit("Not", 1, 1, &m_outBuf1, &m_outBuf1, 1, 0.0f)
+	: Circuit("Not", ECircuitType::Not, 1, 1, &m_outBuf1, &m_outBuf1, 1, 0.0f)
 	, m_inputPin(*this, "in", 1)
 	, m_outputPin(*this, "out", 0, 1)
 	, m_outBuf1(false)
 	, m_outBuf2(false)
 {}
+
+NotCircuit::NotCircuit(float x, float y)
+	: NotCircuit()
+{
+	SetPos(x, y);
+}
 
 void NotCircuit::render()
 {

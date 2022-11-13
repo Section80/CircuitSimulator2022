@@ -8,6 +8,7 @@ class NotCircuit final : public Circuit
 {
 public:
 	NotCircuit();
+	NotCircuit(float x, float y);
 
 	void render() override;
 

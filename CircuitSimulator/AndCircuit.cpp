@@ -1,12 +1,18 @@
 #include "stdafx.h"
 #include "AndCircuit.h"
 
-AndCircuit::AndCircuit(float delay)
-	: Circuit("And", 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
+AndCircuit::AndCircuit()
+	: Circuit("And", ECircuitType::And, 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 0.1f)
 	, m_inputPin0(*this, "in1", 1)
 	, m_inputPin1(*this, "in2", 1)
 	, m_outputPin(*this, "out", 0, 1)
 {}
+
+AndCircuit::AndCircuit(float x, float y)
+	: AndCircuit()
+{
+	SetPos(x, y);
+}
 
 void AndCircuit::render()
 {
@@ -61,12 +67,18 @@ void AndCircuit::updateOutput()
 }
 
 
-NandCircuit::NandCircuit(float delay)
-	: Circuit("Nand", 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
+NandCircuit::NandCircuit()
+	: Circuit("Nand", ECircuitType::Nand, 2, 1, &m_outputBuffer1, &m_outputBuffer2, 1, 1.0f)
 	, m_inputPin0(*this, "in1", 1)
 	, m_inputPin1(*this, "in2", 1)
 	, m_outputPin(*this, "out", 0, 1)
 {}
+
+NandCircuit::NandCircuit(float x, float y)
+	: NandCircuit()
+{
+	SetPos(x, y);
+}
 
 void NandCircuit::render()
 {

@@ -16,6 +16,7 @@ class InputPin;
 class OutputPin;
 class BufferCircuit;
 class Mux21Circuit;
+class Mux31Circuit;
 
 class Pin abstract : public Identifiable
 {
@@ -63,6 +64,7 @@ public:
 	// https ://stackoverflow.com/questions/28307374/friend-class-not-working
 	friend class ::BufferCircuit;	// for setWireLineCount();
 	friend class ::Mux21Circuit;
+	friend class ::Mux31Circuit;
 
 public:
 	InputPin(Circuit& owner, const char* name, int wireLineCount);
@@ -88,6 +90,7 @@ public:
 	// https ://stackoverflow.com/questions/28307374/friend-class-not-working
 	friend class ::BufferCircuit;	// for setWireLineCount();
 	friend class ::Mux21Circuit;
+	friend class ::Mux31Circuit;
 
 public:
 	OutputPin(Circuit& owner, const char* name, int dataOffset, int wireLineCount);

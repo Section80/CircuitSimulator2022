@@ -4,7 +4,7 @@
 
 
 IdExRegisterCircuit::IdExRegisterCircuit()
-	: Circuit("ID/EX Register", 15, 14, m_outBuf1, m_outBuf2, 147, 0.5f)
+	: Circuit("ID/EX Register", ECircuitType::IdEx, 15, 14, m_outBuf1, m_outBuf2, 147, 0.5f)
 	, m_regWrite_in(*this, "regWrite", 1)
 	, m_memToReg_in(*this, "memToReg", 1)
 	, m_branch_in(*this, "branch", 1)
@@ -54,7 +54,7 @@ void IdExRegisterCircuit::render()
 	renderIOGroup("======== WB ========", 0, 2);
 	renderIOGroup("======== MEM ========", 2, 3);
 	renderIOGroup("======== EX ========", 5, 3);
-	renderIOGroup("======== ID/EX ========", 8, 6);
+	renderIOGroup("======== ID/EX ========", 8, 6);	
 	m_clock.Render();
 
 	ImNode::EndNode();
@@ -87,11 +87,11 @@ InputPin* IdExRegisterCircuit::GetInputPin(int index)
 	case 10:
 		return &m_read2_in;
 	case 11:
-		return &m_signExtended_in;
-	case 12:
 		return &m_rt_in;
-	case 13:
+	case 12:
 		return &m_rd_in;
+	case 13:
+		return &m_signExtended_in;
 	case 14:
 		return &m_clock;
 	default:
@@ -128,11 +128,11 @@ OutputPin* IdExRegisterCircuit::GetOutputPin(int index)
 	case 10:
 		return &m_read2_out;
 	case 11:
-		return &m_signExtended_out;
-	case 12:
 		return &m_rt_out;
-	case 13:
+	case 12:
 		return &m_rd_out;
+	case 13:
+		return &m_signExtended_out;
 	default:
 		assert(false);
 	}

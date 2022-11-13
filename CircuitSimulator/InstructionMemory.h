@@ -22,13 +22,7 @@ private:
 
 private:
 	InputPin m_addr;
-	
-	OutputPin m_op;		// 6bit
-	OutputPin m_rs;		// 5bit
-	OutputPin m_rt;		// 5bit
-	OutputPin m_rd;		// 5bit
-	OutputPin m_funct;	// 6bit
-	OutputPin m_low16;	// 16bit
+	OutputPin m_out;	// instruction
 
 	bool m_outBuf1[32];
 	bool m_outBuf2[32];

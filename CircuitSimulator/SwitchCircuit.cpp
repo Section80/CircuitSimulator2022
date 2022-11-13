@@ -2,7 +2,7 @@
 #include "SwitchCircuit.h"
 
 SwitchCircuit::SwitchCircuit()
-	: Circuit("Switch", 0, 1, &m_outBuf1, &m_outBuf2, 1, 0.0f)
+	: Circuit("Switch", ECircuitType::Switch, 0, 1, &m_outBuf1, &m_outBuf2, 1, 0.0f)
 	, m_outputPin(*this, "out", 0, 1)
 	, m_val(false)
 	, m_outBuf1(false)

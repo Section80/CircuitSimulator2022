@@ -3,7 +3,7 @@
 #include "Convert.h"
 
 RegIdxOutCircuit::RegIdxOutCircuit()
-	: Circuit("Register Index", 0, 1, m_outBuf1, m_outBuf2, 5, 0.0f)
+	: Circuit("Register Index", ECircuitType::RegIdxOut, 0, 1, m_outBuf1, m_outBuf2, 5, 0.0f)
 	, m_outputPin(*this, "out", 0, 5)
 	, m_textInputId(Identifiable::GetNewId())
 	, m_val(0)
@@ -41,13 +41,13 @@ void RegIdxOutCircuit::render()
 	ImGui::Text(GetName());
 
 	ImGui::PushID(m_textInputId);
-	
 	ImGui::PushItemWidth(100.0f);
 	bool bInput = ImGui::InputInt(
 		"", (int*)&m_val, 1, 1
 		, ImGuiInputTextFlags_EnterReturnsTrue
 	);
 	ImGui::PopItemWidth();
+	ImGui::PopID();
 	
 	if (bInput)
 	{
@@ -59,8 +59,7 @@ void RegIdxOutCircuit::render()
 		Uint32ToBoolArray(m_val, outputBuffer, 5);
 		afterUpdateOutput();
 	}
-	ImGui::PopItemWidth();
-	ImGui::PopID();
+
 	ImGui::SameLine();
 	m_outputPin.Render();
 	ImNode::EndNode();

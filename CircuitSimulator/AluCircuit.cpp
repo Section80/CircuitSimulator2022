@@ -3,7 +3,7 @@
 #include "AluCircuit.h"
 
 AluCircuit::AluCircuit()
-	: Circuit("ALU", 3, 2, m_outBuf1, m_outBuf2, 33, 0.5f)
+	: Circuit("ALU", ECircuitType::ALU, 3, 2, m_outBuf1, m_outBuf2, 33, 0.5f)
 	, m_in1(*this, "in1", 32)
 	, m_in2(*this, "in2", 32)
 	, m_operation(*this, "op", 4)
@@ -117,7 +117,7 @@ void AluCircuit::updateOutput()
 }
 
 AluOperationCircuit::AluOperationCircuit()
-	: Circuit("ALU OP", 0, 1, m_outBuf1, m_outBuf2, 4, 0.0f)
+	: Circuit("ALU OP", ECircuitType::ALUOperation, 0, 1, m_outBuf1, m_outBuf2, 4, 0.0f)
 	, m_out(*this, "out", 0, 4)
 	, m_op(EAluOperation::Or)
 	, m_buttonId(Identifiable::GetNewId())

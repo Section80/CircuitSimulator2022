@@ -3,7 +3,7 @@
 #include "AluControlCircuit.h"
 
 AluControlCircuit::AluControlCircuit()
-	: Circuit("ALU Control", 2, 1, m_outBuf1, m_outBuf2, 4, 0.5f)
+	: Circuit("ALU Control", ECircuitType::ALUControl, 2, 1, m_outBuf1, m_outBuf2, 4, 0.5f)
 	, m_op(*this, "op", 2)
 	, m_funct(*this, "funct", 6)
 	, m_control(*this, "ALU Ctrl", 0, 4)

@@ -3,7 +3,7 @@
 #include "Add32Circuit.h"
 
 Add32Circuit::Add32Circuit()
-	: Circuit("Add", 2, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Add", ECircuitType::Add32, 2, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_in1(*this, "in1", 32)
 	, m_in2(*this, "in2", 32)
 	, m_out(*this, "out", 0, 32)

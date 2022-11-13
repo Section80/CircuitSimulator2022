@@ -5,7 +5,7 @@
 std::vector<Circuit*> Circuit::s_pCircuits;
 
 Circuit::Circuit(
-	const char* name,
+	const char* name, ECircuitType type,
 	int inputPinCount, int outputPinCount,
 	bool* outputBuffer1, bool* outputBuffer2,
 	int outputSize,
@@ -13,6 +13,7 @@ Circuit::Circuit(
 )
 	: Identifiable()
 	, m_name(name)
+	, m_type(type)
 	, m_circuitOutput(outputBuffer1, outputBuffer2, outputSize)
 	, m_inputPinCount(inputPinCount)
 	, m_outputPinCount(outputPinCount)
@@ -73,6 +74,37 @@ bool Circuit::IsResolvable()
 void Circuit::SetPos(float x, float y)
 {
 	ImNode::SetNodePosition(GetNodeId(), ImVec2(x, y));
+}
+
+ImVec2 Circuit::GetPos()
+{
+	return ImNode::GetNodePosition(GetId());
+}
+
+void Circuit::Isolate()
+{
+	for (int i = 0; i < GetInputPinCount(); i++)
+	{
+		InputPin* in = GetInputPin(i);
+		OutputPin* from = in->GetFrom();
+		if (from != nullptr)
+		{
+			from->Disconnect(in);
+		}
+	}
+
+	for (int i = 0; i < GetOutputPinCount(); i++)
+	{
+		OutputPin* out = GetOutputPin(i);
+		for (int j = 0; j < MAX_WIRE_IN_OUTPUTPIN; j++)
+		{
+			Wire& w = out->GetWire(j);
+			if (w.GetTo() != nullptr)
+			{
+				out->Disconnect(w.GetTo());
+			}
+		}
+	}
 }
 
 // static
@@ -182,6 +214,25 @@ void Circuit::RenderAllWires()
 	{
 		pCircuit->renderWire();
 	}
+}
+
+Circuit* Circuit::GetCircuitById(ImNode::NodeId nodeId)
+{
+	auto it = std::find_if(
+		s_pCircuits.begin(),
+		s_pCircuits.end(),
+		[nodeId](Circuit* pCircuit)
+		{
+			return pCircuit->GetNodeId() == nodeId;
+
+		}
+	);
+
+	if (it == s_pCircuits.end()) {
+		return nullptr;
+	}
+
+	return (*it);
 }
 
 void Circuit::setOutputData(int outputPinIndex, const bool* pData)

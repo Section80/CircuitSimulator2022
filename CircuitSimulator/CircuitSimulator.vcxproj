@@ -41,6 +41,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="FunctCircuit.cpp" />
     <ClCompile Include="Identifiable.cpp" />
     <ClCompile Include="IdExRegisterCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -104,6 +106,7 @@
     <ClInclude Include="BufferCircuit.h" />
     <ClInclude Include="Circuit.h" />
     <ClInclude Include="CircuitOutput.h" />
+    <ClInclude Include="CircuitType.h" />
     <ClInclude Include="ClockCircuit.h" />
     <ClInclude Include="ControlUnitCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -115,6 +118,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="File.h" />
+    <ClInclude Include="FunctCircuit.h" />
     <ClInclude Include="Identifiable.h" />
     <ClInclude Include="IdExRegisterCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

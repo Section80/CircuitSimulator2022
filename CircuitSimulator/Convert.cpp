@@ -60,6 +60,25 @@ uint32_t ReadToUint32(InputPin& inputPin, int len)
 	return ret;
 }
 
+uint32_t ReadToUint32(InputPin& inputPin, int offset, int len)
+{
+	uint32_t ret = 0;
+	uint32_t mask = MASK_0;
+
+	for (int i = offset; i < offset + len; i++)
+	{
+		bool bVal = inputPin.ReadAt(i);
+		if (bVal)
+		{
+			ret |= mask;
+		}
+
+		mask = mask << 1;
+	}
+
+	return ret;
+}
+
 bool ReadBitAt(uint32_t bits, int index)
 {
 	switch (index)

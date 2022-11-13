@@ -5,6 +5,7 @@
 #include "Pin.h"
 
 uint32_t ReadToUint32(InputPin& inputPin, int len);
+uint32_t ReadToUint32(InputPin& inputPin, int offset, int len);
 
 bool ReadBitAt(uint32_t bits, int index);
 

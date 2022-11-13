@@ -2,9 +2,15 @@
 #include "BitBulbCircuit.h"
 
 BitBulbCircuit::BitBulbCircuit()
-	: Circuit("BitBulb", 1, 0, nullptr, nullptr, 0, 0.0f)
+	: Circuit("BitBulb", ECircuitType::BitBulb, 1, 0, nullptr, nullptr, 0, 0.0f)
 	, m_inputPin(*this, "in1", 1)
 {
+}
+
+BitBulbCircuit::BitBulbCircuit(float x, float y)
+	: BitBulbCircuit()
+{
+	SetPos(x, y);
 }
 
 void BitBulbCircuit::render()

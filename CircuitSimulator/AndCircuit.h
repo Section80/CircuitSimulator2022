@@ -7,7 +7,8 @@
 class AndCircuit final : public Circuit
 {
 public: 
-	AndCircuit(float delay);
+	AndCircuit();
+	AndCircuit(float x, float y);
 
 	void render() override;
 
@@ -29,7 +30,8 @@ private:
 class NandCircuit final : public Circuit
 {
 public:
-	NandCircuit(float delay);
+	NandCircuit();
+	NandCircuit(float x, float y);
 
 	void render() override;
 

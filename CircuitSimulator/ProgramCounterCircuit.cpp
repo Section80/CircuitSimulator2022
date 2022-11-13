@@ -3,7 +3,7 @@
 #include "ProgramCounterCircuit.h"
 
 ProgramCounterCircuit::ProgramCounterCircuit()
-	: Circuit("Program Counter", 3, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Program Counter", ECircuitType::ProgramCounter, 3, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_inAddr(*this, "inAddr", 32)
 	, m_write(*this, "write", 1)
 	, m_clock(*this, "clock", 1)

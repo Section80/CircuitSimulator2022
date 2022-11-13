@@ -8,6 +8,7 @@ class OrCircuit final : public Circuit
 {
 public:
 	OrCircuit();
+	OrCircuit(float x, float y);
 
 	void render() override;
 
@@ -32,6 +33,7 @@ class NorCircuit final : public Circuit
 {
 public:
 	NorCircuit();
+	NorCircuit(float x, float y);
 
 	void render() override;
 

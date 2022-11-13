@@ -4,7 +4,7 @@
 
 
 RegisterCircuit::RegisterCircuit()
-	: Circuit("Register File", 6, 2, m_outBuf1, m_outBuf2, 64, 0.5f)
+	: Circuit("Register File", ECircuitType::Register, 6, 2, m_outBuf1, m_outBuf2, 64, 0.5f)
 	, m_rReg1(*this, "rReg1", 5)
 	, m_rReg2(*this, "rReg2", 5)
 	, m_wReg(*this, "wReg", 5)

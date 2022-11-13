@@ -2,7 +2,7 @@
 #include "BufferCircuit.h"
 
 BufferCircuit::BufferCircuit()
-	: Circuit("Buffer", 1, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
+	: Circuit("Buffer", ECircuitType::Buffer, 1, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
 	, m_inputPin(*this, "in", 1)
 	, m_outputPin(*this, "out", 0, 1)
 	, m_reverse(false)
