@@ -3,7 +3,7 @@
 #include "ExMemRegisterCircuit.h"
 
 ExMemRegisterCircuit::ExMemRegisterCircuit()
-	: Circuit("EX/MEM Register", ECircuitType::ExMem, 11, 10, m_outBuf1, m_outBuf2, 107, 0.1f)
+	: Circuit("EX/MEM Register", ECircuitType::ExMem, 11, 10, m_outBuf1, m_outBuf2, 107, 0.5f)
 	, m_regWrite_in(*this, "regWrite", 1)
 	, m_memToReg_in(*this, "memToReg", 1)
 	, m_branch_in(*this, "branch", 1)
@@ -28,6 +28,7 @@ ExMemRegisterCircuit::ExMemRegisterCircuit()
 	, m_bLastClock(false)
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
+	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
 ExMemRegisterCircuit::ExMemRegisterCircuit(float x, float y)
@@ -48,6 +49,30 @@ void ExMemRegisterCircuit::render()
 	m_clock.Render();
 
 	ImNode::EndNode();
+}
+
+void ExMemRegisterCircuit::RenderInspector()
+{
+	sprintf_s(m_strBuf, " regWrite: %d", m_regWrite_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, " memToReg: %d", m_memToReg_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "   branch: %d", m_branch_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "  memRead: %d", m_memRead_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, " memWrite: %d", m_memWrite_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "      bta: %d", m_bta_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "     zero: %d", m_zero_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "aluResult: %d", m_aluResult_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "    read2: %d", m_read2_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, " writeReg: %d", m_writeReg_out.Value());
+	ImGui::Text(m_strBuf);
 }
 
 InputPin* ExMemRegisterCircuit::GetInputPin(int index)
@@ -136,19 +161,16 @@ void ExMemRegisterCircuit::updateOutput()
 
 	if (bRisingEdge)
 	{
-		if (false)
+		// update edge triggred part here
+		for (int i = 0; i < GetOutputPinCount(); i++)	// GetInputPinGount() 로 하면 Clock까지 포함되서 오버런된다. 
 		{
-			// update edge triggred part here
-			for (int i = 0; i < GetOutputPinCount(); i++)	// GetInputPinGount() 로 하면 Clock까지 포함되서 오버런된다. 
-			{
-				InputPin& in = *GetInputPin(i);
-				m_data[i] = ReadToUint32(in, in.GetWireLineCount());
-			}
-
-			// 입력이 변하지 않더라도 출력을 업데이트하도록
-			// 남은 딜레이를 리셋시킨다. 
-			resetDelay();
+			InputPin& in = *GetInputPin(i);
+			m_data[i] = ReadToUint32(in, in.GetWireLineCount());
 		}
+
+		// 입력이 변하지 않더라도 출력을 업데이트하도록
+		// 남은 딜레이를 리셋시킨다. 
+		resetDelay();
 	}
 
 	// update edge triggred part here

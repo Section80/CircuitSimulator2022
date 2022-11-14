@@ -5,6 +5,7 @@
 #include "SpawnCircuit.h"
 #include "File.h"
 #include "MuxCircuit.h"
+#include "Int32OutCircuit.h"
 
 
 void SaveCircuitsToFile(const char* fileName, std::vector<Circuit*>& circuits)
@@ -36,17 +37,60 @@ void SaveCircuitsToFile(const char* fileName, std::vector<Circuit*>& circuits)
 		// pos
 		ImVec2 pos = c->GetPos();
 		f << pos.x << " ";
-		f << pos.y << " ";
+		f << pos.y;
 
 		if (c->GetType() == ECircuitType::Mux21)
 		{
 			Mux21Circuit* m = (Mux21Circuit*)c;
-			f << m->GetWireLineCount();
+			f << " " << m->GetWireLineCount();
 		} 
 		else if (c->GetType() == ECircuitType::Mux31)
 		{
 			Mux31Circuit* m = (Mux31Circuit*)c;
-			f << m->GetWireLineCount();
+			f << " " << m->GetWireLineCount();
+		}
+		else if (c->GetType() == ECircuitType::Buffer)
+		{
+			BufferCircuit* b = (BufferCircuit*)c;
+			if (b->IsReversed())
+			{
+				f << " " << 1 << " ";
+			}
+			else
+			{
+				f << " " << 0 << " ";
+			}
+
+			f << b->GetWireLineCount();
+		}
+		else if (c->GetType() == ECircuitType::Switch)
+		{
+			SwitchCircuit* s = (SwitchCircuit*)c;
+			if (s->GetPressed())
+			{
+				f << " " << 1;
+			}
+			else 
+			{
+				f << " " << 0;
+			}
+		}
+		else if (c->GetType() == ECircuitType::Int32Out)
+		{
+			Int32OutCircuit* i32 = (Int32OutCircuit*)c;
+			f << " " << i32->GetValue();
+		}
+		else if (c->GetType() == ECircuitType::ClockBuffer)
+		{
+			ClockBufferCircuit* b = (ClockBufferCircuit*)c;
+			if (b->IsReversed())
+			{
+				f << " " << 1;
+			}
+			else
+			{
+				f << " " << 0;
+			}
 		}
 
 		// new line
@@ -154,13 +198,65 @@ void LoadCircuitsFromFile(const char* fileName, std::vector<Circuit*>* pCircuits
 			f >> wireLineCount;
 			m->SetWireLineCount(wireLineCount);
 		}
+		else if (type == ECircuitType::Buffer)
+		{
+			BufferCircuit* b = (BufferCircuit*)c;
+			int isReversed = 0;
+			f >> isReversed;
+			if (isReversed == 1)
+			{
+				b->SetIsReversed(true);
+			}
+			else 
+			{
+				b->SetIsReversed(false);
+			}
+
+			int wireLineCount = 0;
+			f >> wireLineCount;
+			b->SetWireLineCount(wireLineCount);
+		}
+		else if (type == ECircuitType::Switch)
+		{
+			SwitchCircuit* s = (SwitchCircuit*)c;
+			int isPressed = 0;
+			f >> isPressed;
+			if (isPressed)
+			{
+				s->SetPressed(true);
+			}
+			else
+			{
+				s->SetPressed(false);
+			}
+		} 
+		else if (type == ECircuitType::Int32Out)
+		{
+			Int32OutCircuit* i32 = (Int32OutCircuit*)c;
+			int value = 0;
+			f >> value;
+			i32->SetValue(value);
+		}
+		else if (type == ECircuitType::ClockBuffer)
+		{
+			ClockBufferCircuit* cb = (ClockBufferCircuit*)c;
+			int isReversed = 0;
+			f >> isReversed;
+			if (isReversed == 1)
+			{
+				cb->SetIsReversed(true);
+			}
+			else
+			{
+				cb->SetIsReversed(false);
+			}
+		}
 	}
 
-	int cnt = 1;
+	int cnt = 0;
 	// now start reading pins
 	while (true)
 	{
-		printf("%d \n", cnt++);
 		
 		int from = -1;
 		f >> from;
@@ -170,6 +266,9 @@ void LoadCircuitsFromFile(const char* fileName, std::vector<Circuit*>* pCircuits
 		{
 			break;
 		}
+
+		cnt++;
+		printf("[info]load pin count: %d \n", cnt);
 
 		int outIndex = -1;
 		f >> outIndex;

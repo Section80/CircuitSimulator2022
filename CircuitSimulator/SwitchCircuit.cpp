@@ -67,5 +67,16 @@ OutputPin* SwitchCircuit::GetOutputPin(int index)
 	return nullptr;
 }
 
+void SwitchCircuit::SetPressed(bool pressed)
+{
+	if (m_val != pressed)
+	{
+		m_val = pressed;
+		swapCircuitOutput();
+		setOutputData(0, &m_val);
+		afterUpdateOutput();
+	}
+}
+
 void SwitchCircuit::updateOutput()
 {}

@@ -1,7 +1,7 @@
 #ifndef PIN_H
 #define PIN_H
 
-#define MAX_WIRE_IN_OUTPUTPIN 4
+#define MAX_WIRE_IN_OUTPUTPIN 7
 
 #include <vector>
 #include <imgui_node_editor.h>
@@ -106,6 +106,8 @@ public:
 	bool CanConnectNew();
 	bool ConnectNew(InputPin* pInputPin);
 	bool Disconnect(InputPin* pInputPin);
+
+	int Value();
 
 private:
 	inline void setWireLineCount(int count) { Pin::setWireLineCount(count); }

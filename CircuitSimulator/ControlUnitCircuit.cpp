@@ -3,13 +3,13 @@
 #include "ControlUnitCircuit.h"
 
 ControlUnitCircuit::ControlUnitCircuit()
-	: Circuit("Control Unit", ECircuitType::ControlUnit, 1, 8, m_outBuf1, m_outBuf2, 7, 0.1f)
+	: Circuit("Control Unit", ECircuitType::ControlUnit, 1, 8, m_outBuf1, m_outBuf2, 9, 0.1f)
 	, m_op(*this, "op", 6)
 	, m_regDest(*this, "regDest", 8, 1)
 	, m_aluSrc(*this, "aluSrc", 7, 1)
 	, m_memToReg(*this, "memToReg", 6, 1)
 	, m_regWrite(*this, "regWrite", 5, 1)
-	, m_memRead(*this, "memRead", 7, 1)
+	, m_memRead(*this, "memRead", 4, 1)
 	, m_memWrite(*this, "memWrite", 3, 1)
 	, m_branch(*this, "branch", 2, 1)
 	, m_aluOp(*this, "aluOp", 0, 2)
@@ -85,7 +85,7 @@ OutputPin* ControlUnitCircuit::GetOutputPin(int index)
 
 void ControlUnitCircuit::updateOutput()
 {
-	bool* outBuf = getOutputDataBuffer(0);
+	bool* outBuf = getOutputDataBuffer(6);
 
 	uint32_t op = ReadToUint32(m_op, 6);
 	uint32_t val = 0;
@@ -100,12 +100,18 @@ void ControlUnitCircuit::updateOutput()
 	case 0b101011:		// sw
 		val = 0b010001000;
 		break;
-	case 0b000100:
+	case 0b000100:		// beq
 		val = 0b000000101;
+		break;
+	case 0b001000:		// addi
+		val = 0b010100000;
 		break;
 	default:
 		assert(false);
 	}
 	Uint32ToBoolArray(val, outBuf, 9);
+
+	int a = m_regWrite.Value();
+	int b = m_aluOp.Value();
 }
 

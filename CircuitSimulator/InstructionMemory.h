@@ -13,6 +13,7 @@ public:
 	virtual ~InstructionMemoryCircuit();
 	
 	void render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -27,9 +28,12 @@ private:
 	bool m_outBuf1[32];
 	bool m_outBuf2[32];
 
-	std::unordered_map<int, int> m_map;
+	std::map<int, int> m_map;
 
 	int m_val;
+	char m_strBuf[256];
+	int m_currentOutAddr;
+	int m_loadButtonId;
 };
 
 #endif

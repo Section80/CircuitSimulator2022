@@ -33,7 +33,8 @@ enum class ECircuitType: int
 	DataMemory = 27,
 	ProgramCounter = 28,
 	Register = 29,
-	Funct = 30
+	Funct = 30,
+	ClockBuffer = 31, 
 };
 
 #endif

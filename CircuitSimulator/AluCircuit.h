@@ -4,6 +4,16 @@
 #include "Circuit.h"
 #include "Pin.h"
 
+enum class EAluOperation
+{
+	And = 0b0000,
+	Or = 0b0001,
+	Add = 0b0010,
+	Sub = 0b0110,
+	Slt = 0b0111,
+	Nor = 0b1100
+};
+
 class AluCircuit final : public Circuit
 {
 public:
@@ -11,6 +21,7 @@ public:
 	AluCircuit(float x, float y);
 
 	void render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -28,16 +39,11 @@ private:
 
 	bool m_outBuf1[33];
 	bool m_outBuf2[33];
-};
 
-enum class EAluOperation
-{
-	And = 0,
-	Or = 1,
-	Add = 2,
-	Sub = 6, 
-	Slt = 7,
-	Nor = 12
+	char m_strBuf[256];
+
+	EAluOperation m_lastOp;
+	int m_lastResult = 0;
 };
 
 class AluOperationCircuit final : public Circuit {

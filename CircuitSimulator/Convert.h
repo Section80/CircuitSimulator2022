@@ -13,4 +13,8 @@ void Uint32ToBoolArray(uint32_t bits, bool* pOut, int len = 32);
 
 void Copy(InputPin& inputPin, bool* pOut, int len);
 
+int EvaluateBoolBuffer(bool* pBuffer, int len);
+
+int EvaluateOutputPin(OutputPin& outputPin);
+
 #endif

@@ -10,7 +10,13 @@ public:
 
 	void Render();
 
-	inline bool IsStarted() { return m_isStarted; }
+	inline void Play() { m_isStarted = true; }
+	inline void Pause() { m_isStarted = false; }
+
+	inline bool IsPlaying() { return m_isStarted; }
+
+public:
+	static PlayButton* Instance;
 
 private:
 	bool m_isStarted;

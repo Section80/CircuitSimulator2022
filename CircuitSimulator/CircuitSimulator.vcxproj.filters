@@ -182,6 +182,15 @@
     <ClCompile Include="FunctCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
+    <ClCompile Include="test_nativeFileDialog_main.cpp">
+      <Filter>소스 파일\main</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>소스 파일\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Parse.cpp">
+      <Filter>소스 파일\Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -303,6 +312,12 @@
     </ClInclude>
     <ClInclude Include="FunctCircuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>소스 파일\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Parse.h">
+      <Filter>소스 파일\Helper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

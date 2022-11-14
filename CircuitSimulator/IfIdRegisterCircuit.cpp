@@ -3,7 +3,7 @@
 #include "IfIdRegisterCircuit.h"
 
 IfIdRegisterCircuit::IfIdRegisterCircuit()
-	: Circuit("IF/ID Register", ECircuitType::IfId, 3, 6, m_outBuf1, m_outBuf2, 64, 0.1f)
+	: Circuit("IF/ID Register", ECircuitType::IfId, 3, 6, m_outBuf1, m_outBuf2, 64, 0.5f)
 	, m_pc_in(*this, "pc", 32)
 	, m_instruction_in(*this, "instruction", 32)
 	, m_clock(*this, "clock", 1)
@@ -16,6 +16,7 @@ IfIdRegisterCircuit::IfIdRegisterCircuit()
 	, m_bLastClock(false)
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
+	memset(m_strBuffer, 0, sizeof(char) * 256);
 }
 
 IfIdRegisterCircuit::IfIdRegisterCircuit(float x, float y)
@@ -52,6 +53,22 @@ void IfIdRegisterCircuit::render()
 	ImGui::EndHorizontal();
 
 	ImNode::EndNode();
+}
+
+void IfIdRegisterCircuit::RenderInspector()
+{
+	sprintf_s(m_strBuffer, "pc: %d", m_pc_out.Value());
+	ImGui::Text(m_strBuffer);
+	sprintf_s(m_strBuffer, "op: %d", m_op_out.Value());
+	ImGui::Text(m_strBuffer);
+	sprintf_s(m_strBuffer, "rs: %d", m_rs_out.Value());
+	ImGui::Text(m_strBuffer);
+	sprintf_s(m_strBuffer, "rt: %d", m_rt_out.Value());
+	ImGui::Text(m_strBuffer);
+	sprintf_s(m_strBuffer, "rd: %d", m_rd_out.Value());
+	ImGui::Text(m_strBuffer);
+	sprintf_s(m_strBuffer, "low16: %d", m_low16_out.Value());
+	ImGui::Text(m_strBuffer);
 }
 
 InputPin* IfIdRegisterCircuit::GetInputPin(int index)
@@ -116,37 +133,28 @@ void IfIdRegisterCircuit::updateOutput()
 
 	if (bRisingEdge)
 	{
-		if (false)
-		{
-			// update edge triggred part here
-			for (int i = 0; i < GetOutputPinCount(); i++)	// GetInputPinGount() 로 하면 Clock까지 포함되서 오버런된다. 
-			{
-				InputPin& in = *GetInputPin(i);
-				m_data[i] = ReadToUint32(in, in.GetWireLineCount());
-			}
+		// update edge triggred part here
+		InputPin* in = GetInputPin(0);
 
-			InputPin* in = GetInputPin(0);
-
-			// m_pcOut;
-			m_data[0] = ReadToUint32(*in, in->GetWireLineCount());
+		// m_pcOut;
+		m_data[0] = ReadToUint32(*in, in->GetWireLineCount());
 			
-			in = GetInputPin(1);
+		in = GetInputPin(1);
 
-			// m_op_out;
-			m_data[1] = ReadToUint32(*in, 26, 6);
-			// m_rs_out;
-			m_data[2] = ReadToUint32(*in, 21, 5);
-			// m_rt_out;
-			m_data[3] = ReadToUint32(*in, 16, 5);
-			// m_rd_out;
-			m_data[4] = ReadToUint32(*in, 11, 5);
-			// m_low16_out
-			m_data[5] = ReadToUint32(*in, 0, 16);
+		// m_op_out;
+		m_data[1] = ReadToUint32(*in, 26, 6);
+		// m_rs_out;
+		m_data[2] = ReadToUint32(*in, 21, 5);
+		// m_rt_out;
+		m_data[3] = ReadToUint32(*in, 16, 5);
+		// m_rd_out;
+		m_data[4] = ReadToUint32(*in, 11, 5);
+		// m_low16_out
+		m_data[5] = ReadToUint32(*in, 0, 16);
 
-			// 입력이 변하지 않더라도 출력을 업데이트하도록
-			// 남은 딜레이를 리셋시킨다. 
-			resetDelay();
-		}
+		// 입력이 변하지 않더라도 출력을 업데이트하도록
+		// 남은 딜레이를 리셋시킨다. 
+		resetDelay();
 	}
 
 	// update edge triggred part here

@@ -11,6 +11,7 @@ public:
 	MemWbRegisterCircuit(float x, float y);
 
 	void render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -25,22 +26,25 @@ private:
 	/* ================ */
 	InputPin m_readData_in;
 	InputPin m_aluResult_in;
+	InputPin m_writeReg_in;
 
 	// clock signal
 	InputPin m_clock;
 	bool m_bLastClock;
 
 	// WB
-	OutputPin m_regWrite_out;		// 1bit : [65, 65]
-	OutputPin m_memToReg_out;		// 1bit : [64, 64]
+	OutputPin m_regWrite_out;		// 1bit : [70, 70]
+	OutputPin m_memToReg_out;		// 1bit : [69, 69]
 	/* ================ */
-	OutputPin m_readData_out;		// 1bit : [32, 63]
-	OutputPin m_aluResult_out;		// 1bit : [0, 31]
+	OutputPin m_readData_out;		// 32bit : [37, 68]
+	OutputPin m_aluResult_out;		// 32bit : [5, 36]
+	OutputPin m_writeReg_out;		// 5bit : [0, 4]
 
-	bool m_outBuf1[66];
-	bool m_outBuf2[66];
+	bool m_outBuf1[71];
+	bool m_outBuf2[71];
 
-	uint32_t m_data[4];
+	uint32_t m_data[5];
+	char m_strBuf[256];
 };
 
 #endif

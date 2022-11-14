@@ -24,16 +24,16 @@ private:
 	InputPin m_op;				// 5-bit op field from instruction
 
 	// WB
-	OutputPin m_regWrite;		// whether to write register file or not
-	OutputPin m_memToReg;		// from alu result(0) or data memory(1)
+	OutputPin m_regWrite;	// 1-bit : [5, 5]
+	OutputPin m_memToReg;	// 1-bit : [6, 6]
 	// MEM
-	OutputPin m_branch;			// pc + 4(0) or bta(1)
-	OutputPin m_memRead;
-	OutputPin m_memWrite;
+	OutputPin m_branch;		// 1-bit : [2, 2]
+	OutputPin m_memRead;	// 1-bit : [4, 4]
+	OutputPin m_memWrite;	// 1-bit : [3, 3]
 	// EX
-	OutputPin m_regDest;		// rt(0) or rd(1) for write register
-	OutputPin m_aluOp;
-	OutputPin m_aluSrc;			// use read data2(0) or sign-extended(1)
+	OutputPin m_regDest;	// 1-bit : [8, 8]
+	OutputPin m_aluOp;		// 2-bit : [0, 1]
+	OutputPin m_aluSrc;		// 1-bit : [7, 7]
 
 	bool m_outBuf1[9];
 	bool m_outBuf2[9];

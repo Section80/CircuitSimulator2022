@@ -2,6 +2,7 @@
 #include "Pin.h"
 #include "Circuit.h"
 #include "BufferCircuit.h"
+#include "Convert.h"
 
 std::vector<Pin*> Pin::s_pPins;
 
@@ -186,4 +187,17 @@ bool OutputPin::Disconnect(InputPin* pInputPin)
 		}
 	}
 	return false;
+}
+
+int OutputPin::Value()
+{
+	bool buffer[32] = { 0 };
+	for (int i = 0; i < GetWireLineCount(); i++)
+	{
+		buffer[i] = ReadAt(i);
+	}
+
+	int ret = EvaluateBoolBuffer(buffer, GetWireLineCount());
+
+	return ret;
 }

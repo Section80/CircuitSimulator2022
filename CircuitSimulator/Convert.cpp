@@ -167,3 +167,20 @@ void Copy(InputPin& inputPin, bool* pOut, int len)
 	uint32_t val =ReadToUint32(inputPin, len);
 	Uint32ToBoolArray(val, pOut, len);
 }
+
+int EvaluateBoolBuffer(bool* pBuffer, int len)
+{
+	int ret = 0;
+	int mask = 1;
+	for (int i = 0; i < len; i++)
+	{
+		if (pBuffer[i])
+		{
+			ret = ret | mask;
+		}
+
+		mask = mask << 1;
+	}
+
+	return ret;
+}

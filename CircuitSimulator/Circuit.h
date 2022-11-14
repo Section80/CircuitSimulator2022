@@ -11,6 +11,7 @@ namespace ImNode = ax::NodeEditor;
 
 class Pin;
 class OutputPin;
+class ClockBufferCircuit;
 
 // 생각하기
 // 딜레이가 1초인 and gate의 1번 입력이 true, 2번 입력은 0.1초마다 true, false가 바뀐다고 해보자. 
@@ -23,6 +24,8 @@ class Circuit abstract : public Identifiable
 {
 public:
 	friend class OutputPin;
+	// friend void ::ClockBufferCircuit::afterUpdateOutput(); <= 이거로 안됨
+	friend class ClockBufferCircuit;
 
 public:
 	Circuit(
@@ -39,6 +42,7 @@ public:
 	// 를 수동으로 호출해야 한다. SwitchCircuit::render() 참고
 	virtual void render() = 0;
 	void renderWire();
+	virtual void RenderInspector();
 
 	// [Pure Virtual] 
 	// 존재하지 않는 index의 경우 assert한다. 

@@ -1,6 +1,10 @@
 #include "stdafx.h"
+#include <nfd.h>
 #include "Convert.h"
 #include "DataMemoryCircuit.h"
+#include "PlayButton.h"
+#include "Environment.h"
+#include "Parse.h"
 
 DataMemoryCircuit::DataMemoryCircuit()
 	: Circuit("Data Memory", ECircuitType::DataMemory, 5, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
@@ -11,6 +15,7 @@ DataMemoryCircuit::DataMemoryCircuit()
 	, m_memWrite(*this, "memWrite", 1)
 	, m_rData(*this, "rData", 0, 32)
 	, m_bLastClock(false)
+	, m_loadButtonId(Identifiable::GetNewId())
 {}
 
 DataMemoryCircuit::DataMemoryCircuit(float x, float y)
@@ -33,6 +38,31 @@ void DataMemoryCircuit::render()
 		m_memRead.Render();
 		m_memWrite.Render();
 		m_clock.Render();
+
+		ImGui::PushID(m_loadButtonId);
+		if (ImGui::Button("Load"))
+		{
+			PlayButton::Instance->Pause();
+
+			nfdchar_t* outPath = NULL;
+			nfdresult_t result = NFD_OpenDialog("asm;", env::pwd.c_str(), &outPath);
+
+			if (result == NFD_OKAY) {
+				PlayButton::Instance->Pause();
+				puts(outPath);
+				LoadDatas(outPath, &m_data);
+
+				free(outPath);
+			}
+			else if (result == NFD_CANCEL) {
+				puts("User pressed cancel.");
+			}
+			else {
+				printf("Error: %s\n", NFD_GetError());
+			}
+		}
+		ImGui::PopID();
+
 	ImNode::EndNode();
 }
 

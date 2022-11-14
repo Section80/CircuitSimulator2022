@@ -3,11 +3,13 @@
 #include <vector>
 #include <imgui_node_editor.h>
 #include <time.h>
+#include <nfd.h>
 #include "Window.h"
 #include "InteractionManager.h"
 #include "SpawnCircuit.h"
 #include "PlayButton.h"
 #include "File.h"
+#include "Environment.h"
 
 namespace ImNode = ax::NodeEditor;
 
@@ -19,11 +21,16 @@ ImNode::EditorContext* pNodeContext;
 std::vector<Circuit*> pCircuits;
 PlayButton playButton;
 float skip_sec = 0.0f;
-char saveLoadBuffer[512] = { 0 };
 int spawnId = 0;
 
-int main()
+int main(int argc, char* argv[])
 {
+	env::pwd.assign(argv[0]);
+	size_t last = env::pwd.rfind('\\');
+	env::pwd = env::pwd.substr(0, last + 1);
+	printf("pwd: %s \n", env::pwd.c_str());
+	
+
 	glfw_imgui::Config cfg = 
 	{
 		1280, 720,
@@ -47,6 +54,7 @@ bool onStart()
 
 	// SpawnSimple1(0, 0, &pCircuits);
 	// SpawnTestRegisterFile(0, 0, &pCircuits);
+	LoadCircuitsFromFile("./f/cc.save", &pCircuits);
 
 	return true;
 }
@@ -54,7 +62,7 @@ bool onStart()
 void onUpdate(double dt)
 {
 	// Update
-	if (playButton.IsStarted())
+	if (playButton.IsPlaying())
 	{
 		Circuit::UpdateAll(dt);
 		Sleep((int)(1.0f / 60.0f) * 1000);
@@ -74,29 +82,55 @@ void onUpdate(double dt)
 
 	if (ImGui::Button("Skip"))
 	{
+		playButton.Pause();
 		Circuit::UpdateAll(skip_sec);
 	}
 	ImGui::SameLine();
 
-	ImGui::PushItemWidth(160.0f);
-	ImGui::InputText("fileName", saveLoadBuffer, 512);
-	ImGui::PopItemWidth();
-	ImGui::SameLine();
 	bool bSave = ImGui::Button("Save");
 	ImGui::SameLine();
 	bool bLoad = ImGui::Button("Load");
-	ImGui::SameLine();
-	bool bBackUp = ImGui::Button("Backup");
 
+	ImGui::SameLine();
 	ImGui::PushItemWidth(80.0f);
 	ImGui::InputInt("ID", &spawnId, 0, 0);
 	ImGui::PopItemWidth();
 	ImGui::SameLine();
 	bool bSpawn = ImGui::Button("Spawn");
+
+	ImNode::SetCurrentEditor(pNodeContext);
+
+	ImGui::BeginChild("Inspect", ImVec2(300, 0));
 	
+	ImNode::NodeId* pSelectedNodeId = new ImNode::NodeId[1];
+	ImNode::GetSelectedNodes(pSelectedNodeId, 1);
+
+	if (ImNode::GetSelectedObjectCount() == 0)
+	{
+		ImGui::Text("Name: None");
+	}
+	else 
+	{
+		Circuit* pC = Circuit::GetCircuitById(*pSelectedNodeId);
+		if (pC == nullptr)
+		{
+			// wire가 선택된 경우
+			// printf("[info]Object count is not 0 but pointer is null. \n");
+			ImGui::Text("Name: None");
+		}
+		else
+		{
+			static char nameBuffer[64] = { 0 };
+			sprintf_s(nameBuffer, "Name: %s", pC->GetName());
+			ImGui::Text(nameBuffer);
+			pC->RenderInspector();
+		}
+	}
+	
+	ImGui::EndChild();
+	ImGui::SameLine();
 
 	// Before ImNode Render
-	ImNode::SetCurrentEditor(pNodeContext);
 	ImNode::Begin("Node Editor", ImVec2(0.0f, 0.0f));
 
 	// ImNode Render
@@ -106,27 +140,47 @@ void onUpdate(double dt)
 	InteractionManager::Update(&pCircuits);
 	if (bSave) 	// ImNode::GetNodePosition에서 exception이 안나려면 End()하기전에 해야한다. 
 	{
-		SaveCircuitsToFile(saveLoadBuffer, pCircuits);
+		playButton.Pause();
+
+		nfdchar_t* outPath = NULL;
+		nfdresult_t result = NFD_SaveDialog("save;", env::pwd.c_str(), &outPath);
+
+		if (result == NFD_OKAY) {
+			SaveCircuitsToFile(outPath, pCircuits);
+			free(outPath);
+		}
+		else if (result == NFD_CANCEL) {
+			puts("User pressed cancel.");
+		}
+		else {
+			printf("Error: %s\n", NFD_GetError());
+		}
 	}
 	if (bLoad) 
 	{
-		// clear
-		for (Circuit* pCircuit : pCircuits)
-		{
-			delete pCircuit;
-		}
-		pCircuits.clear();
-		LoadCircuitsFromFile(saveLoadBuffer, &pCircuits);
-	}
-	if (bBackUp) 
-	{
-		char buf2[512] = { 0 };
-		time_t t = time(NULL);
-		sprintf_s(
-			buf2, "%s.%llu.backup", 
-			saveLoadBuffer, t);
+		playButton.Pause();
 
-		SaveCircuitsToFile(buf2, pCircuits);
+		nfdchar_t* outPath = NULL;
+		nfdresult_t result = NFD_OpenDialog("save;", env::pwd.c_str(), &outPath);
+
+		if (result == NFD_OKAY) {
+			// clear
+			for (Circuit* pCircuit : pCircuits)
+			{
+				delete pCircuit;
+			}
+			pCircuits.clear();
+
+			// puts(outPath);
+			LoadCircuitsFromFile(outPath, &pCircuits);
+			free(outPath);
+		}
+		else if (result == NFD_CANCEL) {
+			puts("User pressed cancel.");
+		}
+		else {
+			printf("Error: %s\n", NFD_GetError());
+		}
 	}
 	if (bSpawn)
 	{

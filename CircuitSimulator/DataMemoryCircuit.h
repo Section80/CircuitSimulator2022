@@ -37,6 +37,8 @@ private:
 	bool m_outBuf2[32];
 
 	std::map<int, int> m_data;
+
+	int m_loadButtonId;
 };
 
 #endif

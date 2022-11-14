@@ -37,6 +37,7 @@
     </ClCompile>
     <ClCompile Include="Convert.cpp" />
     <ClCompile Include="DisplayInt32Circuit.cpp" />
+    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="ExMemRegisterCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -71,6 +72,7 @@
     </ClCompile>
     <ClCompile Include="NotCircuit.cpp" />
     <ClCompile Include="OrCircuit.cpp" />
+    <ClCompile Include="Parse.cpp" />
     <ClCompile Include="Pin.cpp" />
     <ClCompile Include="PlayButton.cpp" />
     <ClCompile Include="ProgramCounterCircuit.cpp" />
@@ -87,8 +89,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="test_window_main.cpp">
+    <ClCompile Include="test_nativeFileDialog_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="test_window_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Window.cpp" />
@@ -114,6 +120,7 @@
     </ClInclude>
     <ClInclude Include="Convert.h" />
     <ClInclude Include="DisplayInt32Circuit.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="ExMemRegisterCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -144,6 +151,7 @@
     </ClInclude>
     <ClInclude Include="NotCircuit.h" />
     <ClInclude Include="OrCircuit.h" />
+    <ClInclude Include="Parse.h" />
     <ClInclude Include="Pin.h" />
     <ClInclude Include="PlayButton.h" />
     <ClInclude Include="ProgramCounterCircuit.h" />
@@ -213,11 +221,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\jaewo\include;$(SolutionDir)\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\jaewo\include;$(SolutionDir)\ImGui;$(SolutionDir)\NativeFileDialog\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\jaewo\lib\debug;$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\jaewo\include;$(SolutionDir)\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\jaewo\include;$(SolutionDir)\ImGui;$(SolutionDir)\NativeFileDialog\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\jaewo\lib\debug;$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -239,7 +247,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;glad.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glad.lib;ImGui.lib;nfd_d.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -270,7 +278,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;glad.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glad.lib;ImGui.lib;nfd_d.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

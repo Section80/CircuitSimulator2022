@@ -11,6 +11,7 @@ public:
 	ExMemRegisterCircuit(float x, float y);
 
 	void render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -55,6 +56,7 @@ private:
 	bool m_outBuf2[107];
 
 	uint32_t m_data[10];
+	char m_strBuf[256];
 };
 
 #endif

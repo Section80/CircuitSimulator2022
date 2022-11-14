@@ -37,6 +37,19 @@ OutputPin* Int32OutCircuit::GetOutputPin(int index)
 	return nullptr;
 }
 
+void Int32OutCircuit::SetValue(int value)
+{
+	if (m_val != value)
+	{
+		m_val = value;
+
+		swapCircuitOutput();
+		bool* outputBuffer = getOutputDataBuffer(0);
+		Uint32ToBoolArray(m_val, outputBuffer);
+		afterUpdateOutput();
+	}
+}
+
 void Int32OutCircuit::render()
 {
 	ImNode::BeginNode(GetId());

@@ -13,6 +13,9 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	inline int GetValue() { return m_val; }
+	void SetValue(int value);
+
 private:
 	void render() override;
 

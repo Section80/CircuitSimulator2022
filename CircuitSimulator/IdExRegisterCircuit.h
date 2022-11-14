@@ -12,6 +12,7 @@ public:
 	IdExRegisterCircuit(float x, float y);
 
 	void render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -66,6 +67,7 @@ private:
 	bool m_outBuf2[147];
 
 	uint32_t m_data[14];
+	char m_strBuf[256];
 };
 
 #endif

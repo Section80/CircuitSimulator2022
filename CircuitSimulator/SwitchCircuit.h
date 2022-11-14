@@ -13,6 +13,9 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	void SetPressed(bool pressed);
+	inline bool GetPressed() { return m_val; }
+
 private:
 	void render() override;
 

@@ -27,6 +27,7 @@
 #include "IdExRegisterCircuit.h"
 #include "ExMemRegisterCircuit.h"
 #include "MemWbRegisterCircuit.h"
+#include "FunctCircuit.h"
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
 
@@ -142,6 +143,7 @@ Circuit* SpawnCircuit(ECircuitType type, float x, float y)
 	switch (type)
 	{
 	case ECircuitType::None:
+		printf("[Info]SpawnCircuit Invalid id: %d", (int)type);
 		return nullptr;
 	case ECircuitType::Add32:
 		return new Add32Circuit(x, y);
@@ -201,7 +203,12 @@ Circuit* SpawnCircuit(ECircuitType type, float x, float y)
 		return new ProgramCounterCircuit(x, y);
 	case ECircuitType::Register:
 		return new RegisterCircuit(x, y);
+	case ECircuitType::Funct:
+		return new FunctCircuit(x, y);
+	case ECircuitType::ClockBuffer:
+		return new ClockBufferCircuit(x, y);
 	default:
+		printf("[Info]SpawnCircuit Invalid id: %d", (int)type);
 		break;
 	}
 

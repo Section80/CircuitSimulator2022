@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include <imgui.h>
+#include <assert.h>
 #include "PlayButton.h"
+
+
+PlayButton* PlayButton::Instance = nullptr;
 
 PlayButton::PlayButton()
 	: m_isStarted(false)
-{}
+{
+	assert(Instance == nullptr);
+	Instance = this;
+}
 
 void PlayButton::Render()
 {

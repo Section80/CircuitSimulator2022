@@ -9,7 +9,11 @@ AluCircuit::AluCircuit()
 	, m_operation(*this, "op", 4)
 	, m_out(*this, "res", 0, 32)
 	, m_zero(*this, "zero", 32, 1)
-{}
+	, m_lastOp(EAluOperation::And)
+	, m_lastResult(0)
+{
+	memset(m_strBuf, 0, sizeof(char) * 256);
+}
 
 AluCircuit::AluCircuit(float x, float y)
 	: AluCircuit()
@@ -26,15 +30,46 @@ void AluCircuit::render()
 
 	m_in1.Render();
 	ImGui::SameLine();
-	m_out.Render();
+	m_zero.Render();
 
 	m_in2.Render();
 	ImGui::SameLine();
-	m_zero.Render();
+	m_out.Render();
 
 	m_operation.Render();
 
 	ImNode::EndNode();
+}
+
+void AluCircuit::RenderInspector()
+{
+	switch (m_lastOp)
+	{
+	case EAluOperation::And:
+		ImGui::Text("op: And");
+		break;
+	case EAluOperation::Or:
+		ImGui::Text("op: Or");
+		break;
+	case EAluOperation::Add:
+		ImGui::Text("op: Add");
+		break;
+	case EAluOperation::Sub:
+		ImGui::Text("op: Sub");
+		break;
+	case EAluOperation::Slt:
+		ImGui::Text("op: Slt");
+		break;
+	case EAluOperation::Nor:
+		ImGui::Text("op: Nor");
+		break;
+	default:
+		ImGui::Text("op: None");
+		break;
+	}
+
+	sprintf_s(m_strBuf, "result: %d", m_lastResult);
+	ImGui::Text(m_strBuf);
 }
 
 InputPin* AluCircuit::GetInputPin(int index)
@@ -73,39 +108,37 @@ void AluCircuit::updateOutput()
 {
 	uint32_t in1 = ReadToUint32(m_in1, 32);
 	uint32_t in2 = ReadToUint32(m_in2, 32);
-	uint32_t op = ReadToUint32(m_operation, 4);
+	m_lastOp = (EAluOperation)ReadToUint32(m_operation, 4);
 
-	uint32_t res = 0;
-
-	switch ((EAluOperation)op)
+	switch (m_lastOp)
 	{
 	case EAluOperation::And:
-		res = in1 & in2;
+		m_lastResult = in1 & in2;
 		break;
 	case EAluOperation::Or:
-		res = in1 | in2;
+		m_lastResult = in1 | in2;
 		break;
 	case EAluOperation::Add:
-		res = in1 + in2;
+		m_lastResult = in1 + in2;
 		break;
 	case EAluOperation::Sub:
-		res = in1 - in2;
+		m_lastResult = in1 - in2;
 		break;
 	case EAluOperation::Slt:
-		(in1 < in2) ? res = 1 : res = 0;
+		(in1 < in2) ? m_lastResult = 1 : m_lastResult = 0;
 		break;
 	case EAluOperation::Nor:
-		res = ~(in1 | in2);
+		m_lastResult = ~(in1 | in2);
 		break;
 	default:
 		break;
 	}
 
 	bool* outBuf = getOutputDataBuffer(0);
-	Uint32ToBoolArray(res, outBuf);
+	Uint32ToBoolArray(m_lastResult, outBuf);
 
 	bool bVal = false;
-	if (res == 0)
+	if (m_lastResult == 0)
 	{
 		bVal = true;
 		setOutputData(1, &bVal);

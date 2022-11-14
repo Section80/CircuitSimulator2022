@@ -1,18 +1,27 @@
 #include "stdafx.h"
+#include <nfd.h>
 #include "Convert.h"
 #include "Instruction.h"
 #include "InstructionMemory.h"
+#include "PlayButton.h"
+#include "Environment.h"
+#include "Parse.h"
+
 
 InstructionMemoryCircuit::InstructionMemoryCircuit()
 	: Circuit("Instruction Memory", ECircuitType::InstructionMemory, 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_addr(*this, "addr", 32)
 	, m_out(*this, "out", 0, 32)
 	, m_val(0)
+	, m_currentOutAddr(0)
+	, m_loadButtonId(Identifiable::GetNewId())
 {
 	for (int i = 0; i < 100; i++)
 	{
 		m_map[i] = i;
 	}
+
+	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
 InstructionMemoryCircuit::InstructionMemoryCircuit(float x, float y)
@@ -31,9 +40,9 @@ void InstructionMemoryCircuit::render()
 	ImGui::Text(GetName());
 	renderDelay(160.0f);
 
-	char buffer[16];
-	_itoa_s(m_val, buffer, 10);
-	ImGui::Text(buffer);
+	// char buffer[16];
+	// _itoa_s(m_val, buffer, 10);
+	// ImGui::Text(buffer);
 
 	ImGui::BeginHorizontal("IO");
 
@@ -47,7 +56,48 @@ void InstructionMemoryCircuit::render()
 
 	ImGui::EndHorizontal();
 
+	ImGui::PushID(m_loadButtonId);
+	if (ImGui::Button("Load"))
+	{
+		PlayButton::Instance->Pause();
+
+		nfdchar_t* outPath = NULL;
+		nfdresult_t result = NFD_OpenDialog("asm;", env::pwd.c_str(), &outPath);
+
+		if (result == NFD_OKAY) {
+			PlayButton::Instance->Pause();
+			puts(outPath);
+			LoadInstructions(outPath, &m_map);
+			
+			free(outPath);
+		}
+		else if (result == NFD_CANCEL) {
+			puts("User pressed cancel.");
+		}
+		else {
+			printf("Error: %s\n", NFD_GetError());
+		}
+	}
+	ImGui::PopID();
+
 	ImNode::EndNode();
+}
+
+void InstructionMemoryCircuit::RenderInspector()
+{
+	for (const auto& pair : m_map)
+	{
+		sprintf_s(m_strBuf, "[%010d] %0#10x", pair.first * 4, pair.second);
+		if (pair.first == m_currentOutAddr)
+		{
+			// yellow
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), m_strBuf);
+		}
+		else
+		{
+			ImGui::Text(m_strBuf);
+		}
+	}
 }
 
 InputPin* InstructionMemoryCircuit::GetInputPin(int index)
@@ -78,13 +128,13 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 
 void InstructionMemoryCircuit::updateOutput()
 {
-	int addr = ReadToUint32(m_addr, 32);
-	addr = addr / 4;	// 32bit 단위: 4바이트로 나눈다. 
+	m_currentOutAddr = ReadToUint32(m_addr, 32);
+	m_currentOutAddr = m_currentOutAddr / 4;	// 32bit 단위: 4바이트로 나눈다. 
 	
 	m_val = 0;
-	if (m_map.count(addr))
+	if (m_map.count(m_currentOutAddr))
 	{
-		m_val = m_map[addr];
+		m_val = m_map[m_currentOutAddr];
 	}
 	
 

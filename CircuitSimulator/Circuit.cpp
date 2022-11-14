@@ -51,6 +51,11 @@ void Circuit::renderWire()
 	}
 }
 
+void Circuit::RenderInspector()
+{
+	ImGui::Text("Inspector is not implemented. ");
+}
+
 bool Circuit::GetOutputData(int index)
 {
 	return m_circuitOutput.ReadAt(index);
