@@ -131,6 +131,14 @@ void IfIdRegisterCircuit::updateOutput()
 	}
 	m_bLastClock = bClock;
 
+	// update edge triggred part here
+	for (int i = 0; i < GetOutputPinCount(); i++)
+	{
+		bool* outBuf = getOutputDataBuffer(i);
+		int len = GetOutputPin(i)->GetWireLineCount();
+		Uint32ToBoolArray(m_data[i], outBuf, len);
+	}
+
 	if (bRisingEdge)
 	{
 		// update edge triggred part here
@@ -138,7 +146,7 @@ void IfIdRegisterCircuit::updateOutput()
 
 		// m_pcOut;
 		m_data[0] = ReadToUint32(*in, in->GetWireLineCount());
-			
+
 		in = GetInputPin(1);
 
 		// m_op_out;
@@ -155,13 +163,5 @@ void IfIdRegisterCircuit::updateOutput()
 		// 입력이 변하지 않더라도 출력을 업데이트하도록
 		// 남은 딜레이를 리셋시킨다. 
 		resetDelay();
-	}
-
-	// update edge triggred part here
-	for (int i = 0; i < GetOutputPinCount(); i++)
-	{
-		bool* outBuf = getOutputDataBuffer(i);
-		int len = GetOutputPin(i)->GetWireLineCount();
-		Uint32ToBoolArray(m_data[i], outBuf, len);
 	}
 }

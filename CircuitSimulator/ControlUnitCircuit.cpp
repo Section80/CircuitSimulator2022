@@ -103,6 +103,9 @@ void ControlUnitCircuit::updateOutput()
 	case 0b000100:		// beq
 		val = 0b000000101;
 		break;
+	case 0b000010:		// j
+		// val = 
+		break;
 	case 0b001000:		// addi
 		val = 0b010100000;
 		break;

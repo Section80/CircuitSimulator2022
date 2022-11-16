@@ -16,11 +16,6 @@ InstructionMemoryCircuit::InstructionMemoryCircuit()
 	, m_currentOutAddr(0)
 	, m_loadButtonId(Identifiable::GetNewId())
 {
-	for (int i = 0; i < 100; i++)
-	{
-		m_map[i] = i;
-	}
-
 	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
@@ -87,7 +82,7 @@ void InstructionMemoryCircuit::RenderInspector()
 {
 	for (const auto& pair : m_map)
 	{
-		sprintf_s(m_strBuf, "[%010d] %0#10x", pair.first * 4, pair.second);
+		sprintf_s(m_strBuf, "[%0#10x] %0#10x", pair.first, pair.second);
 		if (pair.first == m_currentOutAddr)
 		{
 			// yellow
@@ -129,7 +124,7 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 void InstructionMemoryCircuit::updateOutput()
 {
 	m_currentOutAddr = ReadToUint32(m_addr, 32);
-	m_currentOutAddr = m_currentOutAddr / 4;	// 32bit 단위: 4바이트로 나눈다. 
+	m_currentOutAddr = m_currentOutAddr;
 	
 	m_val = 0;
 	if (m_map.count(m_currentOutAddr))

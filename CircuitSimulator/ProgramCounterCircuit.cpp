@@ -9,7 +9,7 @@ ProgramCounterCircuit::ProgramCounterCircuit()
 	, m_clock(*this, "clock", 1)
 	, m_outAddr(*this, "addr", 0, 32)
 	, m_bLastClock(false)
-	, m_addr(0)
+	, m_addr(0x00400024)
 {}
 
 ProgramCounterCircuit::ProgramCounterCircuit(float x, float y)
@@ -25,7 +25,7 @@ void ProgramCounterCircuit::render()
 		renderDelay(160.0f);
 
 		char buffer[16];
-		_itoa_s(m_addr, buffer, 10);
+		sprintf_s(buffer, "%0#10x", m_addr);
 		ImGui::Text(buffer);
 
 		m_inAddr.Render();

@@ -59,6 +59,9 @@
     <Filter Include="소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register">
       <UniqueIdentifier>{09024ca8-89ac-41ba-ab31-c84f71a23f70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Identifiable\Circuit\imple\Combinational\Hazard">
+      <UniqueIdentifier>{d339d683-7554-4a23-8c2a-3733d41b283f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Identifiable.cpp">
@@ -66,9 +69,6 @@
     </ClCompile>
     <ClCompile Include="CircuitOutput.cpp">
       <Filter>소스 파일\Identifiable\Circuit</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일\main</Filter>
     </ClCompile>
     <ClCompile Include="Pin.cpp">
       <Filter>소스 파일\Identifiable\Pin</Filter>
@@ -190,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="Parse.cpp">
       <Filter>소스 파일\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +321,9 @@
     </ClInclude>
     <ClInclude Include="Parse.h">
       <Filter>소스 파일\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

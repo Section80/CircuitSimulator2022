@@ -35,6 +35,7 @@ enum class ECircuitType: int
 	Register = 29,
 	Funct = 30,
 	ClockBuffer = 31, 
+	ForwardUnit = 32, 
 };
 
 #endif

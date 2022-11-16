@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <assert.h>
+#include <unordered_map>
 #include "Parse.h"
 #include "Instruction.h"
 
@@ -30,7 +31,9 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 
 	string line;
 
-	int key = 0;
+	int lastKey = 0x00400024 - 4;
+	unordered_map<string, int> labelMap;	// key: label string, value: instruction address
+
 	while (getline(f, line))
 	{
 		stringstream ss(line);
@@ -39,9 +42,58 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 		{
 			string word;
 			ss >> word;
+
 			if (word[0] == '#') break;
 
-			if (!word.compare("add"))
+			// check if it is Label
+			if (word.back() == ':')
+			{
+				word.pop_back();
+				labelMap[word] = lastKey + 4;
+				break;
+			}
+
+			// to lowercase: https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
+			// for (auto& c : word)
+			// {
+			// 	c = tolower(c);
+			// }
+
+			if (word.compare("and") == 0)
+			{
+				string op1;
+				string op2;
+				string op3;
+				ss >> op1;
+				ss >> op2;
+				ss >> op3;
+
+				int rd = strToRegisterIndex(op1);
+				int rs = strToRegisterIndex(op2);
+				int rt = strToRegisterIndex(op3);
+
+				Instruction i;
+				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x24);
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("or") == 0)
+			{
+				string op1;
+				string op2;
+				string op3;
+				ss >> op1;
+				ss >> op2;
+				ss >> op3;
+
+				int rd = strToRegisterIndex(op1);
+				int rs = strToRegisterIndex(op2);
+				int rt = strToRegisterIndex(op3);
+
+				Instruction i;
+				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x25);
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("add") == 0)
 			{
 				string op1;
 				string op2;
@@ -56,9 +108,9 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 
 				Instruction i;
 				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x20);
-				map[key++] = i.Get();
+				map[lastKey += 4] = i.Get();
 			}
-			else if (!word.compare("addi"))
+			else if (word.compare("addi") == 0)
 			{
 				string op1;
 				string op2;
@@ -72,7 +124,131 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 
 				Instruction i;
 				i.SetOpcode(0x8).SetRT(rt).SetRS(rs).SetLow16(imm);
-				map[key++] = i.Get();
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("sub") == 0)
+			{
+				string op1;
+				string op2;
+				string op3;
+				ss >> op1;
+				ss >> op2;
+				ss >> op3;
+
+				int rd = strToRegisterIndex(op1);
+				int rs = strToRegisterIndex(op2);
+				int rt = strToRegisterIndex(op3);
+
+				Instruction i;
+				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x22);
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("slt") == 0)
+			{
+				string op1;
+				string op2;
+				string op3;
+				ss >> op1;
+				ss >> op2;
+				ss >> op3;
+
+				int rd = strToRegisterIndex(op1);
+				int rs = strToRegisterIndex(op2);
+				int rt = strToRegisterIndex(op3);
+
+				Instruction i;
+				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x2a);
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("lw") == 0)
+			{
+				// lw &4, 8($5)
+				string op1;
+				ss >> op1;
+
+				int rt = strToRegisterIndex(op1);
+
+				// "(" 앞까지는 imm에 해당한다. 
+				string immStr;
+				getline(ss, immStr, '(');
+
+				int imm = 0;
+				strToInt(immStr, &imm);
+
+				// 여는 괄호 이후 부분은 "$rs)"에 해당한다. 
+				string rsStr;
+				rsStr.pop_back();	// 끝에 있는 ")"를 없앤다. 
+				int rs = strToRegisterIndex(rsStr);
+				
+				Instruction i;
+				i.SetOpcode(0x23).SetRT(rt).SetRS(rs).SetLow16(imm);
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("sw") == 0)
+			{
+			// sw &4, 8($5)
+			string op1;
+			ss >> op1;
+
+			int rt = strToRegisterIndex(op1);
+
+			// "(" 앞까지는 imm에 해당한다. 
+			string immStr;
+			getline(ss, immStr, '(');
+
+			int imm = 0;
+			strToInt(immStr, &imm);
+
+			// 여는 괄호 이후 부분은 "$rs)"에 해당한다. 
+			string rsStr;
+			rsStr.pop_back();	// 끝에 있는 ")"를 없앤다. 
+			int rs = strToRegisterIndex(rsStr);
+
+			Instruction i;
+			i.SetOpcode(0x2b).SetRT(rt).SetRS(rs).SetLow16(imm);
+			map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("beq") == 0)
+			{
+				string op1;
+				string op2;
+				string op3;
+				ss >> op1;
+				ss >> op2;
+				ss >> op3;
+
+				int rs = strToRegisterIndex(op1);
+				int rt = strToRegisterIndex(op2);
+
+				int imm = 0;
+				if (labelMap.count(op3) != 0) 
+				{
+					imm = labelMap[op3];
+				}
+				else
+				{
+					printf("[info]LoadInsturctions() label not found: %s", op3);
+				}
+
+				Instruction i;
+				i.SetOpcode(4).SetRS(rs).SetRT(rt).SetLow16(imm);
+				map[lastKey += 4] = i.Get();
+			}
+			else if (word.compare("j") == 0)
+			{
+				string op;
+				int addr = 0;
+				if (labelMap.count(op) != 0) {
+					addr = labelMap[op];
+				}
+				else
+				{
+					printf("[info]LoadInsturctions() label not found: %s", op);
+				}
+
+				Instruction i;
+				i.SetOpcode(2).SetAddress(addr);
+				map[lastKey += 4] = i.Get();
 			}
 		}
 	}

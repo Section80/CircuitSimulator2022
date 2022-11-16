@@ -17,6 +17,14 @@ RegisterCircuit::RegisterCircuit()
 {
 	memset(m_registers, 0, sizeof(uint32_t) * 32);
 	memset(m_strBuffer, 0, sizeof(char) * 256);
+
+	// https://ecampus.kookmin.ac.kr/mod/assign/view.php?id=1261943
+	
+	// $gp = 0x7ffffe40
+	m_registers[28] = 0x7ffffe40;
+	// $sp = 0x7ffffe40
+	m_registers[29] = 0x7ffffe40;
+	
 }
 
 RegisterCircuit::RegisterCircuit(float x, float y)
@@ -201,7 +209,7 @@ void RegisterCircuit::updateOutput()
 	data_buffer = getOutputDataBuffer(1);
 	Uint32ToBoolArray(bits, data_buffer);
 
-	if (bRisingEdge)
+	if (bFallingEdge)
 	{
 		// 상태를 업데이트시키지만, 출력은 나중에 업데이트된다. 
 		// 여기서 변화시킨 상태는 다음 입력 변화 시 출력으로 적용될 것이다. 
