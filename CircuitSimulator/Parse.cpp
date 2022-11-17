@@ -43,6 +43,11 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 			string word;
 			ss >> word;
 
+			if (word.size() == 0)
+			{
+				continue;
+			}
+
 			if (word[0] == '#') break;
 
 			// check if it is Label
@@ -227,7 +232,7 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 				}
 				else
 				{
-					printf("[info]LoadInsturctions() label not found: %s", op3);
+					printf("[info]LoadInsturctions() label not found: %s", op3.c_str());
 				}
 
 				Instruction i;
@@ -243,7 +248,7 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 				}
 				else
 				{
-					printf("[info]LoadInsturctions() label not found: %s", op);
+					printf("[info]LoadInsturctions() label not found: %s", op.c_str());
 				}
 
 				Instruction i;

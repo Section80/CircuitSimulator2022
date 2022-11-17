@@ -80,6 +80,11 @@ bool InputPin::ReadAt(int wireLinIndex)
 	return m_from->ReadAt(wireLinIndex);
 }
 
+uint32_t InputPin::Value()
+{
+	return ReadToUint32(*this, GetWireLineCount());
+}
+
 OutputPin::OutputPin(Circuit& owner, const char* name, int dataOffset, int wireLineCount)
 	: Pin(owner, name, ImNode::PinKind::Output, wireLineCount)
 	, m_dataOffset(dataOffset)

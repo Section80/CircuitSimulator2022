@@ -4,7 +4,7 @@
 
 
 IdExRegisterCircuit::IdExRegisterCircuit()
-	: Circuit("ID/EX Register", ECircuitType::IdEx, 15, 14, m_outBuf1, m_outBuf2, 147, 0.5f)
+	: Circuit("ID/EX Register", ECircuitType::IdEx, 16, 15, m_outBuf1, m_outBuf2, 152, 0.5f)
 	, m_regWrite_in(*this, "regWrite", 1)
 	, m_memToReg_in(*this, "memToReg", 1)
 	, m_branch_in(*this, "branch", 1)
@@ -17,21 +17,23 @@ IdExRegisterCircuit::IdExRegisterCircuit()
 	, m_read1_in(*this, "read1", 32)
 	, m_read2_in(*this, "read2", 32)
 	, m_signExtended_in(*this, "sign ex", 32)
+	, m_rs_in(*this, "rs", 5)
 	, m_rt_in(*this, "rt", 5)
 	, m_rd_in(*this, "rd", 5)
 	, m_clock(*this, "clock", 1)
-	, m_regWrite_out(*this, "regWrite", 146, 1)
-	, m_memToReg_out(*this, "memToReg", 145, 1)
-	, m_branch_out(*this, "branch", 144, 1)
-	, m_memRead_out(*this, "memRead", 143, 1)
-	, m_memWrite_out(*this, "memWrite", 142, 1)
-	, m_regDest_out(*this, "regDest", 141, 1)
-	, m_aluOp_out(*this, "aluOp", 139, 2)
-	, m_aluSrc_out(*this, "aluSrc", 138, 1)
-	, m_pc_out(*this, "pc", 106, 32)
-	, m_read1_out(*this, "read1", 74, 32)
-	, m_read2_out(*this, "read2", 42, 32)
-	, m_signExtended_out(*this, "sign ex", 10, 32)
+	, m_regWrite_out(*this, "regWrite", 151, 1)
+	, m_memToReg_out(*this, "memToReg", 150, 1)
+	, m_branch_out(*this, "branch", 149, 1)
+	, m_memRead_out(*this, "memRead", 148, 1)
+	, m_memWrite_out(*this, "memWrite", 147, 1)
+	, m_regDest_out(*this, "regDest", 146, 1)
+	, m_aluOp_out(*this, "aluOp", 144, 2)
+	, m_aluSrc_out(*this, "aluSrc", 143, 1)
+	, m_pc_out(*this, "pc", 111, 32)
+	, m_read1_out(*this, "read1", 79, 32)
+	, m_read2_out(*this, "read2", 47, 32)
+	, m_signExtended_out(*this, "sign ex", 15, 32)
+	, m_rs_out(*this, "rs", 10, 5)
 	, m_rt_out(*this, "rt", 5, 5)
 	, m_rd_out(*this, "rd", 0, 5)
 	, m_bLastClock(false)
@@ -55,7 +57,7 @@ void IdExRegisterCircuit::render()
 	renderIOGroup("======== WB ========", 0, 2);
 	renderIOGroup("======== MEM ========", 2, 3);
 	renderIOGroup("======== EX ========", 5, 3);
-	renderIOGroup("======== ID/EX ========", 8, 6);	
+	renderIOGroup("======== ID/EX ========", 8, 7);	
 	m_clock.Render();
 
 	ImNode::EndNode();
@@ -86,6 +88,8 @@ void IdExRegisterCircuit::RenderInspector()
 	sprintf_s(m_strBuf, "   read2: %d", m_read2_out.Value());
 	ImGui::Text(m_strBuf);
 	sprintf_s(m_strBuf, "  signEx: %d", m_signExtended_out.Value());
+	ImGui::Text(m_strBuf);
+	sprintf_s(m_strBuf, "      rs: %d", m_rs_out.Value());
 	ImGui::Text(m_strBuf);
 	sprintf_s(m_strBuf, "      rt: %d", m_rt_out.Value());
 	ImGui::Text(m_strBuf);
@@ -120,12 +124,14 @@ InputPin* IdExRegisterCircuit::GetInputPin(int index)
 	case 10:
 		return &m_read2_in;
 	case 11:
-		return &m_rt_in;
+		return &m_rs_in;
 	case 12:
-		return &m_rd_in;
+		return &m_rt_in;
 	case 13:
-		return &m_signExtended_in;
+		return &m_rd_in;
 	case 14:
+		return &m_signExtended_in;
+	case 15:
 		return &m_clock;
 	default:
 		assert(false);
@@ -161,10 +167,12 @@ OutputPin* IdExRegisterCircuit::GetOutputPin(int index)
 	case 10:
 		return &m_read2_out;
 	case 11:
-		return &m_rt_out;
+		return &m_rs_out;
 	case 12:
-		return &m_rd_out;
+		return &m_rt_out;
 	case 13:
+		return &m_rd_out;
+	case 14:
 		return &m_signExtended_out;
 	default:
 		assert(false);

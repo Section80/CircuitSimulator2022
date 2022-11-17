@@ -82,6 +82,8 @@ protected:
 	// pData의 길이는 해당 OutputPin의 WireLineCount 이상이여야 한다. 
 	void setOutputData(int outputPinindex, const bool* pData);
 	
+	void setOutputDataByValue(int outputPinindex, uint32_t value);
+
 	// setOutputBuffer()는 pData를 OutputBufferData에 복사한다. 
 	// 즉, pData를 미리 할당해두어야 한다. 
 	// 그렇게 하지 않고, outputBufferData에 직접 접근하고 싶을 때 이 함수를 사용한다. 

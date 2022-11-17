@@ -28,6 +28,7 @@
 #include "ExMemRegisterCircuit.h"
 #include "MemWbRegisterCircuit.h"
 #include "FunctCircuit.h"
+#include "ForwardCircuit.h"
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
 
@@ -207,6 +208,8 @@ Circuit* SpawnCircuit(ECircuitType type, float x, float y)
 		return new FunctCircuit(x, y);
 	case ECircuitType::ClockBuffer:
 		return new ClockBufferCircuit(x, y);
+	case ECircuitType::ForwardUnit:
+		return new ForwardCircuit(x, y);
 	default:
 		printf("[Info]SpawnCircuit Invalid id: %d", (int)type);
 		break;

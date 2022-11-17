@@ -43,7 +43,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="File.cpp" />
-    <ClCompile Include="ForwardCircuit.cpp" />
+    <ClCompile Include="ForwardCircuit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="FunctCircuit.cpp" />
     <ClCompile Include="Identifiable.cpp" />
     <ClCompile Include="IdExRegisterCircuit.cpp">
@@ -123,7 +126,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="File.h" />
-    <ClInclude Include="ForwardCircuit.h" />
+    <ClInclude Include="ForwardCircuit.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="FunctCircuit.h" />
     <ClInclude Include="Identifiable.h" />
     <ClInclude Include="IdExRegisterCircuit.h">

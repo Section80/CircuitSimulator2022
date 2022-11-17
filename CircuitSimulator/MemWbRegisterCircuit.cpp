@@ -50,7 +50,7 @@ void MemWbRegisterCircuit::RenderInspector()
 	ImGui::Text(m_strBuf);
 	sprintf_s(m_strBuf, " aluResult: %d", m_aluResult_out.Value());
 	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "m_writeReg: %d", m_writeReg_out.Value());
+	sprintf_s(m_strBuf, "  writeReg: %d", m_writeReg_out.Value());
 	ImGui::Text(m_strBuf);
 }
 

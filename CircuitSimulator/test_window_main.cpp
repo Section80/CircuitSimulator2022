@@ -20,7 +20,7 @@ bool onEnd();
 ImNode::EditorContext* pNodeContext;
 std::vector<Circuit*> pCircuits;
 PlayButton playButton;
-float skip_sec = 0.0f;
+float skip_sec = 2.9f;
 int spawnId = 0;
 
 int main(int argc, char* argv[])
@@ -54,7 +54,11 @@ bool onStart()
 
 	// SpawnSimple1(0, 0, &pCircuits);
 	// SpawnTestRegisterFile(0, 0, &pCircuits);
-	LoadCircuitsFromFile("./f/cc.save", &pCircuits);
+
+	std::string loadPath("/f/cc.save");
+	loadPath = env::pwd + loadPath;
+
+	LoadCircuitsFromFile(loadPath.c_str(), &pCircuits);
 
 	return true;
 }

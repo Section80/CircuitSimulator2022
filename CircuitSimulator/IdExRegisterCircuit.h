@@ -37,6 +37,7 @@ private:
 	InputPin m_read1_in;
 	InputPin m_read2_in;
 	InputPin m_signExtended_in;
+	InputPin m_rs_in;
 	InputPin m_rt_in;
 	InputPin m_rd_in;
 
@@ -45,26 +46,27 @@ private:
 	bool m_bLastClock;
 	
 	// WB
-	OutputPin m_regWrite_out;		// 1bit : [146, 146]
-	OutputPin m_memToReg_out;		// 1bit : [145, 145]
+	OutputPin m_regWrite_out;		// 1bit : [151, 151]
+	OutputPin m_memToReg_out;		// 1bit : [150, 150]
 	// MEM
-	OutputPin m_branch_out;			// 1bit : [144, 144]
-	OutputPin m_memRead_out;		// 1bit : [143, 143]
-	OutputPin m_memWrite_out;		// 1bit : [142, 142]
+	OutputPin m_branch_out;			// 1bit : [149, 149]
+	OutputPin m_memRead_out;		// 1bit : [148, 148]
+	OutputPin m_memWrite_out;		// 1bit : [147, 147]
 	// EX
-	OutputPin m_regDest_out;		// 1bit : [141, 141]
-	OutputPin m_aluOp_out;			// 2bit : [139, 140]
-	OutputPin m_aluSrc_out;			// 1bit : [138, 138]
+	OutputPin m_regDest_out;		// 1bit : [146, 146]
+	OutputPin m_aluOp_out;			// 2bit : [144, 145]
+	OutputPin m_aluSrc_out;			// 1bit : [143, 143]
 	/* ================ */
-	OutputPin m_pc_out;				// 32bit : [106. 137]
-	OutputPin m_read1_out;			// 32bit : [74, 105]
-	OutputPin m_read2_out;			// 32bit : [42, 73]
-	OutputPin m_signExtended_out;	// 32bit : [10, 41]
+	OutputPin m_pc_out;				// 32bit : [111, 142]
+	OutputPin m_read1_out;			// 32bit : [79, 110]
+	OutputPin m_read2_out;			// 32bit : [47, 78]
+	OutputPin m_signExtended_out;	// 32bit : [15, 46]
+	OutputPin m_rs_out;				// 5bit : [10, 14]
 	OutputPin m_rt_out;				// 5bit : [5, 9]
 	OutputPin m_rd_out;				// 5bit : [0, 4]
 
-	bool m_outBuf1[147];
-	bool m_outBuf2[147];
+	bool m_outBuf1[152];
+	bool m_outBuf2[152];
 
 	uint32_t m_data[14];
 	char m_strBuf[256];

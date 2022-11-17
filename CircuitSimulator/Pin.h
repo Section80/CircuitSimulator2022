@@ -75,6 +75,7 @@ public:
 	inline OutputPin* GetFrom() { return m_from; }
 	// InputPin의 wire들 중 해당하는 index에 있는 값을 읽는다. 
 	bool ReadAt(int wireLinIndex);
+	uint32_t Value();
 
 private:
 	inline void setWireLineCount(int count) { Pin::setWireLineCount(count); }

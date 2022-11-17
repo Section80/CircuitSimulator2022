@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Pin.h"
+#include "Convert.h"
 #include "Circuit.h"
 
 std::vector<Circuit*> Circuit::s_pCircuits;
@@ -54,6 +55,14 @@ void Circuit::renderWire()
 void Circuit::RenderInspector()
 {
 	ImGui::Text("Inspector is not implemented. ");
+	if (IsResolvable())
+	{
+		ImGui::Text("IsResolvable : true");
+	}
+	else
+	{
+		ImGui::Text("IsResolvable : false");
+	}
 }
 
 bool Circuit::GetOutputData(int index)
@@ -250,6 +259,13 @@ void Circuit::setOutputData(int outputPinIndex, const bool* pData)
 		op->GetOutputOffset(),
 		op->GetWireLineCount()
 	);
+}
+
+void Circuit::setOutputDataByValue(int outputPinindex, uint32_t value)
+{
+	bool* outBuf = getOutputDataBuffer(outputPinindex);
+	OutputPin* op = GetOutputPin(outputPinindex);
+	Uint32ToBoolArray(value, outBuf, op->GetWireLineCount());
 }
 
 bool* Circuit::getOutputDataBuffer(int outputPinIndex)

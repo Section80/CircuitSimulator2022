@@ -15,6 +15,4 @@ void Copy(InputPin& inputPin, bool* pOut, int len);
 
 int EvaluateBoolBuffer(bool* pBuffer, int len);
 
-int EvaluateOutputPin(OutputPin& outputPin);
-
 #endif

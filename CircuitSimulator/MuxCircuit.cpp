@@ -3,7 +3,7 @@
 #include "MuxCircuit.h"
 
 Mux21Circuit::Mux21Circuit()
-	: Circuit("2 to 1 Mux", ECircuitType::Mux21, 3, 1, m_outBuf1, m_outBuf2, 32, 0.1f)
+	: Circuit("2 to 1 Mux", ECircuitType::Mux21, 3, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
 	, m_in0(*this, "in0", 1)
 	, m_in1(*this, "in1", 1)
 	, m_select(*this, "select", 1)
@@ -125,7 +125,7 @@ void Mux21Circuit::updateOutput()
 }
 
 Mux31Circuit::Mux31Circuit()
-	: Circuit("3 to 1 Mux", ECircuitType::Mux31, 4, 1, m_outBuf1, m_outBuf2, 32, 0.1f)
+	: Circuit("3 to 1 Mux", ECircuitType::Mux31, 4, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
 	, m_in0(*this, "in0", 1)
 	, m_in1(*this, "in1", 1)
 	, m_in2(*this, "in2", 1)
