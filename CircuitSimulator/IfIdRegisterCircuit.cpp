@@ -16,7 +16,6 @@ IfIdRegisterCircuit::IfIdRegisterCircuit()
 	, m_bLastClock(false)
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
-	memset(m_strBuffer, 0, sizeof(char) * 256);
 }
 
 IfIdRegisterCircuit::IfIdRegisterCircuit(float x, float y)
@@ -25,12 +24,12 @@ IfIdRegisterCircuit::IfIdRegisterCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void IfIdRegisterCircuit::render()
+void IfIdRegisterCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
 
-	renderDelay(160.0f);
+	renderDelay(180.0f);
 	ImGui::BeginHorizontal("IO");
 	ImGui::BeginVertical("in");
 
@@ -57,18 +56,12 @@ void IfIdRegisterCircuit::render()
 
 void IfIdRegisterCircuit::RenderInspector()
 {
-	sprintf_s(m_strBuffer, "pc: %d", m_pc_out.Value());
-	ImGui::Text(m_strBuffer);
-	sprintf_s(m_strBuffer, "op: %d", m_op_out.Value());
-	ImGui::Text(m_strBuffer);
-	sprintf_s(m_strBuffer, "rs: %d", m_rs_out.Value());
-	ImGui::Text(m_strBuffer);
-	sprintf_s(m_strBuffer, "rt: %d", m_rt_out.Value());
-	ImGui::Text(m_strBuffer);
-	sprintf_s(m_strBuffer, "rd: %d", m_rd_out.Value());
-	ImGui::Text(m_strBuffer);
-	sprintf_s(m_strBuffer, "low16: %d", m_low16_out.Value());
-	ImGui::Text(m_strBuffer);
+	ImGui::Text("pc: %d", m_pc_out.Value());
+	ImGui::Text("op: %d", m_op_out.Value());
+	ImGui::Text("rs: %d", m_rs_out.Value());
+	ImGui::Text("rt: %d", m_rt_out.Value());
+	ImGui::Text("rd: %d", m_rd_out.Value());
+	ImGui::Text("low16: %d", m_low16_out.Value());
 }
 
 InputPin* IfIdRegisterCircuit::GetInputPin(int index)

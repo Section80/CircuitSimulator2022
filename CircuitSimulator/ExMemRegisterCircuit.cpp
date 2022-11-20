@@ -28,7 +28,6 @@ ExMemRegisterCircuit::ExMemRegisterCircuit()
 	, m_bLastClock(false)
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
-	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
 ExMemRegisterCircuit::ExMemRegisterCircuit(float x, float y)
@@ -37,7 +36,7 @@ ExMemRegisterCircuit::ExMemRegisterCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ExMemRegisterCircuit::render()
+void ExMemRegisterCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -53,26 +52,16 @@ void ExMemRegisterCircuit::render()
 
 void ExMemRegisterCircuit::RenderInspector()
 {
-	sprintf_s(m_strBuf, " regWrite: %d", m_regWrite_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, " memToReg: %d", m_memToReg_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "   branch: %d", m_branch_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  memRead: %d", m_memRead_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, " memWrite: %d", m_memWrite_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "      bta: %d", m_bta_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "     zero: %d", m_zero_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "aluResult: %d", m_aluResult_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "    read2: %d", m_read2_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, " writeReg: %d", m_writeReg_out.Value());
-	ImGui::Text(m_strBuf);
+	ImGui::Text(" regWrite: %d", m_regWrite_out.Value());
+	ImGui::Text(" memToReg: %d", m_memToReg_out.Value());
+	ImGui::Text("   branch: %d", m_branch_out.Value());
+	ImGui::Text("  memRead: %d", m_memRead_out.Value());
+	ImGui::Text(" memWrite: %d", m_memWrite_out.Value());
+	ImGui::Text("      bta: %d", m_bta_out.Value());
+	ImGui::Text("     zero: %d", m_zero_out.Value());
+	ImGui::Text("aluResult: %d", m_aluResult_out.Value());
+	ImGui::Text("    read2: %d", m_read2_out.Value());
+	ImGui::Text(" writeReg: %d", m_writeReg_out.Value());
 }
 
 InputPin* ExMemRegisterCircuit::GetInputPin(int index)
@@ -174,6 +163,12 @@ void ExMemRegisterCircuit::updateOutput()
 		{
 			InputPin& in = *GetInputPin(i);
 			m_data[i] = ReadToUint32(in, in.GetWireLineCount());
+
+			if (m_data[i] > 100000000)
+			{
+				int a = 0;
+				a++;
+			}
 		}
 
 		// 입력이 변하지 않더라도 출력을 업데이트하도록

@@ -1,7 +1,7 @@
 #ifndef PIN_H
 #define PIN_H
 
-#define MAX_WIRE_IN_OUTPUTPIN 7
+#define MAX_WIRE_IN_OUTPUTPIN 8
 
 #include <vector>
 #include <imgui_node_editor.h>

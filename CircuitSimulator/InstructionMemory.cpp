@@ -15,8 +15,8 @@ InstructionMemoryCircuit::InstructionMemoryCircuit()
 	, m_val(0)
 	, m_currentOutAddr(0)
 	, m_loadButtonId(Identifiable::GetNewId())
+	, m_path("NULL")
 {
-	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
 InstructionMemoryCircuit::InstructionMemoryCircuit(float x, float y)
@@ -29,7 +29,7 @@ InstructionMemoryCircuit::~InstructionMemoryCircuit()
 {
 }
 
-void InstructionMemoryCircuit::render()
+void InstructionMemoryCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -62,7 +62,7 @@ void InstructionMemoryCircuit::render()
 		if (result == NFD_OKAY) {
 			PlayButton::Instance->Pause();
 			puts(outPath);
-			LoadInstructions(outPath, &m_map);
+			LoadInstructions(outPath);
 			
 			free(outPath);
 		}
@@ -82,15 +82,14 @@ void InstructionMemoryCircuit::RenderInspector()
 {
 	for (const auto& pair : m_map)
 	{
-		sprintf_s(m_strBuf, "[%0#10x] %0#10x", pair.first, pair.second);
 		if (pair.first == m_currentOutAddr)
 		{
 			// yellow
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), m_strBuf);
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "[%0#10x] %0#10x", pair.first, pair.second);
 		}
 		else
 		{
-			ImGui::Text(m_strBuf);
+			ImGui::Text("[%0#10x] %0#10x", pair.first, pair.second);
 		}
 	}
 }
@@ -119,6 +118,19 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 	}
 
 	return nullptr;
+}
+
+void InstructionMemoryCircuit::LoadInstructions(std::string path)
+{
+	bool bRes = ::LoadInstructions(path.c_str(), &m_map);
+	if (bRes)
+	{
+		m_path.assign(path);
+	}
+	else
+	{
+		m_path.assign("NULL");
+	}
 }
 
 void InstructionMemoryCircuit::updateOutput()

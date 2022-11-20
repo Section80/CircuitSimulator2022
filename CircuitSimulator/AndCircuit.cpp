@@ -14,7 +14,7 @@ AndCircuit::AndCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void AndCircuit::render()
+void AndCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());
@@ -80,7 +80,7 @@ NandCircuit::NandCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void NandCircuit::render()
+void NandCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

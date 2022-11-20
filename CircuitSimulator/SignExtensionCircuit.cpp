@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Convert.h"
 #include "SignExtensionCircuit.h"
 
 SignExtensionCircuit::SignExtensionCircuit()
@@ -13,7 +14,7 @@ SignExtensionCircuit::SignExtensionCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void SignExtensionCircuit::render()
+void SignExtensionCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -65,8 +66,16 @@ void SignExtensionCircuit::updateOutput()
 	for (int i = 16; i < 32; i++)
 	{
 		bool bVal = m_in.ReadAt(15);
+
+		if (bVal == false)
+		{
+			int a = 0;
+		}
+
 		buf[i] = bVal;
 	}
 	
+
+
 	setOutputData(0, buf);
 }

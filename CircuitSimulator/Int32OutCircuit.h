@@ -17,7 +17,7 @@ public:
 	void SetValue(int value);
 
 private:
-	void render() override;
+	void Render() override;
 
 private:
 	void updateOutput() override;

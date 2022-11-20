@@ -50,7 +50,7 @@ void Int32OutCircuit::SetValue(int value)
 	}
 }
 
-void Int32OutCircuit::render()
+void Int32OutCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());

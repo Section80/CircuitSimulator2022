@@ -15,7 +15,7 @@ AluControlCircuit::AluControlCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void AluControlCircuit::render()
+void AluControlCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

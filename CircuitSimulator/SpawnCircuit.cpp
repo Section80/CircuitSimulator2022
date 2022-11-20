@@ -29,6 +29,9 @@
 #include "MemWbRegisterCircuit.h"
 #include "FunctCircuit.h"
 #include "ForwardCircuit.h"
+#include "LoadStoreCircuit.h"
+#include "HazardDetectionUnit.h"
+
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
 
@@ -210,6 +213,10 @@ Circuit* SpawnCircuit(ECircuitType type, float x, float y)
 		return new ClockBufferCircuit(x, y);
 	case ECircuitType::ForwardUnit:
 		return new ForwardCircuit(x, y);
+	case ECircuitType::LoadStoreUnit:
+		return new LoadStoreCircuit(x, y);
+	case ECircuitType::HarzardDetection:
+		return new HazardDetectionUnit(x, y);
 	default:
 		printf("[Info]SpawnCircuit Invalid id: %d", (int)type);
 		break;

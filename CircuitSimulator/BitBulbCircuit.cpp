@@ -13,7 +13,7 @@ BitBulbCircuit::BitBulbCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void BitBulbCircuit::render()
+void BitBulbCircuit::Render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text("Bulb");

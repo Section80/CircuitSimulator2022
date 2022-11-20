@@ -13,7 +13,7 @@ ShiftLeftCircuit::ShiftLeftCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ShiftLeftCircuit::render()
+void ShiftLeftCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

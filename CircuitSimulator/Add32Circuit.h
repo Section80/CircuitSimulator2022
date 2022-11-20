@@ -10,7 +10,7 @@ public:
 	Add32Circuit();
 	Add32Circuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

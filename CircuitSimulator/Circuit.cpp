@@ -41,7 +41,7 @@ Circuit::~Circuit()
 	);
 }
 
-void Circuit::renderWire()
+void Circuit::RenderWire()
 {
 	for (int i = 0; i < m_outputPinCount; i++)
 	{
@@ -218,7 +218,7 @@ void Circuit::RenderAll()
 {
 	for (Circuit* pCircuit : s_pCircuits)
 	{
-		pCircuit->render();
+		pCircuit->Render();
 	}
 }
 
@@ -226,7 +226,7 @@ void Circuit::RenderAllWires()
 {
 	for (Circuit* pCircuit : s_pCircuits)
 	{
-		pCircuit->renderWire();
+		pCircuit->RenderWire();
 	}
 }
 

@@ -15,7 +15,7 @@ Add32Circuit::Add32Circuit(float x, float y)
 	SetPos(x, y);
 }
 
-void Add32Circuit::render()
+void Add32Circuit::Render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());

@@ -18,7 +18,7 @@ BufferCircuit::BufferCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void BufferCircuit::render()
+void BufferCircuit::Render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text(GetName());
@@ -142,7 +142,7 @@ ClockBufferCircuit::ClockBufferCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ClockBufferCircuit::render()
+void ClockBufferCircuit::Render()
 {
 	ImNode::BeginNode(GetNodeId());
 	ImGui::Text(GetName());

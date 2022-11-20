@@ -16,7 +16,7 @@ ClockCircuit::ClockCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ClockCircuit::render()
+void ClockCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

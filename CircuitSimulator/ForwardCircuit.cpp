@@ -22,7 +22,7 @@ ForwardCircuit::ForwardCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ForwardCircuit::render()
+void ForwardCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -109,10 +109,10 @@ OutputPin* ForwardCircuit::GetOutputPin(int index)
 
 void ForwardCircuit::updateOutput()
 {
-	printf("rs: %d \n", m_rs.Value());
-	printf("rt: %d \n", m_rt.Value());
-	printf("ex/mem: %d \n", m_exMemAluReg.Value());
-	printf("mem/wb: %d \n", m_memWbAluReg.Value());
+	// printf("rs: %d \n", m_rs.Value());
+	// printf("rt: %d \n", m_rt.Value());
+	// printf("ex/mem: %d \n", m_exMemAluReg.Value());
+	// printf("mem/wb: %d \n", m_memWbAluReg.Value());
 
 	// update ForwardA
 	if (

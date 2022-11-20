@@ -16,6 +16,7 @@ DataMemoryCircuit::DataMemoryCircuit()
 	, m_rData(*this, "rData", 0, 32)
 	, m_bLastClock(false)
 	, m_loadButtonId(Identifiable::GetNewId())
+	, m_lastChanged(-1)
 {}
 
 DataMemoryCircuit::DataMemoryCircuit(float x, float y)
@@ -24,7 +25,7 @@ DataMemoryCircuit::DataMemoryCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void DataMemoryCircuit::render()
+void DataMemoryCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());
@@ -64,6 +65,23 @@ void DataMemoryCircuit::render()
 		ImGui::PopID();
 
 	ImNode::EndNode();
+}
+
+void DataMemoryCircuit::RenderInspector()
+{
+	for (const auto& pair : m_data)
+	{
+		// sprintf_s(m_strBuf, "[%0#10x] %0#10x", pair.first, pair.second);
+		if (pair.first == m_lastChanged)
+		{
+			// yellow
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "[%0#10x] %#10d", pair.first, pair.second);
+		}
+		else
+		{
+			ImGui::Text("[%0#10x] %#10d", pair.first, pair.second);
+		}
+	}
 }
 
 InputPin* DataMemoryCircuit::GetInputPin(int index)
@@ -121,7 +139,12 @@ void DataMemoryCircuit::updateOutput()
 	m_bLastClock = bClock;
 
 	uint32_t addr = ReadToUint32(m_addr, 32);
-	uint32_t bits = m_data[addr];
+	uint32_t bits = 0;
+	if (m_data.count(addr))
+	{
+		bits = m_data[addr];
+	}
+
 	bool* data_buffer = getOutputDataBuffer(0);
 	Uint32ToBoolArray(bits, data_buffer);
 
@@ -130,9 +153,9 @@ void DataMemoryCircuit::updateOutput()
 		if (m_memWrite.ReadAt(0))
 		{
 			// update edge triggred part here
-			uint32_t addr = ReadToUint32(m_addr, 32);
+			m_lastChanged = addr;
 			int val = ReadToUint32(m_wData, 32);
-			m_data[addr] = val;
+			m_data[m_lastChanged] = val;
 
 			// 입력이 변하지 않더라도 출력을 업데이트하도록
 			// 남은 딜레이를 리셋시킨다. 

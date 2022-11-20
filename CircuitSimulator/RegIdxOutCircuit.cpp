@@ -35,7 +35,7 @@ OutputPin* RegIdxOutCircuit::GetOutputPin(int index)
 	return nullptr;
 }
 
-void RegIdxOutCircuit::render()
+void RegIdxOutCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

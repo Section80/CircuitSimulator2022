@@ -10,7 +10,7 @@ public:
 	OrCircuit();
 	OrCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -35,7 +35,7 @@ public:
 	NorCircuit();
 	NorCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

@@ -10,7 +10,7 @@ public:
 	AndCircuit();
 	AndCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -33,7 +33,7 @@ public:
 	NandCircuit();
 	NandCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

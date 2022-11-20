@@ -11,7 +11,7 @@ int strToRegisterIndex(std::string& str);
 bool strToInt(std::string& str, int* pOut);
 
 
-void LoadInstructions(const char* path, std::map<int, int>* pMap)
+bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 {
 	using namespace std;
 	printf("Load Instructions \n");
@@ -206,7 +206,7 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 
 			// 여는 괄호 이후 부분은 "$rs)"에 해당한다. 
 			string rsStr;
-			rsStr.pop_back();	// 끝에 있는 ")"를 없앤다. 
+			getline(ss, rsStr, ')');	// "(" 앞까지만 읽는다. 
 			int rs = strToRegisterIndex(rsStr);
 
 			Instruction i;
@@ -257,6 +257,8 @@ void LoadInstructions(const char* path, std::map<int, int>* pMap)
 			}
 		}
 	}
+
+	return true;
 }
 
 void LoadDatas(const char* path, std::map<int, int>* pMap)

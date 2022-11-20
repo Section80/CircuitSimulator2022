@@ -40,8 +40,8 @@ public:
 	// [Pure Virtual] 
 	// GUI(버튼 등) 입력에 의해 출력이 변화한 경우, 마지막에 afterUpdateOutput()
 	// 를 수동으로 호출해야 한다. SwitchCircuit::render() 참고
-	virtual void render() = 0;
-	void renderWire();
+	virtual void Render() = 0;
+	void RenderWire();
 	virtual void RenderInspector();
 
 	// [Pure Virtual] 

@@ -16,7 +16,7 @@ FunctCircuit::FunctCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void FunctCircuit::render()
+void FunctCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

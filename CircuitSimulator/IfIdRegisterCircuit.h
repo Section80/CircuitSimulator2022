@@ -10,7 +10,7 @@ public:
 	IfIdRegisterCircuit();
 	IfIdRegisterCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
@@ -22,6 +22,9 @@ private:
 private:
 	InputPin m_pc_in;		// 32bit : [32, 63]
 	InputPin m_instruction_in; // 32bit : [0, 31]
+
+	// TODO: Add This
+	// InputPin m_write
 
 	// clock signal
 	InputPin m_clock;
@@ -38,8 +41,6 @@ private:
 	bool m_outBuf2[64];
 
 	uint32_t m_data[7];
-
-	char m_strBuffer[256];
 };
 
 #endif

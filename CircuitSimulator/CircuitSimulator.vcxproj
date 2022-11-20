@@ -48,6 +48,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="FunctCircuit.cpp" />
+    <ClCompile Include="HazardDetectionUnit.cpp" />
     <ClCompile Include="Identifiable.cpp" />
     <ClCompile Include="IdExRegisterCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -62,6 +63,10 @@
     <ClCompile Include="Int32OutCircuit.cpp" />
     <ClCompile Include="InteractionManager.cpp" />
     <ClCompile Include="DataMemoryCircuit.cpp" />
+    <ClCompile Include="LoadStoreCircuit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MemWbRegisterCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -131,6 +136,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="FunctCircuit.h" />
+    <ClInclude Include="HazardDetectionUnit.h" />
     <ClInclude Include="Identifiable.h" />
     <ClInclude Include="IdExRegisterCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -145,6 +151,10 @@
     <ClInclude Include="Int32OutCircuit.h" />
     <ClInclude Include="InteractionManager.h" />
     <ClInclude Include="DataMemoryCircuit.h" />
+    <ClInclude Include="LoadStoreCircuit.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="MemWbRegisterCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

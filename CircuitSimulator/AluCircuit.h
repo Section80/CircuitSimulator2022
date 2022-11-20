@@ -20,7 +20,7 @@ public:
 	AluCircuit();
 	AluCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
@@ -40,8 +40,6 @@ private:
 	bool m_outBuf1[33];
 	bool m_outBuf2[33];
 
-	char m_strBuf[256];
-
 	EAluOperation m_lastOp;
 	int m_lastResult = 0;
 };
@@ -52,7 +50,7 @@ public:
 	AluOperationCircuit(float x, float y);
 
 private:
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

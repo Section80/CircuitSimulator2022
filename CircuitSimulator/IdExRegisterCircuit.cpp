@@ -39,7 +39,6 @@ IdExRegisterCircuit::IdExRegisterCircuit()
 	, m_bLastClock(false)
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
-	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
 IdExRegisterCircuit::IdExRegisterCircuit(float x, float y)
@@ -48,7 +47,7 @@ IdExRegisterCircuit::IdExRegisterCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void IdExRegisterCircuit::render()
+void IdExRegisterCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -65,36 +64,21 @@ void IdExRegisterCircuit::render()
 
 void IdExRegisterCircuit::RenderInspector()
 {
-	sprintf_s(m_strBuf, "regWrite: %d", m_regWrite_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "memToReg: %d", m_memToReg_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  branch: %d", m_branch_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, " memRead: %d", m_memRead_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "memWrite: %d", m_memWrite_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, " regDest: %d", m_regDest_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "   aluOp: %d", m_aluOp_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  aluSrc: %d", m_aluSrc_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "      pc: %d", m_pc_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "   read1: %d", m_read1_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "   read2: %d", m_read2_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  signEx: %d", m_signExtended_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "      rs: %d", m_rs_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "      rt: %d", m_rt_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "      rd: %d", m_rd_out.Value());
-	ImGui::Text(m_strBuf);
+	ImGui::Text("regWrite: %d", m_regWrite_out.Value());
+	ImGui::Text("memToReg: %d", m_memToReg_out.Value());
+	ImGui::Text("  branch: %d", m_branch_out.Value());
+	ImGui::Text(" memRead: %d", m_memRead_out.Value());
+	ImGui::Text("memWrite: %d", m_memWrite_out.Value());
+	ImGui::Text(" regDest: %d", m_regDest_out.Value());
+	ImGui::Text("   aluOp: %d", m_aluOp_out.Value());
+	ImGui::Text("  aluSrc: %d", m_aluSrc_out.Value());
+	ImGui::Text("      pc: %d", m_pc_out.Value());
+	ImGui::Text("   read1: %d", m_read1_out.Value());
+	ImGui::Text("   read2: %d", m_read2_out.Value());
+	ImGui::Text("  signEx: %d", m_signExtended_out.Value());
+	ImGui::Text("      rs: %d", m_rs_out.Value());
+	ImGui::Text("      rt: %d", m_rt_out.Value());
+	ImGui::Text("      rd: %d", m_rd_out.Value());
 }
 
 InputPin* IdExRegisterCircuit::GetInputPin(int index)
@@ -216,6 +200,12 @@ void IdExRegisterCircuit::updateOutput()
 		{
 			InputPin& in = *GetInputPin(i);
 			m_data[i] = ReadToUint32(in, in.GetWireLineCount());
+
+			if (m_data[i] > 100000000)
+			{
+				int a = 0;
+				a++;
+			}
 		}
 
 		// 입력이 변하지 않더라도 출력을 업데이트하도록

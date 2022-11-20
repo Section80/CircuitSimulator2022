@@ -3,7 +3,7 @@
 #include "MuxCircuit.h"
 
 Mux21Circuit::Mux21Circuit()
-	: Circuit("2 to 1 Mux", ECircuitType::Mux21, 3, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
+	: Circuit("2 to 1 Mux", ECircuitType::Mux21, 3, 1, m_outBuf1, m_outBuf2, 32, 0.1f)
 	, m_in0(*this, "in0", 1)
 	, m_in1(*this, "in1", 1)
 	, m_select(*this, "select", 1)
@@ -19,7 +19,7 @@ Mux21Circuit::Mux21Circuit(float x, float y)
 	SetPos(x, y);
 }
 
-void Mux21Circuit::render()
+void Mux21Circuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -112,20 +112,33 @@ void Mux21Circuit::SetWireLineCount(int count)
 
 void Mux21Circuit::updateOutput()
 {
-	bool* outBuf = getOutputDataBuffer(0);
-
-	if (m_select.ReadAt(0) == false)
+	int select = m_select.Value();
+	if (select == 0)
 	{
-		Copy(m_in0, outBuf, m_wireLineCount);
+		int val = m_in0.Value();
+		if (val > 100000000)
+		{
+			int a = 0;
+			a++;
+		}
+		setOutputDataByValue(0, val);
 	}
 	else
 	{
-		Copy(m_in1, outBuf, m_wireLineCount);
+		int val = m_in1.Value();
+		if (val > 100000000)
+		{
+			// 여기서 중단점이 걸렸다. 
+			// m_in1은 SignExtension이다. 
+			int a = 0;
+			a++;
+		}
+		setOutputDataByValue(0, val);
 	}
 }
 
 Mux31Circuit::Mux31Circuit()
-	: Circuit("3 to 1 Mux", ECircuitType::Mux31, 4, 1, m_outBuf1, m_outBuf2, 32, 0.0f)
+	: Circuit("3 to 1 Mux", ECircuitType::Mux31, 4, 1, m_outBuf1, m_outBuf2, 32, 0.1f)
 	, m_in0(*this, "in0", 1)
 	, m_in1(*this, "in1", 1)
 	, m_in2(*this, "in2", 1)
@@ -143,7 +156,7 @@ Mux31Circuit::Mux31Circuit(float x, float y)
 	SetPos(x, y);
 }
 
-void Mux31Circuit::render()
+void Mux31Circuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -246,26 +259,35 @@ void Mux31Circuit::SetWireLineCount(int count)
 
 void Mux31Circuit::updateOutput()
 {
-	bool* outBuf = getOutputDataBuffer(0);
-
-	bool b0 = m_select.ReadAt(0);
-	bool b1 = m_select.ReadAt(1);
-
-	if (!b1 && !b0)	// 00
+	int select = m_select.Value();
+	if (select == 0b00)
 	{
-		Copy(m_in0, outBuf, m_wireLineCount);
+		int val = m_in0.Value();
+		if (val > 100000000)
+		{
+			int a = 0;
+			a++;
+		}
+		setOutputDataByValue(0, val);
 	}
-	else if (!b1 && b0)	// 01
+	else if(select == 0b01)
 	{
-		Copy(m_in1, outBuf, m_wireLineCount);
+		int val = m_in1.Value();
+		if (val > 100000000)
+		{
+			int a = 0;
+			a++;
+		}
+		setOutputDataByValue(0, val);
 	}
-	else if (b1 && !b0)	// 10
+	else if (select == 0b10)
 	{
-		Copy(m_in2, outBuf, m_wireLineCount);
-	}
-	else    // 3 to 1 mux의 select signal로 3이 들어온 경우
-	{
-		assert(b0 && b1);
-		Copy(m_in2, outBuf, m_wireLineCount);
+		int val = m_in2.Value();
+		if (val > 100000000)
+		{
+			int a = 0;
+			a++;
+		}
+		setOutputDataByValue(0, val);
 	}
 }

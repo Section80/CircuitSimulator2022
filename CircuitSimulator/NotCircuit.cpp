@@ -15,7 +15,7 @@ NotCircuit::NotCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void NotCircuit::render()
+void NotCircuit::Render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text(GetName());

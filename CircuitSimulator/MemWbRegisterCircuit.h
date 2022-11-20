@@ -10,7 +10,7 @@ public:
 	MemWbRegisterCircuit();
 	MemWbRegisterCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
@@ -44,7 +44,6 @@ private:
 	bool m_outBuf2[71];
 
 	uint32_t m_data[5];
-	char m_strBuf[256];
 };
 
 #endif

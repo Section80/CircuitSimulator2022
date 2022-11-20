@@ -17,7 +17,6 @@ MemWbRegisterCircuit::MemWbRegisterCircuit()
 	, m_writeReg_out(*this, "writeReg", 0, 5)
 {
 	memset(m_data, 0, sizeof(uint32_t) * 2);
-	memset(m_strBuf, 0, sizeof(char) * 256);
 }
 
 MemWbRegisterCircuit::MemWbRegisterCircuit(float x, float y)
@@ -26,7 +25,7 @@ MemWbRegisterCircuit::MemWbRegisterCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void MemWbRegisterCircuit::render()
+void MemWbRegisterCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -42,16 +41,11 @@ void MemWbRegisterCircuit::render()
 
 void MemWbRegisterCircuit::RenderInspector()
 {
-	sprintf_s(m_strBuf, "  regWrite: %d", m_regWrite_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  memToReg: %d", m_memToReg_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  readData: %d", m_readData_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, " aluResult: %d", m_aluResult_out.Value());
-	ImGui::Text(m_strBuf);
-	sprintf_s(m_strBuf, "  writeReg: %d", m_writeReg_out.Value());
-	ImGui::Text(m_strBuf);
+	ImGui::Text("  regWrite: %d", m_regWrite_out.Value());
+	ImGui::Text("  memToReg: %d", m_memToReg_out.Value());
+	ImGui::Text("  readData: %d", m_readData_out.Value());
+	ImGui::Text(" aluResult: %d", m_aluResult_out.Value());
+	ImGui::Text("  writeReg: %d", m_writeReg_out.Value());
 }
 
 InputPin* MemWbRegisterCircuit::GetInputPin(int index)

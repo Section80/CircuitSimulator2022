@@ -10,7 +10,7 @@ public:
 	Mux21Circuit();
 	Mux21Circuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -43,7 +43,7 @@ public:
 	Mux31Circuit();
 	Mux31Circuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

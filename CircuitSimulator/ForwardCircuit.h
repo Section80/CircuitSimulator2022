@@ -10,7 +10,7 @@ public:
 	ForwardCircuit();
 	ForwardCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
 	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;

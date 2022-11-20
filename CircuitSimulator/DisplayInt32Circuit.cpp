@@ -35,7 +35,7 @@ OutputPin* DisplayInt32Circuit::GetOutputPin(int index)
 	return nullptr;
 }
 
-void DisplayInt32Circuit::render()
+void DisplayInt32Circuit::Render()
 {
 	ImNode::BeginNode(GetNodeId());
 		ImGui::Text(GetName());

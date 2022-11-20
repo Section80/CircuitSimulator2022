@@ -16,7 +16,7 @@ SwitchCircuit::SwitchCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void SwitchCircuit::render()
+void SwitchCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

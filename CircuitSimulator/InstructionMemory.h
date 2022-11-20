@@ -12,11 +12,14 @@ public:
 	InstructionMemoryCircuit(float x, float y);
 	virtual ~InstructionMemoryCircuit();
 	
-	void render() override;
+	void Render() override;
 	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
+
+	void LoadInstructions(std::string path);
+	inline std::string& GetPath() { return m_path; }
 
 private:
 	void updateOutput() override;
@@ -31,9 +34,10 @@ private:
 	std::map<int, int> m_map;
 
 	int m_val;
-	char m_strBuf[256];
 	int m_currentOutAddr;
 	int m_loadButtonId;
+
+	std::string m_path;
 };
 
 #endif

@@ -14,7 +14,7 @@ public:
 	OutputPin* GetOutputPin(int index) override;
 
 private:
-	void render() override;
+	void Render() override;
 
 private:
 	InputPin m_inputPin;

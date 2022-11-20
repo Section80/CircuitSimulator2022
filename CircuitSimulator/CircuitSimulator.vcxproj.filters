@@ -194,6 +194,12 @@
     <ClCompile Include="ForwardCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
     </ClCompile>
+    <ClCompile Include="LoadStoreCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
+    </ClCompile>
+    <ClCompile Include="HazardDetectionUnit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -323,6 +329,12 @@
       <Filter>소스 파일\Helper</Filter>
     </ClInclude>
     <ClInclude Include="ForwardCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadStoreCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
+    </ClInclude>
+    <ClInclude Include="HazardDetectionUnit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
     </ClInclude>
   </ItemGroup>

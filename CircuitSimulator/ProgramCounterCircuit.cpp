@@ -18,7 +18,7 @@ ProgramCounterCircuit::ProgramCounterCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ProgramCounterCircuit::render()
+void ProgramCounterCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 		ImGui::Text(GetName());

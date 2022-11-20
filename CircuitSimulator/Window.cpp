@@ -57,10 +57,11 @@ namespace glfw_imgui
         }
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-
+         
         // Init ImGui
         ImGuiContext* pGuiContext = ImGui::CreateContext();
         ImGui::SetCurrentContext(pGuiContext);
+        // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
         const char* glsl_version = "#version 120";
         ImGui_ImplGlfw_InitForOpenGL(pWindow, true);

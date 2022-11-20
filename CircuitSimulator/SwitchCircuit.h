@@ -17,7 +17,7 @@ public:
 	inline bool GetPressed() { return m_val; }
 
 private:
-	void render() override;
+	void Render() override;
 
 private:
 	void updateOutput() override;

@@ -11,9 +11,7 @@ AluCircuit::AluCircuit()
 	, m_zero(*this, "zero", 32, 1)
 	, m_lastOp(EAluOperation::And)
 	, m_lastResult(0)
-{
-	memset(m_strBuf, 0, sizeof(char) * 256);
-}
+{}
 
 AluCircuit::AluCircuit(float x, float y)
 	: AluCircuit()
@@ -21,7 +19,7 @@ AluCircuit::AluCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void AluCircuit::render()
+void AluCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());
@@ -68,8 +66,7 @@ void AluCircuit::RenderInspector()
 		break;
 	}
 
-	sprintf_s(m_strBuf, "result: %d", m_lastResult);
-	ImGui::Text(m_strBuf);
+	ImGui::Text("result: %d", m_lastResult);
 }
 
 InputPin* AluCircuit::GetInputPin(int index)
@@ -134,6 +131,12 @@ void AluCircuit::updateOutput()
 		break;
 	}
 
+	if (m_lastResult > 100000000)
+	{
+		int a = 0;
+		a++;
+	}
+
 	bool* outBuf = getOutputDataBuffer(0);
 	Uint32ToBoolArray(m_lastResult, outBuf);
 
@@ -162,7 +165,7 @@ AluOperationCircuit::AluOperationCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void AluOperationCircuit::render()
+void AluOperationCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text(GetName());

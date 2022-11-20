@@ -21,7 +21,7 @@ ControlUnitCircuit::ControlUnitCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void ControlUnitCircuit::render()
+void ControlUnitCircuit::Render()
 {
 	ImNode::BeginNode(GetNodeId());
 	ImGui::Text(GetName());

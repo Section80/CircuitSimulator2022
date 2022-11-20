@@ -11,7 +11,8 @@ public:
 	DataMemoryCircuit();
 	DataMemoryCircuit(float x, float y);
 
-	void render() override;
+	void Render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
@@ -39,6 +40,7 @@ private:
 	std::map<int, int> m_data;
 
 	int m_loadButtonId;
+	int m_lastChanged;
 };
 
 #endif

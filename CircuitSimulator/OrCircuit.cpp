@@ -14,7 +14,7 @@ OrCircuit::OrCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void OrCircuit::render()
+void OrCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text("Or");
@@ -80,7 +80,7 @@ NorCircuit::NorCircuit(float x, float y)
 	SetPos(x, y);
 }
 
-void NorCircuit::render()
+void NorCircuit::Render()
 {
 	ImNode::BeginNode(GetId());
 	ImGui::Text("Nor");

@@ -20,7 +20,7 @@ bool onEnd();
 ImNode::EditorContext* pNodeContext;
 std::vector<Circuit*> pCircuits;
 PlayButton playButton;
-float skip_sec = 2.9f;
+float skip_sec = 6.0f;	// Clock 주기
 int spawnId = 0;
 
 int main(int argc, char* argv[])
@@ -60,6 +60,9 @@ bool onStart()
 
 	LoadCircuitsFromFile(loadPath.c_str(), &pCircuits);
 
+	// rising edge 바로 직전
+	Circuit::UpdateAll(2.9f);
+
 	return true;
 }
 
@@ -84,7 +87,10 @@ void onUpdate(double dt)
 	ImGui::PopItemWidth();
 	ImGui::SameLine();
 
-	if (ImGui::Button("Skip"))
+	if (
+		ImGui::Button("Skip") || 
+		ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_RightArrow))
+		)
 	{
 		playButton.Pause();
 		Circuit::UpdateAll(skip_sec);
