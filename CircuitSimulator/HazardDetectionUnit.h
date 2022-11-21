@@ -4,6 +4,8 @@
 #include "Circuit.h"
 #include "Pin.h"
 
+// Branch Hazard ³»¿ë: 321p, 359p
+
 class HazardDetectionUnit final : public Circuit
 {
 public:
@@ -20,19 +22,23 @@ private:
 	void updateOutput() override;
 
 private:
-	InputPin m_ifIdRs;
-	InputPin m_ifIdRt;
-	InputPin m_idExMemRead;
-	InputPin m_idExWriteReg;
+	InputPin m_IFID_rs;
+	InputPin m_IFID_rt;
+	InputPin m_IDEX_memRead;
+	InputPin m_IDEX_writeReg;
+	InputPin m_EXMEM_memWrite;
+	InputPin m_EXMEM_writeReg;
 
 	OutputPin m_pcWrite;
 	OutputPin m_ifIdWrite;
-	OutputPin m_select;
+	OutputPin m_selectCtrl;
+	OutputPin m_selectRead1;
 
-	bool m_outBuf1[3];
-	bool m_outBuf2[3];
+	bool m_outBuf1[4];
+	bool m_outBuf2[4];
 
 	bool m_bStall;
+	bool m_bSaveUsed2;
 };
 
 #endif

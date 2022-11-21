@@ -81,8 +81,10 @@ protected:
 	// 해당하는 outputPin에 출력을 쓴다. 
 	// pData의 길이는 해당 OutputPin의 WireLineCount 이상이여야 한다. 
 	void setOutputData(int outputPinindex, const bool* pData);
-	
 	void setOutputDataByValue(int outputPinindex, uint32_t value);
+
+	// 이거 쓰는게 제일 편할듯
+	void setOutputDataByValue(OutputPin& outputPin, uint32_t value);
 
 	// setOutputBuffer()는 pData를 OutputBufferData에 복사한다. 
 	// 즉, pData를 미리 할당해두어야 한다. 
@@ -91,11 +93,9 @@ protected:
 	// [WARNING]outputPin의 WireLineCount보다 많이 쓰면 안된다!!
 	bool* getOutputDataBuffer(int outputPinIndex);
 
-	// 왜 virtual일까? EdgeTriggeredCircuit 참고
 	virtual void onInputChanged();
 
 	// 각 outputPin의 출력이 변한 경우, 연결된 circuit의 onInputChagned()를 호출한다. 
-	// 왜 virtual일까? ClockCircuit::afterUpdateOutput() 참고
 	virtual void afterUpdateOutput();
 
 	// Edge-Triggered 회로 구현에 사용한다. 

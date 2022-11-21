@@ -89,6 +89,7 @@ class OutputPin final : public Pin
 {
 public:
 	// https ://stackoverflow.com/questions/28307374/friend-class-not-working
+	friend class ::Circuit;
 	friend class ::BufferCircuit;	// for setWireLineCount();
 	friend class ::Mux21Circuit;
 	friend class ::Mux31Circuit;

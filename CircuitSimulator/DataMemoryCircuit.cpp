@@ -148,7 +148,7 @@ void DataMemoryCircuit::updateOutput()
 	bool* data_buffer = getOutputDataBuffer(0);
 	Uint32ToBoolArray(bits, data_buffer);
 
-	if (bRisingEdge)
+	if (bFallingEdge)
 	{
 		if (m_memWrite.ReadAt(0))
 		{

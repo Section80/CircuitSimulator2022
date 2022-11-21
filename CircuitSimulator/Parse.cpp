@@ -16,7 +16,8 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 	using namespace std;
 	printf("Load Instructions \n");
 
-	map<int, int>& map = *pMap;
+	std::map<int, int>& map = *pMap;
+	map.clear();
 	
 	// 코드 참고
 	// https://stackoverflow.com/questions/7868936/read-file-line-by-line-using-ifstream-in-c
@@ -34,6 +35,7 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 	int lastKey = 0x00400024 - 4;
 	unordered_map<string, int> labelMap;	// key: label string, value: instruction address
 
+	// 일단 처음부터 끝까지 읽으면서 라벨을 초기화한다. 
 	while (getline(f, line))
 	{
 		stringstream ss(line);
@@ -57,6 +59,75 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 				labelMap[word] = lastKey + 4;
 				break;
 			}
+
+			// to lowercase: https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
+			// for (auto& c : word)
+			// {
+			// 	c = tolower(c);
+			// }
+
+			if (word.compare("and") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("or") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("add") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("addi") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("sub") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("slt") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("lw") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("sw") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("beq") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("j") == 0)
+			{
+				lastKey += 4;
+			}
+		}
+	}
+
+	// 라벨을 초기화했으니 명령어를 채운다. 
+	f.clear();
+	f.seekg(0);
+	lastKey = 0x00400024 - 4;
+	while (getline(f, line))
+	{
+		stringstream ss(line);
+
+		while (!ss.eof())
+		{
+			string word;
+			ss >> word;
+
+			if (word.size() == 0)
+			{
+				continue;
+			}
+
+			if (word[0] == '#') break;
 
 			// to lowercase: https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
 			// for (auto& c : word)
@@ -182,7 +253,7 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 
 				// 여는 괄호 이후 부분은 "$rs)"에 해당한다. 
 				string rsStr;
-				rsStr.pop_back();	// 끝에 있는 ")"를 없앤다. 
+				getline(ss, rsStr, ')');
 				int rs = strToRegisterIndex(rsStr);
 				
 				Instruction i;
@@ -242,9 +313,13 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 			else if (word.compare("j") == 0)
 			{
 				string op;
+				ss >> op;
 				int addr = 0;
 				if (labelMap.count(op) != 0) {
-					addr = labelMap[op];
+					int pc = lastKey + 4;
+					addr = labelMap[op] / 4;
+					addr |= 0b00001111111111111111111111111111;
+					addr = addr >> 2;
 				}
 				else
 				{

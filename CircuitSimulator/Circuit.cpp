@@ -268,6 +268,17 @@ void Circuit::setOutputDataByValue(int outputPinindex, uint32_t value)
 	Uint32ToBoolArray(value, outBuf, op->GetWireLineCount());
 }
 
+void Circuit::setOutputDataByValue(OutputPin& outputPin, uint32_t value)
+{
+	// 내 outputPin이 아니면 수정할 수 없다. 
+	assert(&outputPin.GetOwner() == this);
+
+	bool* outBuf = m_circuitOutput.GetCurrentBuffer();
+	int offset= outputPin.GetOutputOffset();
+	int count = outputPin.GetWireLineCount();
+	Uint32ToBoolArray(value, &outBuf[offset], count);
+}
+
 bool* Circuit::getOutputDataBuffer(int outputPinIndex)
 {
 	bool* buffer = m_circuitOutput.GetCurrentBuffer();

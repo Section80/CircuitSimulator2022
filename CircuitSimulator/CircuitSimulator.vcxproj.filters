@@ -200,6 +200,9 @@
     <ClCompile Include="HazardDetectionUnit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
     </ClCompile>
+    <ClCompile Include="JumpAddressCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -336,6 +339,9 @@
     </ClInclude>
     <ClInclude Include="HazardDetectionUnit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpAddressCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

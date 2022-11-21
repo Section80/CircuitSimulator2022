@@ -3,16 +3,18 @@
 #include "IfIdRegisterCircuit.h"
 
 IfIdRegisterCircuit::IfIdRegisterCircuit()
-	: Circuit("IF/ID Register", ECircuitType::IfId, 3, 6, m_outBuf1, m_outBuf2, 64, 0.5f)
+	: Circuit("IF/ID Register", ECircuitType::IfId, 4, 7, m_outBuf1, m_outBuf2, 95, 0.5f)
 	, m_pc_in(*this, "pc", 32)
 	, m_instruction_in(*this, "instruction", 32)
+	, m_write(*this, "write", 1)
 	, m_clock(*this, "clock", 1)
-	, m_pc_out(*this, "pc", 32, 32)
-	, m_op_out(*this, "op", 26, 6)
-	, m_rs_out(*this, "rs", 21, 5)
-	, m_rt_out(*this, "rt", 16, 5)
-	, m_rd_out(*this, "rd", 11, 5)
-	, m_low16_out(*this, "low16", 0, 16)
+	, m_pc_out(*this, "pc", 63, 32)
+	, m_op_out(*this, "op", 57, 6)
+	, m_rs_out(*this, "rs", 52, 5)
+	, m_rt_out(*this, "rt", 47, 5)
+	, m_rd_out(*this, "rd", 42, 5)
+	, m_low16_out(*this, "low16", 26, 16)
+	, m_addr_out(*this, "addr", 0, 25)
 	, m_bLastClock(false)
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
@@ -62,6 +64,7 @@ void IfIdRegisterCircuit::RenderInspector()
 	ImGui::Text("rt: %d", m_rt_out.Value());
 	ImGui::Text("rd: %d", m_rd_out.Value());
 	ImGui::Text("low16: %d", m_low16_out.Value());
+	ImGui::Text("addr: %d", m_addr_out.Value());
 }
 
 InputPin* IfIdRegisterCircuit::GetInputPin(int index)
@@ -73,6 +76,8 @@ InputPin* IfIdRegisterCircuit::GetInputPin(int index)
 	case 1:
 		return &m_instruction_in;
 	case 2:
+		return &m_write;
+	case 3:
 		return &m_clock;
 	default:
 		assert(false);
@@ -97,6 +102,8 @@ OutputPin* IfIdRegisterCircuit::GetOutputPin(int index)
 		return &m_rd_out;
 	case 5:
 		return &m_low16_out;
+	case 6:
+		return &m_addr_out;
 	default:
 		assert(false);
 	}
@@ -135,26 +142,26 @@ void IfIdRegisterCircuit::updateOutput()
 	if (bRisingEdge)
 	{
 		// update edge triggred part here
-		InputPin* in = GetInputPin(0);
+		if (m_write.Value() == 1)
+		{
+			// pc_out;
+			m_data[0] = m_pc_out.Value();
+			// op_out;
+			m_data[1] = m_op_out.Value();
+			// rs_out;
+			m_data[2] = m_rs_out.Value();
+			// rt_out;
+			m_data[3] = m_rt_out.Value();
+			// rd_out;
+			m_data[4] = m_rd_out.Value();
+			// low16_out
+			m_data[5] = m_low16_out.Value();
+			// addr_out
+			m_data[6] = m_addr_out.Value();
 
-		// m_pcOut;
-		m_data[0] = ReadToUint32(*in, in->GetWireLineCount());
-
-		in = GetInputPin(1);
-
-		// m_op_out;
-		m_data[1] = ReadToUint32(*in, 26, 6);
-		// m_rs_out;
-		m_data[2] = ReadToUint32(*in, 21, 5);
-		// m_rt_out;
-		m_data[3] = ReadToUint32(*in, 16, 5);
-		// m_rd_out;
-		m_data[4] = ReadToUint32(*in, 11, 5);
-		// m_low16_out
-		m_data[5] = ReadToUint32(*in, 0, 16);
-
-		// 입력이 변하지 않더라도 출력을 업데이트하도록
-		// 남은 딜레이를 리셋시킨다. 
-		resetDelay();
+			// 입력이 변하지 않더라도 출력을 업데이트하도록
+			// 남은 딜레이를 리셋시킨다. 
+			resetDelay();
+		}
 	}
 }

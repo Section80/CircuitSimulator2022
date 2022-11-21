@@ -25,7 +25,6 @@ private:
 	InputPin m_regWrite_in;		// whether to write register file or not
 	InputPin m_memToReg_in;		// from alu result(0) or data memory(1)
 	// MEM
-	InputPin m_branch_in;			// pc + 4(0) or bta(1)
 	InputPin m_memRead_in;
 	InputPin m_memWrite_in;
 	// EX
@@ -33,7 +32,6 @@ private:
 	InputPin m_aluOp_in;
 	InputPin m_aluSrc_in;			// use read data2(0) or sign-extended(1)
 	/* ================ */
-	InputPin m_pc_in;
 	InputPin m_read1_in;
 	InputPin m_read2_in;
 	InputPin m_signExtended_in;
@@ -46,18 +44,16 @@ private:
 	bool m_bLastClock;
 	
 	// WB
-	OutputPin m_regWrite_out;		// 1bit : [151, 151]
-	OutputPin m_memToReg_out;		// 1bit : [150, 150]
+	OutputPin m_regWrite_out;		// 1bit : [118, 118]
+	OutputPin m_memToReg_out;		// 1bit : [117, 117]
 	// MEM
-	OutputPin m_branch_out;			// 1bit : [149, 149]
-	OutputPin m_memRead_out;		// 1bit : [148, 148]
-	OutputPin m_memWrite_out;		// 1bit : [147, 147]
+	OutputPin m_memRead_out;		// 1bit : [116, 116]
+	OutputPin m_memWrite_out;		// 1bit : [115, 115]
 	// EX
-	OutputPin m_regDest_out;		// 1bit : [146, 146]
-	OutputPin m_aluOp_out;			// 2bit : [144, 145]
-	OutputPin m_aluSrc_out;			// 1bit : [143, 143]
+	OutputPin m_regDest_out;		// 1bit : [114, 114]
+	OutputPin m_aluOp_out;			// 2bit : [112, 113]
+	OutputPin m_aluSrc_out;			// 1bit : [111, 111]
 	/* ================ */
-	OutputPin m_pc_out;				// 32bit : [111, 142]
 	OutputPin m_read1_out;			// 32bit : [79, 110]
 	OutputPin m_read2_out;			// 32bit : [47, 78]
 	OutputPin m_signExtended_out;	// 32bit : [15, 46]
@@ -65,8 +61,8 @@ private:
 	OutputPin m_rt_out;				// 5bit : [5, 9]
 	OutputPin m_rd_out;				// 5bit : [0, 4]
 
-	bool m_outBuf1[152];
-	bool m_outBuf2[152];
+	bool m_outBuf1[119];
+	bool m_outBuf2[119];
 
 	/* =============== CAUTION ===============
 	* 회로를 업데이트하면서 outoputPin 수를 하나 늘렸다. 
