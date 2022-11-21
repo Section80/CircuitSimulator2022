@@ -144,20 +144,21 @@ void IfIdRegisterCircuit::updateOutput()
 		// update edge triggred part here
 		if (m_write.Value() == 1)
 		{
-			// pc_out;
-			m_data[0] = m_pc_out.Value();
-			// op_out;
-			m_data[1] = m_op_out.Value();
-			// rs_out;
-			m_data[2] = m_rs_out.Value();
-			// rt_out;
-			m_data[3] = m_rt_out.Value();
-			// rd_out;
-			m_data[4] = m_rd_out.Value();
-			// low16_out
-			m_data[5] = m_low16_out.Value();
-			// addr_out
-			m_data[6] = m_addr_out.Value();
+			// m_pcOut;
+			m_data[0] = ReadToUint32(m_pc_in, m_pc_in.GetWireLineCount());
+
+			// m_op_out;
+			m_data[1] = ReadToUint32(m_instruction_in, 26, m_op_out.GetWireLineCount());
+			// m_rs_out;
+			m_data[2] = ReadToUint32(m_instruction_in, 21, m_rs_out.GetWireLineCount());
+			// m_rt_out;
+			m_data[3] = ReadToUint32(m_instruction_in, 16, m_rt_out.GetWireLineCount());
+			// m_rd_out;
+			m_data[4] = ReadToUint32(m_instruction_in, 11, m_rd_out.GetWireLineCount());
+			// m_low16_out
+			m_data[5] = ReadToUint32(m_instruction_in, 0, m_low16_out.GetWireLineCount());
+			// m_addr_out
+			m_data[5] = ReadToUint32(m_instruction_in, 0, m_addr_out.GetWireLineCount());
 
 			// 입력이 변하지 않더라도 출력을 업데이트하도록
 			// 남은 딜레이를 리셋시킨다. 

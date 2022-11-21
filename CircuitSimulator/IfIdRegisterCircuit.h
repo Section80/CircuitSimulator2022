@@ -20,8 +20,8 @@ private:
 	void updateOutput() override;
 
 private:
-	InputPin m_pc_in;		// 32bit : [32, 63]
-	InputPin m_instruction_in; // 32bit : [0, 31]
+	InputPin m_pc_in;		// 32bit
+	InputPin m_instruction_in; // 32bit
 
 	// TODO: Add This
 	InputPin m_write;
