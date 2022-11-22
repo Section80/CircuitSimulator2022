@@ -38,6 +38,8 @@ enum class ECircuitType: int
 	ForwardUnit = 32, 
 	LoadStoreUnit = 33, 
 	HarzardDetection = 34, 
+	JumpAddress = 35, 
+	Compare32 = 36, 
 };
 
 #endif

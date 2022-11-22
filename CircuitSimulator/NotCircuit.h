@@ -4,6 +4,7 @@
 #include "Circuit.h"
 #include "Pin.h"
 
+// 1bit not
 class NotCircuit final : public Circuit
 {
 public:

@@ -83,7 +83,7 @@ protected:
 	void setOutputData(int outputPinindex, const bool* pData);
 	void setOutputDataByValue(int outputPinindex, uint32_t value);
 
-	// 이거 쓰는게 제일 편할듯
+	// 이거 쓰는게 제일 편할 듯
 	void setOutputDataByValue(OutputPin& outputPin, uint32_t value);
 
 	// setOutputBuffer()는 pData를 OutputBufferData에 복사한다. 

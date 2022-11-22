@@ -4,7 +4,7 @@
 #include <map>
 
 
-bool LoadInstructions(const char* path, std::map<int, int>* pMap);
-void LoadDatas(const char* path, std::map<int, int>* pMap);
+bool LoadInstruction(const char* path, std::map<int, int>* pMap);
+void LoadData(const char* path, std::map<int, int>* pMap);
 
 #endif

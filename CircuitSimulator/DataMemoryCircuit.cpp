@@ -51,7 +51,7 @@ void DataMemoryCircuit::Render()
 			if (result == NFD_OKAY) {
 				PlayButton::Instance->Pause();
 				puts(outPath);
-				LoadDatas(outPath, &m_data);
+				LoadData(outPath, &m_data);
 
 				free(outPath);
 			}

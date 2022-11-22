@@ -62,7 +62,7 @@ void InstructionMemoryCircuit::Render()
 		if (result == NFD_OKAY) {
 			PlayButton::Instance->Pause();
 			puts(outPath);
-			LoadInstructions(outPath);
+			LoadInstruction(outPath);
 			
 			free(outPath);
 		}
@@ -120,9 +120,9 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 	return nullptr;
 }
 
-void InstructionMemoryCircuit::LoadInstructions(std::string path)
+void InstructionMemoryCircuit::LoadInstruction(std::string path)
 {
-	bool bRes = ::LoadInstructions(path.c_str(), &m_map);
+	bool bRes = ::LoadInstruction(path.c_str(), &m_map);
 	if (bRes)
 	{
 		m_path.assign(path);

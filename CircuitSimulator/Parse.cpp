@@ -11,10 +11,9 @@ int strToRegisterIndex(std::string& str);
 bool strToInt(std::string& str, int* pOut);
 
 
-bool LoadInstructions(const char* path, std::map<int, int>* pMap)
+bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 {
 	using namespace std;
-	printf("Load Instructions \n");
 
 	std::map<int, int>& map = *pMap;
 	map.clear();
@@ -28,7 +27,11 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 
 	
 	ifstream f(path, ifstream::in);
-	assert(f.is_open());
+	if (!f.is_open())
+	{
+		printf("[info]LoadInstruction() ifstream is not opened. \n -  %s", path);
+		return false;
+	}
 
 	string line;
 
@@ -336,9 +339,9 @@ bool LoadInstructions(const char* path, std::map<int, int>* pMap)
 	return true;
 }
 
-void LoadDatas(const char* path, std::map<int, int>* pMap)
+void LoadData(const char* path, std::map<int, int>* pMap)
 {
-	printf("Load Datas \n");
+	printf("Load Data \n");
 }
 
 int strToRegisterIndex(std::string& str)

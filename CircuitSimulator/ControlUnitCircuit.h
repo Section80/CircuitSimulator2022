@@ -22,7 +22,7 @@ private:
 	void updateOutput() override;
 
 private:
-	InputPin m_op;				// 5-bit op field from instruction
+	InputPin m_instruction;
 
 	// WB
 	OutputPin m_regWrite;	// 1-bit : [9, 9]

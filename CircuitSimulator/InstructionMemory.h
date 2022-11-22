@@ -18,7 +18,7 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
-	void LoadInstructions(std::string path);
+	void LoadInstruction(std::string path);
 	inline std::string& GetPath() { return m_path; }
 
 private:

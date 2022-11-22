@@ -7,7 +7,7 @@ ControlUnitCircuit::ControlUnitCircuit()
 		"Control Unit", ECircuitType::ControlUnit, 
 		1, 9, m_outBuf1, m_outBuf2, 
 		10, 0.1f)
-	, m_op(*this, "op", 6)
+	, m_instruction(*this, "instr", 32)
 	, m_regWrite(*this, "regWrite", 9, 1)
 	, m_memToReg(*this, "memToReg", 8, 1)
 	, m_branch(*this, "branch", 7, 1)
@@ -43,36 +43,55 @@ void ControlUnitCircuit::Render()
 	m_aluOp.Render();
 	m_aluSrc.Render();
 	ImGui::Text("==== IN ==== ");
-	m_op.Render();
+	m_instruction.Render();
 
 	ImNode::EndNode();
 }
 
 void ControlUnitCircuit::RenderInspector()
 {
-	uint32_t op = ReadToUint32(m_op, 6);
-	switch (op)
+	if (m_instruction.GetFrom() != nullptr)
 	{
-	case 0b000000:		// R-Format: 0
-		ImGui::Text("      op: R-Format");
-		break;
-	case 0b100011:		// lw: 35
-		ImGui::Text("      op: lw");
-		break;
-	case 0b101011:		// sw: 43
-		ImGui::Text("      op: sw");
-		break;
-	case 0b000100:		// beq: 4
-		ImGui::Text("      op: beq");
-		break;
-	case 0b000010:		// j: 2
-		ImGui::Text("      op: jump");
-		break;
-	case 0b001000:		// addi: 8
-		ImGui::Text("      op: addi");
-		break;
-	default:
-		assert(false);
+		bool isNop = (0 == ReadToUint32(
+			m_instruction, 
+			m_instruction.GetWireLineCount()
+		));
+
+		if (isNop)
+		{
+			ImGui::Text("      op: NOP");
+		}
+		else
+		{
+			uint32_t op = ReadToUint32(m_instruction, 26, 6);
+			switch (op)
+			{
+			case 0b000000:		// R-Format: 0
+				ImGui::Text("      op: R-Format");
+				break;
+			case 0b100011:		// lw: 35
+				ImGui::Text("      op: lw");
+				break;
+			case 0b101011:		// sw: 43
+				ImGui::Text("      op: sw");
+				break;
+			case 0b000100:		// beq: 4
+				ImGui::Text("      op: beq");
+				break;
+			case 0b000010:		// j: 2
+				ImGui::Text("      op: jump");
+				break;
+			case 0b001000:		// addi: 8
+				ImGui::Text("      op: addi");
+				break;
+			default:
+				assert(false);
+			}
+		}
+	}
+	else
+	{
+		ImGui::Text("      op: not connected");
 	}
 
 	ImGui::Text("regWrite: %#2d", m_regWrite.Value());
@@ -85,6 +104,7 @@ void ControlUnitCircuit::RenderInspector()
 
 
 	ImGui::Text(" regDest: %#2d", m_regDest.Value());
+	
 	int val = m_aluOp.Value();
 	switch (val)
 	{
@@ -112,7 +132,7 @@ InputPin* ControlUnitCircuit::GetInputPin(int index)
 	switch (index)
 	{
 	case 0:
-		return &m_op;
+		return &m_instruction;
 	default:
 		assert(false);
 	}
@@ -153,89 +173,112 @@ void ControlUnitCircuit::updateOutput()
 {
 	bool* outBuf = getOutputDataBuffer(6);
 
-	uint32_t op = ReadToUint32(m_op, 6);
-	switch (op)
+	bool isNop = (0 == ReadToUint32(
+		m_instruction,
+		m_instruction.GetWireLineCount()
+	));
+
+	if (isNop)
 	{
-	case 0b000000:		// R-Format: 0
-		setOutputDataByValue(m_regWrite,	1);
-		setOutputDataByValue(m_memToReg,	0);
+		// all zero
+		setOutputDataByValue(m_regWrite, 0);
+		setOutputDataByValue(m_memToReg, 0);
 
-		setOutputDataByValue(m_branch,		0);
-		setOutputDataByValue(m_jump,		0);
-		setOutputDataByValue(m_memRead,		0);
-		setOutputDataByValue(m_memWrite,	0);
+		setOutputDataByValue(m_branch, 0);
+		setOutputDataByValue(m_jump, 0);
+		setOutputDataByValue(m_memRead, 0);
+		setOutputDataByValue(m_memWrite, 0);
 
-		setOutputDataByValue(m_regDest,		1);
-		setOutputDataByValue(m_aluOp,		0b10);
-		setOutputDataByValue(m_aluSrc,		0);
-		break;
-	case 0b100011:		// lw: 35
-		setOutputDataByValue(m_regWrite,	1);
-		setOutputDataByValue(m_memToReg,	1);
+		setOutputDataByValue(m_regDest, 0);
+		setOutputDataByValue(m_aluOp, 0b00);
+		setOutputDataByValue(m_aluSrc, 0);
+	}
+	else
+	{
+		uint32_t op = ReadToUint32(m_instruction, 26, 6);
+		switch (op)
+		{
+		case 0b000000:		// R-Format: 0
+			setOutputDataByValue(m_regWrite, 1);
+			setOutputDataByValue(m_memToReg, 0);
 
-		setOutputDataByValue(m_branch,		0);
-		setOutputDataByValue(m_jump,		0);
-		setOutputDataByValue(m_memRead,		1);
-		setOutputDataByValue(m_memWrite,	0);
+			setOutputDataByValue(m_branch, 0);
+			setOutputDataByValue(m_jump, 0);
+			setOutputDataByValue(m_memRead, 0);
+			setOutputDataByValue(m_memWrite, 0);
 
-		setOutputDataByValue(m_regDest,		0);
-		setOutputDataByValue(m_aluOp,		0b00);
-		setOutputDataByValue(m_aluSrc,		1);
-		break;
-	case 0b101011:		// sw: 43
-		setOutputDataByValue(m_regWrite,	0);
-		setOutputDataByValue(m_memToReg,	0);
+			setOutputDataByValue(m_regDest, 1);
+			setOutputDataByValue(m_aluOp, 0b10);
+			setOutputDataByValue(m_aluSrc, 0);
+			break;
+		case 0b100011:		// lw: 35
+			setOutputDataByValue(m_regWrite, 1);
+			setOutputDataByValue(m_memToReg, 1);
 
-		setOutputDataByValue(m_branch,		0);
-		setOutputDataByValue(m_jump,		0);
-		setOutputDataByValue(m_memRead,		0);
-		setOutputDataByValue(m_memWrite,	1);
+			setOutputDataByValue(m_branch, 0);
+			setOutputDataByValue(m_jump, 0);
+			setOutputDataByValue(m_memRead, 1);
+			setOutputDataByValue(m_memWrite, 0);
 
-		setOutputDataByValue(m_regDest,		0);
-		setOutputDataByValue(m_aluOp,		0b00);
-		setOutputDataByValue(m_aluSrc,		1);
-		break;
-	case 0b000100:		// beq: 4
-		setOutputDataByValue(m_regWrite,	0);
-		setOutputDataByValue(m_memToReg,	0);
-		
-		setOutputDataByValue(m_branch,		1);
-		setOutputDataByValue(m_jump,		0);
-		setOutputDataByValue(m_memRead,		0);
-		setOutputDataByValue(m_memWrite,	0);
-		
-		setOutputDataByValue(m_regDest,		0);
-		setOutputDataByValue(m_aluOp,		0b01);
-		setOutputDataByValue(m_aluSrc,		0);
-		break;
-	case 0b000010:		// j: 2
-		setOutputDataByValue(m_regWrite,	0);
-		setOutputDataByValue(m_memToReg,	0);
+			setOutputDataByValue(m_regDest, 0);
+			setOutputDataByValue(m_aluOp, 0b00);
+			setOutputDataByValue(m_aluSrc, 1);
+			break;
+		case 0b101011:		// sw: 43
+			setOutputDataByValue(m_regWrite, 0);
+			setOutputDataByValue(m_memToReg, 0);
 
-		setOutputDataByValue(m_branch,		1);
-		setOutputDataByValue(m_jump,		1);
-		setOutputDataByValue(m_memRead,		0);
-		setOutputDataByValue(m_memWrite,	0);
+			setOutputDataByValue(m_branch, 0);
+			setOutputDataByValue(m_jump, 0);
+			setOutputDataByValue(m_memRead, 0);
+			setOutputDataByValue(m_memWrite, 1);
 
-		setOutputDataByValue(m_regDest,		0);
-		setOutputDataByValue(m_aluOp,		0b00);
-		setOutputDataByValue(m_aluSrc,		0);
-		break;
-	case 0b001000:		// addi: 8
-		setOutputDataByValue(m_regWrite,	1);
-		setOutputDataByValue(m_memToReg,	0);
+			setOutputDataByValue(m_regDest, 0);
+			setOutputDataByValue(m_aluOp, 0b00);
+			setOutputDataByValue(m_aluSrc, 1);
+			break;
+		case 0b000100:		// beq: 4
+			setOutputDataByValue(m_regWrite, 0);
+			setOutputDataByValue(m_memToReg, 0);
 
-		setOutputDataByValue(m_branch,		0);
-		setOutputDataByValue(m_jump,		0);
-		setOutputDataByValue(m_memRead,		0);
-		setOutputDataByValue(m_memWrite,	0);
-		
-		setOutputDataByValue(m_regDest,		0);
-		setOutputDataByValue(m_aluOp,		0b00);
-		setOutputDataByValue(m_aluSrc,		1);
-		break;
-	default:
-		assert(false);
+			setOutputDataByValue(m_branch, 1);
+			setOutputDataByValue(m_jump, 0);
+			setOutputDataByValue(m_memRead, 0);
+			setOutputDataByValue(m_memWrite, 0);
+
+			setOutputDataByValue(m_regDest, 0);
+			setOutputDataByValue(m_aluOp, 0b01);
+			setOutputDataByValue(m_aluSrc, 0);
+			break;
+		case 0b000010:		// j: 2
+			setOutputDataByValue(m_regWrite, 0);
+			setOutputDataByValue(m_memToReg, 0);
+
+			setOutputDataByValue(m_branch, 1);
+			setOutputDataByValue(m_jump, 1);
+			setOutputDataByValue(m_memRead, 0);
+			setOutputDataByValue(m_memWrite, 0);
+
+			setOutputDataByValue(m_regDest, 0);
+			setOutputDataByValue(m_aluOp, 0b00);
+			setOutputDataByValue(m_aluSrc, 0);
+			break;
+		case 0b001000:		// addi: 8
+			setOutputDataByValue(m_regWrite, 1);
+			setOutputDataByValue(m_memToReg, 0);
+
+			setOutputDataByValue(m_branch, 0);
+			setOutputDataByValue(m_jump, 0);
+			setOutputDataByValue(m_memRead, 0);
+			setOutputDataByValue(m_memWrite, 0);
+
+			setOutputDataByValue(m_regDest, 0);
+			setOutputDataByValue(m_aluOp, 0b00);
+			setOutputDataByValue(m_aluSrc, 1);
+			break;
+		default:
+			assert(false);
+		}
 	}
 }
 

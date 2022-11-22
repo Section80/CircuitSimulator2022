@@ -50,12 +50,6 @@
     <Filter Include="소스 파일\Identifiable\Circuit\imple\Primitive\IO">
       <UniqueIdentifier>{fdc21a74-df10-4c0d-a60e-740f31feb780}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\TODO">
-      <UniqueIdentifier>{162a9d29-fb67-4b51-9cd0-703cd1994ec3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\TODO\PipelineRegister">
-      <UniqueIdentifier>{e822253c-c1c5-4f1f-8755-85fa26d04a40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Identifiable\Circuit\imple\Sequential\Pipeline Register">
       <UniqueIdentifier>{09024ca8-89ac-41ba-ab31-c84f71a23f70}</UniqueIdentifier>
     </Filter>
@@ -203,6 +197,9 @@
     <ClCompile Include="JumpAddressCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
+    <ClCompile Include="Compare32Circuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Identifiable.h">
@@ -341,6 +338,9 @@
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational\Hazard</Filter>
     </ClInclude>
     <ClInclude Include="JumpAddressCircuit.h">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
+    </ClInclude>
+    <ClInclude Include="Compare32Circuit.h">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClInclude>
   </ItemGroup>

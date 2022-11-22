@@ -31,6 +31,7 @@
     <ClCompile Include="Circuit.cpp" />
     <ClCompile Include="CircuitOutput.cpp" />
     <ClCompile Include="ClockCircuit.cpp" />
+    <ClCompile Include="Compare32Circuit.cpp" />
     <ClCompile Include="ControlUnitCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -65,7 +66,7 @@
     <ClCompile Include="DataMemoryCircuit.cpp" />
     <ClCompile Include="JumpAddressCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="LoadStoreCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -123,6 +124,7 @@
     <ClInclude Include="CircuitOutput.h" />
     <ClInclude Include="CircuitType.h" />
     <ClInclude Include="ClockCircuit.h" />
+    <ClInclude Include="Compare32Circuit.h" />
     <ClInclude Include="ControlUnitCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -157,7 +159,7 @@
     <ClInclude Include="DataMemoryCircuit.h" />
     <ClInclude Include="JumpAddressCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="LoadStoreCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

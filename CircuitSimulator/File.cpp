@@ -264,7 +264,7 @@ void LoadCircuitsFromFile(const char* fileName, std::vector<Circuit*>* pCircuits
 			f >> path;
 			if (path.compare("NULL") != 0)
 			{
-				in->LoadInstructions(path);
+				in->LoadInstruction(path);
 			}
 		}
 	}

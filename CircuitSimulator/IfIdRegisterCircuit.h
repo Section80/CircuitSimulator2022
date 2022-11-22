@@ -20,28 +20,28 @@ private:
 	void updateOutput() override;
 
 private:
-	InputPin m_pc_in;		// 32bit
-	InputPin m_instruction_in; // 32bit
-
-	// TODO: Add This
-	InputPin m_write;
+	InputPin m_pc_in;				// 32bit
+	InputPin m_instruction_in;		// 32bit
+	InputPin m_write;				// 1bit
+	InputPin m_flush;				// 1bit
 
 	// clock signal
 	InputPin m_clock;
 	bool m_bLastClock;
 
-	OutputPin m_pc_out;		// 32bit : [63, 94]
-	OutputPin m_op_out;		//  6bit : [57, 62]
-	OutputPin m_rs_out;		//  5bit : [52, 56]
-	OutputPin m_rt_out;		//  5bit : [47, 51]
-	OutputPin m_rd_out;		//  5bit : [42, 46]
-	OutputPin m_low16_out;	// 16bit : [26 ,41]
-	OutputPin m_addr_out;	// 26bit : [ 0, 25]
+	OutputPin m_pc_out;				// 32bit : [32, 63]
+	OutputPin m_instruction_out;	// 32bit : [0, 31]
+	OutputPin m_rs_out;				//  5bit : [21, 25]
+	OutputPin m_rt_out;				//  5bit : [16, 20]
+	OutputPin m_rd_out;				//  5bit : [11, 15]
+	OutputPin m_low16_out;			// 16bit : [ 0 ,15]
+	OutputPin m_addr_out;			// 26bit : [ 0, 25]
 
-	bool m_outBuf1[95];
-	bool m_outBuf2[95];
+	bool m_outBuf1[64];
+	bool m_outBuf2[64];
 
-	uint32_t m_data[7];
+	uint32_t m_pc;
+	uint32_t m_instruction;
 };
 
 #endif

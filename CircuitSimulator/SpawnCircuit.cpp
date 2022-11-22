@@ -31,6 +31,8 @@
 #include "ForwardCircuit.h"
 #include "LoadStoreCircuit.h"
 #include "HazardDetectionUnit.h"
+#include "JumpAddressCircuit.h"
+#include "Compare32Circuit.h"
 
 
 void connect(Circuit* pC1, int outIdx, Circuit* pC2, int inIdx);
@@ -217,6 +219,10 @@ Circuit* SpawnCircuit(ECircuitType type, float x, float y)
 		return new LoadStoreCircuit(x, y);
 	case ECircuitType::HarzardDetection:
 		return new HazardDetectionUnit(x, y);
+	case ECircuitType::JumpAddress:
+		return new JumpAddressCircuit(x, y);
+	case ECircuitType::Compare32:
+		return new Compare32Circuit(x, y);
 	default:
 		printf("[Info]SpawnCircuit Invalid id: %d", (int)type);
 		break;
