@@ -114,6 +114,7 @@ void onUpdate(double dt)
 	
 	ImNode::NodeId* pSelectedNodeId = new ImNode::NodeId[1];
 	ImNode::GetSelectedNodes(pSelectedNodeId, 1);
+	Circuit* pSelected = nullptr;
 
 	if (ImNode::GetSelectedObjectCount() == 0)
 	{
@@ -121,8 +122,8 @@ void onUpdate(double dt)
 	}
 	else 
 	{
-		Circuit* pC = Circuit::GetCircuitById(*pSelectedNodeId);
-		if (pC == nullptr)
+		pSelected = Circuit::GetCircuitById(*pSelectedNodeId);
+		if (pSelected == nullptr)
 		{
 			// wire가 선택된 경우
 			// printf("[info]Object count is not 0 but pointer is null. \n");
@@ -131,9 +132,10 @@ void onUpdate(double dt)
 		else
 		{
 			static char nameBuffer[64] = { 0 };
-			sprintf_s(nameBuffer, "Name: %s", pC->GetName());
+			sprintf_s(nameBuffer, "Name: %s", pSelected->GetName());
 			ImGui::Text(nameBuffer);
-			pC->RenderInspector();
+			
+			pSelected->RenderInspector();
 		}
 	}
 	
@@ -145,6 +147,27 @@ void onUpdate(double dt)
 
 	// ImNode Render
 	Circuit::RenderAll();
+
+	/*
+	if (pSelected)
+	{
+		for (int i = 0; i < pSelected->GetInputPinCount(); i++)
+		{
+			InputPin* in = pSelected->GetInputPin(i);
+			OutputPin* out = in->GetFrom();
+			if (out != nullptr)
+			{
+				out->RenderWire();
+			}
+		}
+
+		pSelected->RenderWire();
+	}
+	else
+	{
+		Circuit::RenderAllWires();
+	}
+	*/
 	Circuit::RenderAllWires();
 
 	InteractionManager::Update(&pCircuits);

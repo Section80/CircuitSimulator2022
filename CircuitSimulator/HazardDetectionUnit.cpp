@@ -3,20 +3,17 @@
 HazardDetectionUnit::HazardDetectionUnit()
 	: Circuit(
 		"HazardDetectionUnit", ECircuitType::HarzardDetection,
-		6, 4, m_outBuf1, m_outBuf2,
+		6, 3, m_outBuf1, m_outBuf2,
 		4, 0.1f)
 	, m_IFID_rs(*this, "IF/ID.rs", 5)
 	, m_IFID_rt(*this, "IF/ID.rt", 5)
 	, m_IDEX_memRead(*this, "ID/EX.memRead", 1)
 	, m_IDEX_writeReg(*this, "ID/EX.writeReg", 5)
-	, m_EXMEM_memWrite(*this, "EX/MEM.memWrite", 1)
+	, m_EXMEM_regWrite(*this, "EX/MEM.regWrite", 1)
 	, m_EXMEM_writeReg(*this, "EX/MEM.writeReg", 5)
-	, m_pcWrite(*this, "PC.write", 0, 1)
-	, m_ifIdWrite(*this, "IF/ID.write", 1, 1)
-	, m_selectCtrl(*this, "selectCtrl", 2, 1)
-	, m_selectRead1(*this, "selectRead1", 3, 1)
-	, m_bStall(false)
-	, m_bSaveUsed2(false)
+	, m_stall(*this, "stall", 0, 1)
+	, m_forwardA(*this, "forwardA", 2, 1)
+	, m_forwardB(*this, "forwardB", 3, 1)
 {}
 
 HazardDetectionUnit::HazardDetectionUnit(float x, float y)
@@ -35,14 +32,13 @@ void HazardDetectionUnit::Render()
 				m_IFID_rt.Render();
 				m_IDEX_memRead.Render();
 				m_IDEX_writeReg.Render();
-				m_EXMEM_memWrite.Render();
+				m_EXMEM_regWrite.Render();
 				m_EXMEM_writeReg.Render();
 			ImGui::EndVertical();
 			ImGui::BeginVertical("Output");
-				m_pcWrite.Render();
-				m_ifIdWrite.Render();
-				m_selectCtrl.Render();
-				m_selectRead1.Render();
+				m_stall.Render();
+				m_forwardA.Render();
+				m_forwardB.Render();
 			ImGui::EndVertical();
 		ImGui::EndHorizontal();
 	ImNode::EndNode();
@@ -50,7 +46,7 @@ void HazardDetectionUnit::Render()
 
 void HazardDetectionUnit::RenderInspector()
 {
-	if (m_bStall)
+	if (m_stall.Value() == 1)
 	{
 		ImGui::Text("Stall: true");
 	}
@@ -59,13 +55,22 @@ void HazardDetectionUnit::RenderInspector()
 		ImGui::Text("Stall: false");
 	}
 
-	if (m_bSaveUsed2)
+	if (m_forwardA.Value() == 1)
 	{
-		ImGui::Text("SaveUsed2: true");
+		ImGui::Text("ForwardA: true");
 	}
 	else
 	{
-		ImGui::Text("SaveUsed2: false");
+		ImGui::Text("ForwardA: false");
+	}
+
+	if (m_forwardB.Value() == 1)
+	{
+		ImGui::Text("ForwardB: true");
+	}
+	else
+	{
+		ImGui::Text("ForwardB: false");
 	}
 }
 
@@ -82,7 +87,7 @@ InputPin* HazardDetectionUnit::GetInputPin(int index)
 	case 3: 
 		return &m_IDEX_writeReg;
 	case 4:
-		return &m_EXMEM_memWrite;
+		return &m_EXMEM_regWrite;
 	case 5:
 		return &m_EXMEM_writeReg;
 	default:
@@ -97,13 +102,11 @@ OutputPin* HazardDetectionUnit::GetOutputPin(int index)
 	switch (index)
 	{
 	case 0:
-		return &m_pcWrite;
+		return &m_stall;
 	case 1:
-		return &m_ifIdWrite;
+		return &m_forwardA;
 	case 2:
-		return &m_selectCtrl;
-	case 3:
-		return &m_selectRead1;
+		return &m_forwardB;
 	default:
 		assert(false);
 	}
@@ -114,6 +117,7 @@ OutputPin* HazardDetectionUnit::GetOutputPin(int index)
 void HazardDetectionUnit::updateOutput()
 {
 	// Check Load Use(Save Used1)
+	// memWrite로 하면 LoadUse랑 add $t0; beq $t0 인 경우 둘 다 걸림. 
 	if (
 		m_IDEX_memRead.ReadAt(0) == 1 &&
 		(
@@ -122,39 +126,37 @@ void HazardDetectionUnit::updateOutput()
 		)
 	)
 	{
-		m_bStall = true;
-
-		// pc_write = 0;
-		setOutputDataByValue(0, 0);
-		// IFID_write = 0;
-		setOutputDataByValue(1, 0);
-		// Use All 0 instead of Control Unit output
-		setOutputDataByValue(2, 1);
+		setOutputDataByValue(m_stall, 1);
 	}
 	else
 	{
-		m_bStall = false;
-
-		// pc_write = 1;
-		setOutputDataByValue(0, 1);
-		// IFID_write = 1;
-		setOutputDataByValue(1, 1);
-		// Use Control Unit output
-		setOutputDataByValue(2, 0);
+		setOutputDataByValue(m_stall, 0);
 	}
 
+	// ForwardA
 	// Check Save Used2
 	if (
-		m_EXMEM_memWrite.ReadAt(0) == true &&
+		m_EXMEM_regWrite.ReadAt(0) == true &&
+		m_IFID_rs.Value() == m_EXMEM_writeReg.Value()
+		)
+	{
+		setOutputDataByValue(m_forwardA, 1);
+	}
+	else
+	{
+		setOutputDataByValue(m_forwardA, 0);
+	}
+
+	// ForwardB
+	if (
+		m_EXMEM_regWrite.ReadAt(0) == true &&
 		m_IFID_rt.Value() == m_EXMEM_writeReg.Value()
 		)
 	{
-		m_bSaveUsed2 = true;
-		setOutputDataByValue(3, 1);
+		setOutputDataByValue(m_forwardB, 1);
 	}
 	else
 	{
-		m_bSaveUsed2 = false;
-		setOutputDataByValue(3, 0);
+		setOutputDataByValue(m_forwardB, 0);
 	}
 }

@@ -2,7 +2,7 @@
 #include "NotCircuit.h"
 
 NotCircuit::NotCircuit()
-	: Circuit("!", ECircuitType::Not, 1, 1, &m_outBuf1, &m_outBuf1, 1, 0.0f)
+	: Circuit("     Not", ECircuitType::Not, 1, 1, &m_outBuf1, &m_outBuf1, 1, 0.0f)
 	, m_inputPin(*this, "i", 1)
 	, m_outputPin(*this, "o", 0, 1)
 	, m_outBuf1(false)

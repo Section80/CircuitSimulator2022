@@ -26,19 +26,15 @@ private:
 	InputPin m_IFID_rt;
 	InputPin m_IDEX_memRead;
 	InputPin m_IDEX_writeReg;
-	InputPin m_EXMEM_memWrite;
+	InputPin m_EXMEM_regWrite;
 	InputPin m_EXMEM_writeReg;
 
-	OutputPin m_pcWrite;
-	OutputPin m_ifIdWrite;
-	OutputPin m_selectCtrl;
-	OutputPin m_selectRead1;
+	OutputPin m_stall;		// 1bit
+	OutputPin m_forwardA;	// 1bit
+	OutputPin m_forwardB;	// 1bit
 
 	bool m_outBuf1[4];
 	bool m_outBuf2[4];
-
-	bool m_bStall;
-	bool m_bSaveUsed2;
 };
 
 #endif

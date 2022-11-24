@@ -23,8 +23,8 @@ void Compare32Circuit::Render()
 	
 	m_in1.Render();
 	ImGui::SameLine();
-	m_in2.Render();
 	m_equal.Render();
+	m_in2.Render();
 
 	ImNode::EndNode();
 }

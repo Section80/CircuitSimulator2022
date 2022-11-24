@@ -265,27 +265,27 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 			}
 			else if (word.compare("sw") == 0)
 			{
-			// sw &4, 8($5)
-			string op1;
-			ss >> op1;
+				// sw &4, 8($5)
+				string op1;
+				ss >> op1;
 
-			int rt = strToRegisterIndex(op1);
+				int rt = strToRegisterIndex(op1);
 
-			// "(" 앞까지는 imm에 해당한다. 
-			string immStr;
-			getline(ss, immStr, '(');
+				// "(" 앞까지는 imm에 해당한다. 
+				string immStr;
+				getline(ss, immStr, '(');
 
-			int imm = 0;
-			strToInt(immStr, &imm);
+				int imm = 0;
+				strToInt(immStr, &imm);
 
-			// 여는 괄호 이후 부분은 "$rs)"에 해당한다. 
-			string rsStr;
-			getline(ss, rsStr, ')');	// "(" 앞까지만 읽는다. 
-			int rs = strToRegisterIndex(rsStr);
+				// 여는 괄호 이후 부분은 "$rs)"에 해당한다. 
+				string rsStr;
+				getline(ss, rsStr, ')');	// "(" 앞까지만 읽는다. 
+				int rs = strToRegisterIndex(rsStr);
 
-			Instruction i;
-			i.SetOpcode(0x2b).SetRT(rt).SetRS(rs).SetLow16(imm);
-			map[lastKey += 4] = i.Get();
+				Instruction i;
+				i.SetOpcode(0x2b).SetRT(rt).SetRS(rs).SetLow16(imm);
+				map[lastKey += 4] = i.Get();
 			}
 			else if (word.compare("beq") == 0)
 			{
@@ -302,7 +302,10 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				int imm = 0;
 				if (labelMap.count(op3) != 0) 
 				{
-					imm = labelMap[op3];
+					int targetPC = labelMap[op3];
+					int curPC = lastKey + 4;
+
+					imm = (targetPC - curPC - 4) / 4;
 				}
 				else
 				{
@@ -319,9 +322,9 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				ss >> op;
 				int addr = 0;
 				if (labelMap.count(op) != 0) {
-					int pc = lastKey + 4;
-					addr = labelMap[op] / 4;
-					addr |= 0b00001111111111111111111111111111;
+					addr = labelMap[op];
+					addr &= 0b00001111111111111111111111111111;
+					// printf("%s: %0#10x \n", op.c_str(), addr);
 					addr = addr >> 2;
 				}
 				else
@@ -333,6 +336,12 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				i.SetOpcode(2).SetAddress(addr);
 				map[lastKey += 4] = i.Get();
 			}
+			else if (word.compare("nop") == 0)
+			{
+				map[lastKey += 4] = 0;
+			}
+
+			break;
 		}
 	}
 

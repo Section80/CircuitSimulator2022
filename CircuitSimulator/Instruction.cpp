@@ -76,7 +76,7 @@ int SetLow16(int instruction, int low16)
 int SetAddress(int instruction, int address)
 {
 	instruction &= ~MASK_ADDRESS;
-	address &= MASK_RS;
+	address &= MASK_ADDRESS;
 
 	instruction |= address;
 	return instruction;
