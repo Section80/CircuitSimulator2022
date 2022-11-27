@@ -15,9 +15,10 @@
 개발 환경: Visual Studio 2022, Windows
 
 다음 라이브러리들을 사용하였다. 
-* [glfw](https://github.com/glfw/glfw)
+ - [glfw](https://github.com/glfw/glfw)
  - [imgui-node-editor](https://github.com/thedmd/imgui-node-editor)
- - [nativefiledialog](https://github.com/mlabbe/nativefiledialog)
+ - [nativefiledialog](https://github.com/mlabbe/nativefiledialog)  
+ 
 imgui-node-editor와 nativefiledialog의 경우, 빌드할 수 있는 프로젝트를 솔루션에 추가해두었다. Linux에서 빌드하는 경우 라이브러리를 직접 빌드해야 할 수 있다. 
 
 glfw의 경우, 직접 다운받아 빌드해야 한다. 
