@@ -27,7 +27,7 @@ glfw의 경우, 직접 다운받아 빌드해야 한다.
 
 windows에서 빌드 완료된 실행 파일을 tag에서 다운로드 받을 수 있다. 
 
-![[./image/0.png]]
+![[/image/0.png]]
 메뉴 설명
  - Start/Pause: 실시간으로 회로를 실행/중지한다. 
  - sec: Skip 버튼을 눌렀을 때 건너뛸 시간 간격(단위: 초)다. 
@@ -224,7 +224,7 @@ else
 ```
 
 회로의 모습은 다음과 같다. 
-![[./image/1.png]]
+![[/image/1.png]]
 일부 와이어를 생략하였다. 
 
 ### Load Use
@@ -297,7 +297,7 @@ sw $t0, 16($t1)    # 2: MEM
 sw여도 memWrite를 확인할 필요가 없다. 조건을 위와 같이 만들면 Store Used1 해저드 또한 해결할 수 있다. 또한, MEM/WB Register의 readData 대신 memToReg로 선택된 데이터를 포워딩받아야 한다. 
 
 회로의 모습은 다음과 같다. 
-![[./image/3.png]]
+![[/image/3.png]]
 
 
 ### Store Used1
