@@ -37,6 +37,14 @@ void ClockCircuit::Render()
 	ImNode::EndNode();
 }
 
+void ClockCircuit::RenderWire(bool bSummary)
+{
+	if (!bSummary)
+	{
+		Circuit::RenderWire();
+	}
+}
+
 InputPin* ClockCircuit::GetInputPin(int index)
 {
 	assert(false);

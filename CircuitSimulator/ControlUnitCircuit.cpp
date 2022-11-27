@@ -48,6 +48,18 @@ void ControlUnitCircuit::Render()
 	ImNode::EndNode();
 }
 
+void ControlUnitCircuit::RenderWire(bool bSummary)
+{
+	if (bSummary)
+	{
+
+	}
+	else
+	{
+		Circuit::RenderWire();
+	}
+}
+
 void ControlUnitCircuit::RenderInspector()
 {
 	if (m_instruction.GetFrom() != nullptr)

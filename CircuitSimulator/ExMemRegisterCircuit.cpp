@@ -47,6 +47,20 @@ void ExMemRegisterCircuit::Render()
 	ImNode::EndNode();
 }
 
+void ExMemRegisterCircuit::RenderWire(bool bSummary)
+{
+	if (bSummary)
+	{
+		m_aluResult_out.RenderWire();
+		m_read2_out.RenderWire();
+		m_writeReg_out.RenderWire();
+	}
+	else
+	{
+		Circuit::RenderWire();
+	}
+}
+
 void ExMemRegisterCircuit::RenderInspector()
 {
 	ImGui::Text(" regWrite: %d", m_regWrite_out.Value());

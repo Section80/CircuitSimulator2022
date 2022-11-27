@@ -11,6 +11,7 @@ public:
 	ClockCircuit(float x, float y);
 
 	void Render() override;
+	void RenderWire(bool bSummary = false) override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;

@@ -41,7 +41,7 @@ Circuit::~Circuit()
 	);
 }
 
-void Circuit::RenderWire()
+void Circuit::RenderWire(bool bSummary)
 {
 	for (int i = 0; i < m_outputPinCount; i++)
 	{
@@ -222,11 +222,11 @@ void Circuit::RenderAll()
 	}
 }
 
-void Circuit::RenderAllWires()
+void Circuit::RenderAllWires(bool bSummary)
 {
 	for (Circuit* pCircuit : s_pCircuits)
 	{
-		pCircuit->RenderWire();
+		pCircuit->RenderWire(bSummary);
 	}
 }
 
@@ -288,15 +288,16 @@ bool* Circuit::getOutputDataBuffer(int outputPinIndex)
 
 void Circuit::afterUpdateOutput()
 {
-	// printf("afterOutputChanged: %s \n", GetName());
-
 	// outputPin을 순회하면서 해당하는 출력이 변했다면 연결된 circuit에게 통지한다. 
 	for (int i = 0; i < m_outputPinCount; i++)
 	{
 		OutputPin* op = GetOutputPin(i);
 		assert(op != nullptr);
 
-		bool isChanged = m_circuitOutput.IsChanged(op->GetOutputOffset(), op->GetWireLineCount());
+		bool isChanged = m_circuitOutput.IsChanged(
+			op->GetOutputOffset(), 
+			op->GetWireLineCount()
+		);
 		if (isChanged || m_delay == 0)
 		{
 			for (int j = 0; j < MAX_WIRE_IN_OUTPUTPIN; j++)
@@ -366,7 +367,6 @@ void Circuit::updateOutput()
 
 void Circuit::onInputChanged()
 {
-	// printf("onInputChanged: %s \n", GetName());
 	// Instance Circuit인 경우
 	if (m_delay == 0)
 	{

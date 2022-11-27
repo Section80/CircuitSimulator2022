@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include <string>
-#include "Environment.h"
+#include "Global.h"
 
-namespace env
+namespace global
 {
 	std::string pwd;
+	bool bSummary = true;
 }

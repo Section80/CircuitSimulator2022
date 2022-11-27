@@ -58,6 +58,24 @@ void IfIdRegisterCircuit::Render()
 	ImNode::EndNode();
 }
 
+void IfIdRegisterCircuit::RenderWire(bool bSummary)
+{
+	if (bSummary)
+	{
+		m_pc_out.RenderWire();
+		m_instruction_out.RenderWire();
+		m_rs_out.RenderWire();
+		m_rt_out.RenderWire();
+		m_rd_out.RenderWire();
+		m_low16_out.RenderWire();
+		m_addr_out.RenderWire();
+	}
+	else 
+	{
+		Circuit::RenderWire();
+	}
+}
+
 void IfIdRegisterCircuit::RenderInspector()
 {
 	ImGui::Text("pc: %d", m_pc_out.Value());

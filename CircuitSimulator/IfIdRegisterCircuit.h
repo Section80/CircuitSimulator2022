@@ -11,6 +11,7 @@ public:
 	IfIdRegisterCircuit(float x, float y);
 
 	void Render() override;
+	void RenderWire(bool bSummary = false) override;
 	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;

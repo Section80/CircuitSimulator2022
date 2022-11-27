@@ -4,7 +4,7 @@
 #include "Instruction.h"
 #include "InstructionMemory.h"
 #include "PlayButton.h"
-#include "Environment.h"
+#include "Global.h"
 #include "Parse.h"
 
 
@@ -57,7 +57,7 @@ void InstructionMemoryCircuit::Render()
 		PlayButton::Instance->Pause();
 
 		nfdchar_t* outPath = NULL;
-		nfdresult_t result = NFD_OpenDialog("asm;", env::pwd.c_str(), &outPath);
+		nfdresult_t result = NFD_OpenDialog("asm;", global::pwd.c_str(), &outPath);
 
 		if (result == NFD_OKAY) {
 			PlayButton::Instance->Pause();

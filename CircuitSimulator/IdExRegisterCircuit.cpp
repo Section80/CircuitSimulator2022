@@ -2,7 +2,6 @@
 #include "Convert.h"
 #include "IdExRegisterCircuit.h"
 
-
 IdExRegisterCircuit::IdExRegisterCircuit()
 	: Circuit("ID/EX Register", ECircuitType::IdEx, 14, 13, m_outBuf1, m_outBuf2, 119, 0.5f)
 	, m_regWrite_in(*this, "regWrite", 1)
@@ -56,6 +55,23 @@ void IdExRegisterCircuit::Render()
 	m_clock.Render();
 
 	ImNode::EndNode();
+}
+
+void IdExRegisterCircuit::RenderWire(bool bSummary)
+{
+	if (bSummary)
+	{
+		m_read1_out.RenderWire();
+		m_read2_out.RenderWire();
+		m_signExtended_out.RenderWire();
+		m_rs_out.RenderWire();
+		m_rt_out.RenderWire();
+		m_rd_out.RenderWire();
+	}
+	else
+	{
+		Circuit::RenderWire();
+	}
 }
 
 void IdExRegisterCircuit::RenderInspector()

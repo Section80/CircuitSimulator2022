@@ -38,7 +38,7 @@
     </ClCompile>
     <ClCompile Include="Convert.cpp" />
     <ClCompile Include="DisplayInt32Circuit.cpp" />
-    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="ExMemRegisterCircuit.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -131,7 +131,7 @@
     </ClInclude>
     <ClInclude Include="Convert.h" />
     <ClInclude Include="DisplayInt32Circuit.h" />
-    <ClInclude Include="Environment.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="ExMemRegisterCircuit.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

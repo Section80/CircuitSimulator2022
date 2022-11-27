@@ -9,7 +9,7 @@
 #include "SpawnCircuit.h"
 #include "PlayButton.h"
 #include "File.h"
-#include "Environment.h"
+#include "Global.h"
 
 namespace ImNode = ax::NodeEditor;
 
@@ -25,10 +25,10 @@ int spawnId = 0;
 
 int main(int argc, char* argv[])
 {
-	env::pwd.assign(argv[0]);
-	size_t last = env::pwd.rfind('\\');
-	env::pwd = env::pwd.substr(0, last + 1);
-	printf("pwd: %s \n", env::pwd.c_str());
+	global::pwd.assign(argv[0]);
+	size_t last = global::pwd.rfind('\\');
+	global::pwd = global::pwd.substr(0, last + 1);
+	printf("pwd: %s \n", global::pwd.c_str());
 	
 
 	glfw_imgui::Config cfg = 
@@ -56,7 +56,7 @@ bool onStart()
 	// SpawnTestRegisterFile(0, 0, &pCircuits);
 
 	std::string loadPath("/f/cc.save");
-	loadPath = env::pwd + loadPath;
+	loadPath = global::pwd + loadPath;
 
 	LoadCircuitsFromFile(loadPath.c_str(), &pCircuits);
 
@@ -108,6 +108,9 @@ void onUpdate(double dt)
 	ImGui::SameLine();
 	bool bSpawn = ImGui::Button("Spawn");
 
+	ImGui::SameLine();
+	ImGui::Checkbox("Summary", &global::bSummary);
+
 	ImNode::SetCurrentEditor(pNodeContext);
 
 	ImGui::BeginChild("Inspect", ImVec2(300, 0));
@@ -148,27 +151,21 @@ void onUpdate(double dt)
 	// ImNode Render
 	Circuit::RenderAll();
 
-	/*
 	if (pSelected)
 	{
 		for (int i = 0; i < pSelected->GetInputPinCount(); i++)
 		{
 			InputPin* in = pSelected->GetInputPin(i);
 			OutputPin* out = in->GetFrom();
-			if (out != nullptr)
-			{
-				out->RenderWire();
-			}
+			in->RenderWire();
 		}
 
 		pSelected->RenderWire();
 	}
 	else
 	{
-		Circuit::RenderAllWires();
+		Circuit::RenderAllWires(global::bSummary);
 	}
-	*/
-	Circuit::RenderAllWires();
 
 	InteractionManager::Update(&pCircuits);
 	if (bSave) 	// ImNode::GetNodePosition에서 exception이 안나려면 End()하기전에 해야한다. 
@@ -176,7 +173,7 @@ void onUpdate(double dt)
 		playButton.Pause();
 
 		nfdchar_t* outPath = NULL;
-		nfdresult_t result = NFD_SaveDialog("save;", env::pwd.c_str(), &outPath);
+		nfdresult_t result = NFD_SaveDialog("save;", global::pwd.c_str(), &outPath);
 
 		if (result == NFD_OKAY) {
 			SaveCircuitsToFile(outPath, pCircuits);
@@ -194,7 +191,7 @@ void onUpdate(double dt)
 		playButton.Pause();
 
 		nfdchar_t* outPath = NULL;
-		nfdresult_t result = NFD_OpenDialog("save;", env::pwd.c_str(), &outPath);
+		nfdresult_t result = NFD_OpenDialog("save;", global::pwd.c_str(), &outPath);
 
 		if (result == NFD_OKAY) {
 			// clear

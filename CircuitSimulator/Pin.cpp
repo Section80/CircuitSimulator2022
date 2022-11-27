@@ -74,6 +74,29 @@ void InputPin::Render(bool reverse)
 	ImNode::EndPin();
 }
 
+void InputPin::RenderWire()
+{
+	OutputPin* out = GetFrom();
+	if (out != nullptr)
+	{
+		for (int i = 0; i < MAX_WIRE_IN_OUTPUTPIN; i++)
+		{
+			Wire& wire = out->GetWire(i);
+			if (wire.GetTo() != nullptr)
+			{
+				InputPin* in = wire.GetTo();
+				if (in == this) {
+					ImNode::Link(
+						wire.GetLinkId(), 
+						out->GetPinId(), 
+						in->GetPinId()
+					);
+				}
+			}
+		}
+	}
+}
+
 bool InputPin::ReadAt(int wireLinIndex)
 {
 	assert(m_from != nullptr);

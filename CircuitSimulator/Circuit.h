@@ -13,13 +13,6 @@ class Pin;
 class OutputPin;
 class ClockBufferCircuit;
 
-// 생각하기
-// 딜레이가 1초인 and gate의 1번 입력이 true, 2번 입력은 0.1초마다 true, false가 바뀐다고 해보자. 
-// 현실에서 이 회로의 출력은 어떻게 될까? 
-// undefined일까? 아니면 1초가 지난 후 부터는 0.1초마다 출력이 변할까? 
-// 내가 디자인한 모델에서는 남은 delay보다 빠르게 입력이 변한 경우, 기존의 입력은 무시된다. 덮어써버린다.  
-// 그리고 새로운 입력에 대한 업데이트는 무조건 delay만큼 시간이 흐른 후에만 적용된다. 
-
 class Circuit abstract : public Identifiable
 {
 public:
@@ -41,7 +34,7 @@ public:
 	// GUI(버튼 등) 입력에 의해 출력이 변화한 경우, 마지막에 afterUpdateOutput()
 	// 를 수동으로 호출해야 한다. SwitchCircuit::render() 참고
 	virtual void Render() = 0;
-	void RenderWire();
+	virtual void RenderWire(bool bSummary = false);
 	virtual void RenderInspector();
 
 	// [Pure Virtual] 
@@ -71,7 +64,7 @@ public:
 public:
 	static void UpdateAll(double dt);
 	static void RenderAll();
-	static void RenderAllWires();
+	static void RenderAllWires(bool bSummary = false);
 
 	static Circuit* GetCircuitById(ImNode::NodeId nodeId);
 
