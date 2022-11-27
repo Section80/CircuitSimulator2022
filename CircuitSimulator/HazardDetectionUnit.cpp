@@ -116,8 +116,9 @@ OutputPin* HazardDetectionUnit::GetOutputPin(int index)
 
 void HazardDetectionUnit::updateOutput()
 {
+	setOutputDataByValue(m_stall, 0);
+
 	// Check Load Use(Save Used1)
-	// memWrite로 하면 LoadUse랑 add $t0; beq $t0 인 경우 둘 다 걸림. 
 	if (
 		m_IDEX_memRead.ReadAt(0) == 1 &&
 		(
@@ -127,10 +128,6 @@ void HazardDetectionUnit::updateOutput()
 	)
 	{
 		setOutputDataByValue(m_stall, 1);
-	}
-	else
-	{
-		setOutputDataByValue(m_stall, 0);
 	}
 
 	// ForwardA

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+int main1(void)
 {
     nfdchar_t* outPath = NULL;
     nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);

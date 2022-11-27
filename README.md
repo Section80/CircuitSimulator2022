@@ -4,10 +4,39 @@
 
 기능: 
  - GUI를 통한 회로 편집
+ - 회로 저장/불러오기
  - 회로의 Delay 표기
  - 회로 Inspector를 통한 상태 등 정보 표기
  - MIPS 명령어(and/or/add/sub/slt/lw/sw/beq/j) 수행
  - 실시간/사이클 단위 명령어 수행
+
+
+# 빌드 및 실행 #
+개발 환경: Visual Studio 2022, Windows
+
+다음 라이브러리들을 사용하였다. 
+* [glfw](https://github.com/glfw/glfw)
+ - [imgui-node-editor](https://github.com/thedmd/imgui-node-editor)
+ - [nativefiledialog](https://github.com/mlabbe/nativefiledialog)
+imgui-node-editor와 nativefiledialog의 경우, 빌드할 수 있는 프로젝트를 솔루션에 추가해두었다. Linux에서 빌드하는 경우 라이브러리를 직접 빌드해야 할 수 있다. 
+
+glfw의 경우, 직접 다운받아 빌드해야 한다. 
+
+회로 파일(cc.save)은 ```/CircuitSimulator2022/f```에 있다. 해당 폴더를 실행 파일이 실행되는 위치에 복사해두면 ``` ./f/cc.save ``` 파일을 불러온다. 
+또는 Load 버튼을 통해 cc.save 파일을 직접 로딩해도 된다. 
+
+windows에서 빌드 완료된 실행 파일을 tag에서 다운로드 받을 수 있다. 
+
+![[./image/0.png]]
+메뉴 설명
+ - Start/Pause: 실시간으로 회로를 실행/중지한다. 
+ - sec: Skip 버튼을 눌렀을 때 건너뛸 시간 간격(단위: 초)다. 
+ - Skip: 시간을 건너뛴다. Clock은 기본으로 risingEdge 직전, sec은 timePeriod(6초) 돼있으니 Skip 버튼을 누르면 한 사이클씩 건너뛸 수 있다. 오른쪽 방향키를 눌러도 된다. 
+ - Save: 현재 회로를 저장한다. 
+ - Load: 회로를 불러온다. 
+ - Spawn: 지정한 id를 가진 회로를 생성한다. CircuitType.h 참고. 
+ - Summary: 클럭과 Pipeline Register의 Control Signal에 해당하는 Wire를 렌더링하지 않는다. 
+
 
 # 코드 설명 #
 
@@ -42,6 +71,7 @@ void Circuit::onInputChanged()
 }
 ```
 m_delay가 0인 경우에는 해당 회로의 출력을 바로 업데이트한 뒤 변경된 출력을 출력 와이어에 연결된 회로들에게 전파한다.  
+
 출력을 업데이트한 뒤 출력 와이어의 값이 변하지 않았을 수도 있다. 그래서 이전 출력을 m_circuitOutput 저장해놓고(더블 버퍼 스왑) 현재 출력과 비교해 변화한 경우에만 바뀐 경우에만 새로운 출력을 전파한다. 
 
 #### updateOutput()
@@ -120,9 +150,181 @@ void Circuit::afterUpdateOutput()
 #### UpdateAll(double dt)
 
 이 함수는 임의의 시간(dt)가 지난 후의 상태로 모든 회로를 업데이트한다. 
+
 그런데 dt만큼의 시간을 한번에 업데이트할 수 없다. 왜냐면 시간이 지나는 중간에 상태가 업데이트될 수 있기 때문이다. 그래서 dt를 다음 상태가 변할 때까지로 쪼개서 조금씩 업데이트 시킨다. 즉, 한번에 회로들의 m_leftDelay의 최소값만큼 업데이트하며 dt를 다 resolve 해야한다. 
 
 추가로 고려해야 하는 문제가 있다. 만약 어떤 회로의 m_leftDelay가 다 지나서 출력이 업데이트되는 동시에 해당 회로의 입력이 변경되면 어떻게 될까?  
-해당 회로가 먼저 업데이트된 뒤 onInputChanged가 호출되면 정상적으로 작동하지만, onInputChanged가 먼저 호출되면 출력 업데이트-전파가 발생하지 않는 문제가 생긴다. 
 
-이 문제를 해결하기 위해 Circuit에 m_isJustResolved 멤버 변수와 resolveConntected() 함수를 추가했다. UpdateAll에서 m_leftDelay가 다 지나 출력을 업데이트하기 전에 resolveConnected() 함수를 호출한다. resolveConnected() 함수는 출럭에 연결된 회로들 중 m_isJustResolved가 false인 회로의 출력을 업데이트-전파한 뒤 m_isJustResolved를 true로 만든다. 
+해당 회로가 먼저 업데이트된 뒤 onInputChanged가 호출되면 정상적으로 작동하지만, onInputChanged()가 먼저 호출되면 출력 업데이트-전파가 발생하지 않는 문제가 생긴다. 왜냐하면 onInputChanged()가 호출되면 딜레이가 초기화되기 때문이다. 
+
+이 문제를 해결하기 위해 Circuit에 m_isJustResolved 멤버 변수와 resolveConntected() 함수를 추가했다. UpdateAll에서 m_leftDelay가 다 지나 출력을 업데이트하기 전에 resolveConnected() 함수를 호출한다. resolveConnected() 함수는 출력에 연결된 회로들 중 m_isJustResolved가 false인 회로의 출력을 업데이트-전파한 뒤 m_isJustResolved를 true로 만든다. 
+
+
+# 해저드 처리 #
+
+이 섹션은 발생할 수 있는 해저드들과 각각을 어떻게 해결했는지를 다룬다. 
+
+### ALU Hazard
+
+발생 예
+``` asm
+add $t0, $t0, $t0    # 1: MEM
+add $t1, $t1, $t1    # 2: EX
+add $t2, $t0, $t1    # 3: ID
+```
+3번 명령어는 ID 단계에서 1, 2번 명령어의 결과가 레지스터에 쓰여지기 전에 값을 읽게 된다. 이 값을 사용하면 의도와 다른 결과를 얻게 된다. 
+``` asm
+add $t0, $t0, $t0    # 1: WB
+add $t1, $t1, $t1    # 2: MEM
+add $t2, $t0, $t1    # 3: EX
+```
+3번 명령어가 EX 단계에 있을 때 1번 명령어의 결과는 MEM/WB Register, 2번 명령어의 결과는 EX/MEM Register에서 받아올 수 있다. 
+
+포워딩 조건은 다음과 같다. 
+``` c++
+// update ForwardA
+if (
+	MEM/WB.RegWrite &&
+	MEM/WB.WriteReg == rs
+)	// MEM/WB에서 가져와야 하는 경우
+{
+	ForwardA = 0b01;
+}
+else if (
+	EX/MEM.RegWrite &&
+	EX/MEM.WriteReg == rs
+)	// EXE/MEM에서 가져와야 하는 경우
+{
+	m_iForwardA = 0b10;
+}
+else   // 레지스터에 읽은 값 그대로 사용
+{
+	ForwardA = 0b00;
+}
+
+// update ForwardB
+if (
+	MEM/WB.RegWrite &&
+	MEM/WB.WriteReg == rs
+)	// MEM/WB에서 가져와야 하는 경우
+{
+	ForwardB = 0b01;
+}
+else if (
+	EX/MEM.RegWrite &&
+	EX/MEM.WriteReg == rt
+)	// EXE/MEM에서 가져와야 하는 경우
+{
+	ForwardB = 0b10;
+}
+else
+{
+	ForwardB = 0b00;
+}
+```
+
+회로의 모습은 다음과 같다. 
+![[./image/1.png]]
+일부 와이어를 생략하였다. 
+
+### Load Use
+
+발생 예
+``` asm
+lw $t0, 16($t0)      # 1: MEM
+add $t1, $t0, $t0    # 2: EX
+```
+EX 스테이지에서 2번 명령어를 수행할 때 $t1의 값은 메모리에서 읽는 중일 것이다. 중간에 한 사이클을 Stall하면 MEM/WB 레지스터에서 값을 포워딩받을 수 있다. 
+``` asm
+lw $t0, 16($t0)      # 1: WB
+nop                  # 2: MEM
+add $t1, $t0, $t0    # 3: EX
+```
+이 방법이 제대로 작동하기 위해서는 WB 스테이지에서 EX 스테이지로 레지스터의 값을 받아올 때 aluRes 값이 아닌 memToReg 컨트롤 시그널에 의해 선택된 값을 받아와야 한다. lw 명령어의 경우 aluRes 값은 DataMemory를 읽을 때 사용된 address 값이기 때문이다. 
+
+Stall을 어떻게 구현할 것인가? 
+1. Stall 여부는 ID Stage에서 판단한다. 
+2. Stall이 발생하면 PC에 Write를 하지 않는다. 
+3. Stall이 발생하면 IF/ID Register에 Write를 하지 않는다. 
+4. Control Unit의 출력 대신 0을 사용한다. 
+PC와 IF/ID에 Write를 하지 않으면 다음 사이클에 똑같은 명령어가 다시 Fetch/Decoding될 것이다. 그리고 Control Unit의 출력 대신 0을 사용하는 것은 곧 현재 ID 스테이지에 있는 명령어를 nop로 바꾸는 것이다.  
+
+Stall 여부 판단 조건은 다음과 같다. 
+``` c++
+stall = false;
+
+// Check Load Use(Save Used1)
+if (
+	ID/EX.memRead &&
+	(
+		rs == ID/EX.writeReg ||
+		rt == D/EX.writeReg
+	)
+)
+{
+	stall = true;
+}
+```
+
+회로의 모습은 다음과 같다. 
+![[./image/2.png]]
+HazardDetectionUnit의 출력 stall이 1인 경우, 쓰기과 관련된 Control Signal은 Control Unit의 결과 대신 0을 사용한다. 또한 IF/ID.write와 PC.write은 stall 값을 not 연산해 사용한다. 
+
+### lw sw
+발생 예
+``` asm
+lw $t0, 16($t1)    # 1: WB
+sw $t0, 16($t1)    # 2: MEM
+```
+2번 명령어가 MEM Stage에 Data Memory에 저장하는 값은 1번 명령어의 결과가 반영되지 않은 값이다.  
+
+이 문제를 해결하려면 MEM Stage에서 WB Stage의 Write Data를 포워딩받으면 된다. 
+
+포워딩 조건은 다음과 같다. 
+``` c++
+	if (
+		MEM/WB.RegWrite && 
+		EX/MEM.WriteReg == MEM/WB.WriteReg
+	)
+	{
+		forward = true;
+	}
+	else
+	{
+		forward = false;
+	}
+```
+sw여도 memWrite를 확인할 필요가 없다. 조건을 위와 같이 만들면 Store Used1 해저드 또한 해결할 수 있다. 또한, MEM/WB Register의 readData 대신 memToReg로 선택된 데이터를 포워딩받아야 한다. 
+
+회로의 모습은 다음과 같다. 
+![[./image/3.png]]
+
+
+### Store Used1
+발생 예
+``` asm
+add $t0, $t0, $t0    # 1: WB
+sw $t0, 16($t1)      # 2: MEM
+```
+lw sw와 같은 방법으로 해결 가능하다. 
+
+### Branch Hazard
+``` asm
+add $t0, $t0, $t0  # EX
+beq $t0, $t1, JUMP # ID
+```
+
+Branch가 발생하면 Flush를 하게 된다. 
+그런데 Stall을 하게 되면 Flush가 무효된다. 
+beq의 경우 그럴수 있지만 jump인데 Stall을 해버리면 안된다. 그러니까 위 경우 beq인지, jump인지 구분해야 한다. 
+
+조건
+branch고, jump가 아닌데, rs 또는 rt가 ex의 writeReg와 같으면... 
+
+### Store Used2
+```
+add $t0, $t0, $t0    # 1: MEM
+add $t1, $t1, $t1    # 2: EX
+sw $t0, 16($t2)      # 3: ID
+```
+레지스터 값 EX/MEM에서 포워딩받으니까 Stall할 필요 없음.. 

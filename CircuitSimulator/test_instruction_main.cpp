@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "Instruction.h"
 
-int main()
+int main2()
 {
 
 	//        0b0000001111122222333334444455555
