@@ -248,7 +248,8 @@ Stall을 어떻게 구현할 것인가?
 1. Stall 여부는 ID Stage에서 판단한다. 
 2. Stall이 발생하면 PC에 Write를 하지 않는다. 
 3. Stall이 발생하면 IF/ID Register에 Write를 하지 않는다. 
-4. Control Unit의 출력 대신 0을 사용한다. 
+4. Control Unit의 출력 대신 0을 사용한다.  
+
 PC와 IF/ID에 Write를 하지 않으면 다음 사이클에 똑같은 명령어가 다시 Fetch/Decoding될 것이다. 그리고 Control Unit의 출력 대신 0을 사용하는 것은 곧 현재 ID 스테이지에 있는 명령어를 nop로 바꾸는 것이다.  
 
 Stall 여부 판단 조건은 다음과 같다. 
