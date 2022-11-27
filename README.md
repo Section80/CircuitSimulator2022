@@ -287,17 +287,17 @@ sw $t0, 16($t1)    # 2: MEM
 
 포워딩 조건은 다음과 같다. 
 ``` c++
-	if (
-		MEM/WB.RegWrite && 
-		EX/MEM.WriteReg == MEM/WB.WriteReg
-	)
-	{
-		forward = true;
-	}
-	else
-	{
-		forward = false;
-	}
+if (
+	MEM/WB.RegWrite && 
+	EX/MEM.WriteReg == MEM/WB.WriteReg
+)
+{
+	forward = true;
+}
+else
+{
+	forward = false;
+}
 ```
 sw여도 memWrite를 확인할 필요가 없다. 조건을 위와 같이 만들면 Store Used1 해저드 또한 해결할 수 있다. 또한, MEM/WB Register의 readData 대신 memToReg로 선택된 데이터를 포워딩받아야 한다. 
 
