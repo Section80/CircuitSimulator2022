@@ -7,7 +7,7 @@
  - 회로 저장/불러오기
  - 회로의 Delay 표기
  - 회로 Inspector를 통한 상태 등 정보 표기
- - MIPS 명령어(and/or/add/sub/slt/lw/sw/beq/j) 수행
+ - MIPS 명령어(and/or/add/sub/slt/lw/sw/beq/j/nop) 수행
  - 실시간/사이클 단위 명령어 수행
 
 
@@ -15,9 +15,10 @@
 개발 환경: Visual Studio 2022, Windows
 
 다음 라이브러리들을 사용하였다. 
-* [glfw](https://github.com/glfw/glfw)
+ - [glfw](https://github.com/glfw/glfw)
  - [imgui-node-editor](https://github.com/thedmd/imgui-node-editor)
- - [nativefiledialog](https://github.com/mlabbe/nativefiledialog)
+ - [nativefiledialog](https://github.com/mlabbe/nativefiledialog)  
+ 
 imgui-node-editor와 nativefiledialog의 경우, 빌드할 수 있는 프로젝트를 솔루션에 추가해두었다. Linux에서 빌드하는 경우 라이브러리를 직접 빌드해야 할 수 있다. 
 
 glfw의 경우, 직접 다운받아 빌드해야 한다. 
@@ -27,10 +28,11 @@ glfw의 경우, 직접 다운받아 빌드해야 한다.
 
 windows에서 빌드 완료된 실행 파일을 tag에서 다운로드 받을 수 있다. 
 
-![[./image/0.png]]
-메뉴 설명
+<image src="./image/0.png">
+
+## 메뉴 설명
  - Start/Pause: 실시간으로 회로를 실행/중지한다. 
- - sec: Skip 버튼을 눌렀을 때 건너뛸 시간 간격(단위: 초)다. 
+ - sec: Skip 버튼을 눌렀을 때 건너뛸 시간 간격이다. 
  - Skip: 시간을 건너뛴다. Clock은 기본으로 risingEdge 직전, sec은 timePeriod(6초) 돼있으니 Skip 버튼을 누르면 한 사이클씩 건너뛸 수 있다. 오른쪽 방향키를 눌러도 된다. 
  - Save: 현재 회로를 저장한다. 
  - Load: 회로를 불러온다. 
@@ -46,11 +48,11 @@ windows에서 빌드 완료된 실행 파일을 tag에서 다운로드 받을 �
 
 m_delay가 0이 아닌 경우, 입력 데이터가 변하면 m_leftDelay의 값이 m_delay로 초기화된다. m_leftDelay의 값은 메인 루프에서 계속 호출되는 Circuit::UpdateAll(double dt) 함수에서 지난 시간만큼 감소되며, 0이 된 경우 해당 회로의 출력 업데이트-전파가 일어난다. 
 
-### Circuit 클래스의 주요 함수
+## Circuit 클래스의 주요 함수
 
 다음은 Circuit들의 공통된 로직을 처리하는 주요 함수들이다. 
 
-#### onInputChanged()
+### onInputChanged()
 
 어떤 회로의 출력이 변했을 때 해당 회로는 출력에 연결된 회로들의 onInputChanged() 함수를 호출한다. 
 ``` c++
@@ -74,7 +76,7 @@ m_delay가 0인 경우에는 해당 회로의 출력을 바로 업데이트한 �
 
 출력을 업데이트한 뒤 출력 와이어의 값이 변하지 않았을 수도 있다. 그래서 이전 출력을 m_circuitOutput 저장해놓고(더블 버퍼 스왑) 현재 출력과 비교해 변화한 경우에만 바뀐 경우에만 새로운 출력을 전파한다. 
 
-#### updateOutput()
+### updateOutput()
 
 이 함수는 새로운 회로를 구현할 때 오버라이딩받아 구현해야하는 순수 가상함수다. 진리표에 따른 출력을 이 함수에 구현한다.  
 
@@ -112,7 +114,7 @@ void IfIdRegisterCircuit::updateOutput()
 마지막 clock 신호를 저장해 rising edge와 falling edge를 구분한다. 
 rising edge에는 출력이 변하지 않고 상태만 변한다. delay만큼의 시간이 또 지난 후 출력이 변하게 하기 위해 resetDelay() 함수를 호출한다. 
 
-#### afterUpdateOutput()
+### afterUpdateOutput()
 
 ``` c++
 void Circuit::afterUpdateOutput()
@@ -147,7 +149,7 @@ void Circuit::afterUpdateOutput()
 ```
 이 함수는 udpateOutput()이 호출된 후 호출된다. 출력 데이터가 변했는지 확인해 변한 경우에만 연결된 회로의 onInputChanged() 함수를 호출해 출력을 전파한다. 
 
-#### UpdateAll(double dt)
+### UpdateAll(double dt)
 
 이 함수는 임의의 시간(dt)가 지난 후의 상태로 모든 회로를 업데이트한다. 
 
@@ -164,7 +166,7 @@ void Circuit::afterUpdateOutput()
 
 이 섹션은 발생할 수 있는 해저드들과 각각을 어떻게 해결했는지를 다룬다. 
 
-### ALU Hazard
+## ALU Hazard
 
 발생 예
 ``` asm
@@ -224,10 +226,11 @@ else
 ```
 
 회로의 모습은 다음과 같다. 
-![[./image/1.png]]
+<image src="./image/1.png">
+
 일부 와이어를 생략하였다. 
 
-### Load Use
+## Load Use
 
 발생 예
 ``` asm
@@ -246,7 +249,8 @@ Stall을 어떻게 구현할 것인가?
 1. Stall 여부는 ID Stage에서 판단한다. 
 2. Stall이 발생하면 PC에 Write를 하지 않는다. 
 3. Stall이 발생하면 IF/ID Register에 Write를 하지 않는다. 
-4. Control Unit의 출력 대신 0을 사용한다. 
+4. Control Unit의 출력 대신 0을 사용한다.  
+
 PC와 IF/ID에 Write를 하지 않으면 다음 사이클에 똑같은 명령어가 다시 Fetch/Decoding될 것이다. 그리고 Control Unit의 출력 대신 0을 사용하는 것은 곧 현재 ID 스테이지에 있는 명령어를 nop로 바꾸는 것이다.  
 
 Stall 여부 판단 조건은 다음과 같다. 
@@ -267,10 +271,11 @@ if (
 ```
 
 회로의 모습은 다음과 같다. 
-![[./image/2.png]]
+<image src="./image/2.png">
+
 HazardDetectionUnit의 출력 stall이 1인 경우, 쓰기과 관련된 Control Signal은 Control Unit의 결과 대신 0을 사용한다. 또한 IF/ID.write와 PC.write은 stall 값을 not 연산해 사용한다. 
 
-### lw sw
+## lw sw
 발생 예
 ``` asm
 lw $t0, 16($t1)    # 1: WB
@@ -297,10 +302,9 @@ sw $t0, 16($t1)    # 2: MEM
 sw여도 memWrite를 확인할 필요가 없다. 조건을 위와 같이 만들면 Store Used1 해저드 또한 해결할 수 있다. 또한, MEM/WB Register의 readData 대신 memToReg로 선택된 데이터를 포워딩받아야 한다. 
 
 회로의 모습은 다음과 같다. 
-![[./image/3.png]]
+<image src="./image/3.png">
 
-
-### Store Used1
+## Store Used1
 발생 예
 ``` asm
 add $t0, $t0, $t0    # 1: WB
@@ -308,7 +312,7 @@ sw $t0, 16($t1)      # 2: MEM
 ```
 lw sw와 같은 방법으로 해결 가능하다. 
 
-### Branch Hazard
+## Branch Hazard
 ``` asm
 add $t0, $t0, $t0  # EX
 beq $t0, $t1, JUMP # ID
@@ -321,7 +325,7 @@ beq의 경우 그럴수 있지만 jump인데 Stall을 해버리면 안된다. �
 조건
 branch고, jump가 아닌데, rs 또는 rt가 ex의 writeReg와 같으면... 
 
-### Store Used2
+## Store Used2
 ```
 add $t0, $t0, $t0    # 1: MEM
 add $t1, $t1, $t1    # 2: EX
