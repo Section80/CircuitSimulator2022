@@ -7,7 +7,7 @@
  - 회로 저장/불러오기
  - 회로의 Delay 표기
  - 회로 Inspector를 통한 상태 등 정보 표기
- - MIPS 명령어(and/or/add/sub/slt/lw/sw/beq/j) 수행
+ - MIPS 명령어(and/or/add/sub/slt/lw/sw/beq/j/nop) 수행
  - 실시간/사이클 단위 명령어 수행
 
 
