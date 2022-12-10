@@ -22,10 +22,18 @@ private:
 	void updateOutput() override;
 
 private:
+	InputPin m_branch;
+	InputPin m_jump;
+	InputPin m_memWrite;
+
 	InputPin m_IFID_rs;
 	InputPin m_IFID_rt;
+	
 	InputPin m_IDEX_memRead;
+	InputPin m_IDEX_regWrite;
 	InputPin m_IDEX_writeReg;
+	
+	InputPin m_EXMEM_memRead;
 	InputPin m_EXMEM_regWrite;
 	InputPin m_EXMEM_writeReg;
 
@@ -33,8 +41,8 @@ private:
 	OutputPin m_forwardA;	// 1bit
 	OutputPin m_forwardB;	// 1bit
 
-	bool m_outBuf1[4];
-	bool m_outBuf2[4];
+	bool m_outBuf1[3];
+	bool m_outBuf2[3];
 };
 
 #endif

@@ -158,13 +158,7 @@ void ExMemRegisterCircuit::updateOutput()
 		for (int i = 0; i < GetOutputPinCount(); i++)	// GetInputPinGount() 로 하면 Clock까지 포함되서 오버런된다. 
 		{
 			InputPin& in = *GetInputPin(i);
-			m_data[i] = ReadToUint32(in, in.GetWireLineCount());
-
-			if (m_data[i] > 100000000)
-			{
-				int a = 0;
-				a++;
-			}
+			m_data[i] = in.Value();
 		}
 
 		// 입력이 변하지 않더라도 출력을 업데이트하도록

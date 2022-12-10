@@ -60,7 +60,7 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 			{
 				word.pop_back();
 				labelMap[word] = lastKey + 4;
-				break;
+				continue;
 			}
 
 			// to lowercase: https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
@@ -106,6 +106,10 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				lastKey += 4;
 			}
 			else if (word.compare("j") == 0)
+			{
+				lastKey += 4;
+			}
+			else if (word.compare("nop") == 0)
 			{
 				lastKey += 4;
 			}
@@ -348,9 +352,187 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 	return true;
 }
 
-void LoadData(const char* path, std::map<int, int>* pMap)
+bool LoadData(const char* path, DataMemory* pDataMemory)
 {
-	printf("Load Data \n");
+	using namespace std;
+
+	DataMemory& dm = *pDataMemory;
+	dm.Clear();
+
+	ifstream f(path, ifstream::in);
+	if (!f.is_open())
+	{
+		printf("[info]LoadData() ifstream is not opened. \n -  %s", path);
+		return false;
+	}
+
+	string line;
+	int addr = 0x10010000;
+
+	// 한 줄 씩 처리한다. 
+	while (getline(f, line))
+	{
+		stringstream ss(line);
+
+		while (!ss.eof())
+		{
+			string word;
+			ss >> word;
+
+			if (word.size() == 0) continue;
+
+			if (word[0] == '#') break;
+
+			// check if it is label
+			if (word.back() == ':')
+			{
+				continue;
+			}
+
+			if (word.compare(".data") == 0)
+			{
+				ss >> word;
+
+				if (word.size() == 0)
+					continue;
+
+				if (word[0] != '#')		// 주석이 아니면
+				{
+					if (word.size() < 2)
+						continue;
+
+					stringstream _ss;
+					if (word[0] == '0' && word[1] == 'x')	// 16진수인 경우
+					{
+						word = word.substr(2);
+						_ss << hex << word;
+						_ss >> addr;
+					}
+					else
+					{
+						strToInt(word, &addr);
+					}
+				}
+			}
+			else if (word.compare(".ascii") == 0)
+			{
+				ss >> word;
+				
+				// remove "
+				word.erase(remove(word.begin(), word.end(), '"'), word.end());
+
+				addr = dm.SetAscii(addr, word);
+			}
+			else if (word.compare(".asciiz") == 0)
+			{
+				ss >> word;
+
+				// remove "
+				word.erase(remove(word.begin(), word.end(), '"'), word.end());
+
+				addr = dm.SetAsciiz(addr, word);
+			}
+			else if (word.compare(".space") == 0)
+			{
+				ss >> word;
+
+				if (word.size() == 0)
+				{
+					addr = dm.SetSpace(addr);
+					continue;
+				}
+
+				if (word[0] == '#')
+					continue;
+
+				int count = 0;
+				if (word[0] == '0' && word[1] == 'x')	// 16진수인 경우
+				{
+					stringstream _ss;
+					word = word.substr(2);
+					_ss << hex << word;
+					_ss >> count;
+				}
+				else
+				{
+					strToInt(word, &count);
+				}
+
+				for (int i = 0; i < count; i++)
+				{
+					addr = dm.SetSpace(addr);
+				}
+			}
+			else if (word.compare(".byte") == 0)
+			{
+				ss >> word;
+				int val = 0;
+				if (word[0] == '0' && word[1] == 'x')	// 16진수인 경우
+				{
+					stringstream _ss;
+					word = word.substr(2);
+					_ss << hex << word;
+					_ss >> val;
+				}
+				else
+				{
+					strToInt(word, &val);
+				}
+				
+				addr = dm.SetByte(addr, val);
+			}
+			else if (word.compare(".half") == 0)
+			{
+				ss >> word;
+				int iVal = 0;
+				if (word[0] == '0' && word[1] == 'x')	// 16진수인 경우
+				{
+					stringstream _ss;
+					word = word.substr(2);
+					_ss << hex << word;
+					_ss >> iVal;
+				}
+				else
+				{
+					strToInt(word, &iVal);
+				}
+				short val = iVal;
+
+				addr = dm.SetHalf(addr, val);
+			}
+			else if (word.compare(".word") == 0)
+			{
+				ss >> word;
+				int iVal = 0;
+				if (word[0] == '0' && word[1] == 'x')	// 16진수인 경우
+				{
+					stringstream _ss;
+					word = word.substr(2);
+					_ss << hex << word;
+					_ss >> iVal;
+				}
+				else
+				{
+					strToInt(word, &iVal);
+				}
+				addr = dm.SetWord(addr, iVal);
+			}
+			else if (word.compare(".float") == 0)
+			{
+				ss >> word;
+				float f = stof(word);
+				addr = dm.SetFloat(addr, f);
+			}
+			else if (word.compare(".double") == 0)
+			{
+				ss >> word;
+				double d = stod(word);
+				addr = dm.SetDouble(addr, d);
+			}
+		}
+	}
+
+	return true;
 }
 
 int strToRegisterIndex(std::string& str)

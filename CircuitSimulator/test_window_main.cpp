@@ -22,6 +22,7 @@ std::vector<Circuit*> pCircuits;
 PlayButton playButton;
 float skip_sec = 6.0f;	// Clock 주기
 int spawnId = 0;
+double updated_time = 0.0f;
 
 int main(int argc, char* argv[])
 {
@@ -62,6 +63,7 @@ bool onStart()
 
 	// rising edge 바로 직전
 	Circuit::UpdateAll(2.9f);
+	updated_time += 2.9;
 
 	return true;
 }
@@ -73,6 +75,7 @@ void onUpdate(double dt)
 	{
 		Circuit::UpdateAll(dt);
 		Sleep((int)(1.0f / 60.0f) * 1000);
+		updated_time += dt;
 	}
 
 	// Render
@@ -87,13 +90,23 @@ void onUpdate(double dt)
 	ImGui::PopItemWidth();
 	ImGui::SameLine();
 
+	int cycle = int(updated_time / 6.0) + 1;
+	ImGui::Text("cycle: %d", cycle);
+	ImGui::SameLine();
+
 	if (
 		ImGui::Button("Skip") || 
 		ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_RightArrow))
 		)
 	{
 		playButton.Pause();
-		Circuit::UpdateAll(skip_sec);
+
+		int div = 6 * 2 * 2 * 2 * 2;
+		for (int i = 0; i < div; i++)
+		{
+			Circuit::UpdateAll(skip_sec / div);
+		}
+		updated_time += skip_sec;
 	}
 	ImGui::SameLine();
 
@@ -151,21 +164,25 @@ void onUpdate(double dt)
 	// ImNode Render
 	Circuit::RenderAll();
 
-	if (pSelected)
-	{
-		for (int i = 0; i < pSelected->GetInputPinCount(); i++)
+	/*
+		if (pSelected)
 		{
-			InputPin* in = pSelected->GetInputPin(i);
-			OutputPin* out = in->GetFrom();
-			in->RenderWire();
-		}
+			for (int i = 0; i < pSelected->GetInputPinCount(); i++)
+			{
+				InputPin* in = pSelected->GetInputPin(i);
+				OutputPin* out = in->GetFrom();
+				in->RenderWire();
+			}
 
-		pSelected->RenderWire();
-	}
-	else
-	{
-		Circuit::RenderAllWires(global::bSummary);
-	}
+			pSelected->RenderWire();
+		}
+		else
+		{
+			Circuit::RenderAllWires(global::bSummary);
+		}
+	*/
+
+	Circuit::RenderAllWires(global::bSummary);
 
 	InteractionManager::Update(&pCircuits);
 	if (bSave) 	// ImNode::GetNodePosition에서 exception이 안나려면 End()하기전에 해야한다. 

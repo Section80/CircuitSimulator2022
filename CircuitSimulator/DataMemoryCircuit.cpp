@@ -17,6 +17,8 @@ DataMemoryCircuit::DataMemoryCircuit()
 	, m_bLastClock(false)
 	, m_loadButtonId(Identifiable::GetNewId())
 	, m_lastChanged(-1)
+	, m_lastRData(0)
+	, m_path("NULL")
 {}
 
 DataMemoryCircuit::DataMemoryCircuit(float x, float y)
@@ -51,8 +53,8 @@ void DataMemoryCircuit::Render()
 			if (result == NFD_OKAY) {
 				PlayButton::Instance->Pause();
 				puts(outPath);
-				LoadData(outPath, &m_data);
-
+				this->LoadData(outPath);
+				
 				free(outPath);
 			}
 			else if (result == NFD_CANCEL) {
@@ -69,19 +71,7 @@ void DataMemoryCircuit::Render()
 
 void DataMemoryCircuit::RenderInspector()
 {
-	for (const auto& pair : m_data)
-	{
-		// sprintf_s(m_strBuf, "[%0#10x] %0#10x", pair.first, pair.second);
-		if (pair.first == m_lastChanged)
-		{
-			// yellow
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "[%0#10x] %#10d", pair.first, pair.second);
-		}
-		else
-		{
-			ImGui::Text("[%0#10x] %#10d", pair.first, pair.second);
-		}
-	}
+	m_dataMemory.RenderInspector();
 }
 
 InputPin* DataMemoryCircuit::GetInputPin(int index)
@@ -118,6 +108,19 @@ OutputPin* DataMemoryCircuit::GetOutputPin(int index)
 	return nullptr;
 }
 
+void DataMemoryCircuit::LoadData(std::string path)
+{
+	bool bRet = ::LoadData(path.c_str(), &m_dataMemory);
+	if (bRet)
+	{
+		m_path.assign(path);
+	}
+	else
+	{
+		m_path.assign("NULL");
+	}
+}
+
 void DataMemoryCircuit::updateOutput()
 {
 	bool bClock = m_clock.ReadAt(0);
@@ -138,24 +141,31 @@ void DataMemoryCircuit::updateOutput()
 	}
 	m_bLastClock = bClock;
 
-	uint32_t addr = ReadToUint32(m_addr, 32);
-	uint32_t bits = 0;
-	if (m_data.count(addr))
+	if (m_memRead.ReadAt(0))
 	{
-		bits = m_data[addr];
-	}
+		uint32_t addr = ReadToUint32(m_addr, 32);
+		uint32_t bits = m_dataMemory.ReadWord(addr);
 
-	bool* data_buffer = getOutputDataBuffer(0);
-	Uint32ToBoolArray(bits, data_buffer);
+		setOutputDataByValue(m_rData, bits);
+		m_lastRData = bits;
+	}
+	else 
+	{
+		setOutputDataByValue(m_rData, m_lastRData);
+	}
 
 	if (bFallingEdge)
 	{
 		if (m_memWrite.ReadAt(0))
 		{
 			// update edge triggred part here
+			uint32_t addr = ReadToUint32(m_addr, 32);
+
 			m_lastChanged = addr;
 			int val = ReadToUint32(m_wData, 32);
-			m_data[m_lastChanged] = val;
+			m_dataMemory.SetWord(addr, val);
+			m_dataMemory.SetLastChangd(addr);
+			printf("dm addr: %d \n", addr);
 
 			// 입력이 변하지 않더라도 출력을 업데이트하도록
 			// 남은 딜레이를 리셋시킨다. 

@@ -131,12 +131,6 @@ void AluCircuit::updateOutput()
 		break;
 	}
 
-	if (m_lastResult > 100000000)
-	{
-		int a = 0;
-		a++;
-	}
-
 	bool* outBuf = getOutputDataBuffer(0);
 	Uint32ToBoolArray(m_lastResult, outBuf);
 

@@ -62,7 +62,7 @@ void InstructionMemoryCircuit::Render()
 		if (result == NFD_OKAY) {
 			PlayButton::Instance->Pause();
 			puts(outPath);
-			LoadInstruction(outPath);
+			this->LoadInstruction(outPath);
 			
 			free(outPath);
 		}

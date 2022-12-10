@@ -7,6 +7,7 @@
 #include "MuxCircuit.h"
 #include "Int32OutCircuit.h"
 #include "InstructionMemory.h"
+#include "DataMemoryCircuit.h"
 
 
 void SaveCircuitsToFile(const char* fileName, std::vector<Circuit*>& circuits)
@@ -97,6 +98,11 @@ void SaveCircuitsToFile(const char* fileName, std::vector<Circuit*>& circuits)
 		{
 			InstructionMemoryCircuit* i = (InstructionMemoryCircuit*)c;
 			f << " " << i->GetPath();
+		}
+		else if (c->GetType() == ECircuitType::DataMemory)
+		{
+			DataMemoryCircuit* d = (DataMemoryCircuit*)c;
+			f << " " << d->GetPath();
 		}
 
 		// new line
@@ -265,6 +271,16 @@ void LoadCircuitsFromFile(const char* fileName, std::vector<Circuit*>* pCircuits
 			if (path.compare("NULL") != 0)
 			{
 				in->LoadInstruction(path);
+			}
+		}
+		else if (type == ECircuitType::DataMemory)
+		{
+			DataMemoryCircuit* dm = (DataMemoryCircuit*)c;
+			std::string path;
+			f >> path;
+			if (path.compare("NULL") != 0)
+			{
+				dm->LoadData(path);
 			}
 		}
 	}
