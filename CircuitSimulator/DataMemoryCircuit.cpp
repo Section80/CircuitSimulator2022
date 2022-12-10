@@ -165,7 +165,6 @@ void DataMemoryCircuit::updateOutput()
 			int val = ReadToUint32(m_wData, 32);
 			m_dataMemory.SetWord(addr, val);
 			m_dataMemory.SetLastChangd(addr);
-			printf("dm addr: %d \n", addr);
 
 			// 입력이 변하지 않더라도 출력을 업데이트하도록
 			// 남은 딜레이를 리셋시킨다. 
