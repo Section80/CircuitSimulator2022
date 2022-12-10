@@ -56,14 +56,15 @@ bool onStart()
 	// SpawnSimple1(0, 0, &pCircuits);
 	// SpawnTestRegisterFile(0, 0, &pCircuits);
 
+	// rising edge 바로 직전
+	Circuit::UpdateAll(2.9f);
+	updated_time += 2.9;
+
 	std::string loadPath("/f/cc.save");
 	loadPath = global::pwd + loadPath;
 
 	LoadCircuitsFromFile(loadPath.c_str(), &pCircuits);
 
-	// rising edge 바로 직전
-	Circuit::UpdateAll(2.9f);
-	updated_time += 2.9;
 
 	return true;
 }
@@ -90,7 +91,7 @@ void onUpdate(double dt)
 	ImGui::PopItemWidth();
 	ImGui::SameLine();
 
-	int cycle = int(updated_time / 6.0) + 1;
+	int cycle = int(updated_time / 6.0);
 	ImGui::Text("cycle: %d", cycle);
 	ImGui::SameLine();
 

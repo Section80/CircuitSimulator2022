@@ -29,12 +29,15 @@ glfw의 경우, 직접 다운받아 빌드해야 한다.
 
 windows에서 빌드 완료된 실행 파일을 tag에서 다운로드 받을 수 있다. 
 
+instruction 단위로 하려면 ``skip 버튼``을 누르거나 ``왼쪽 방향키``를 누르면 된다. 
+one clock cycle은 6초로 sec 값을 6이 아닌 다른 값으로 설정하면 skip했을 때 instruction 단위로 실행아 안 될 수도 있다.
+
 <image src="./image/0.png">
 
 ## 메뉴 설명
  - Start/Pause: 실시간으로 회로를 실행/중지한다. 
  - sec: Skip 버튼을 눌렀을 때 건너뛸 시간 간격이다. 
- - cycle: 현재 사이클. 1부터 시작한다. 
+ - cycle: 현재 사이클. 0부터 시작한다. 
  - Skip: 시간을 건너뛴다. Clock은 기본으로 risingEdge 직전, sec은 timePeriod(6초) 돼있으니 Skip 버튼을 누르면 한 사이클씩 건너뛸 수 있다. 오른쪽 방향키를 눌러도 된다. 
  - Save: 현재 회로를 저장한다. 
  - Load: 회로를 불러온다. 
