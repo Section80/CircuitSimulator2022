@@ -30,7 +30,7 @@ glfw의 경우, 직접 다운받아 빌드해야 한다.
 windows에서 빌드 완료된 실행 파일을 tag에서 다운로드 받을 수 있다. 
 
 instruction 단위로 하려면 ``skip 버튼``을 누르거나 ``왼쪽 방향키``를 누르면 된다. 
-one clock cycle은 6초로 sec 값을 6이 아닌 다른 값으로 설정하면 skip했을 때 instruction 단위로 실행아 안 될 수도 있다.
+one clock cycle은 6초로 sec 값을 6이 아닌 다른 값으로 설정하면 skip했을 때 instruction 단위로 실행 안 될 수도 있다.
 
 <image src="./image/0.png">
 
