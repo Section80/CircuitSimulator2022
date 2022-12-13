@@ -57,14 +57,14 @@ bool onStart()
 	// SpawnTestRegisterFile(0, 0, &pCircuits);
 
 	// rising edge 바로 직전
-	Circuit::UpdateAll(2.9f);
-	updated_time += 2.9;
 
 	std::string loadPath("/f/cc.save");
 	loadPath = global::pwd + loadPath;
 
 	LoadCircuitsFromFile(loadPath.c_str(), &pCircuits);
 
+	Circuit::UpdateAll(2.9f);
+	updated_time += 2.9;
 
 	return true;
 }

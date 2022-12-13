@@ -406,14 +406,18 @@ Stall 여부 판단 조건은 다음과 같다.
 ``` c++
 bool bStall = false;
 
-// Check Load Use(Save Used1)
+// Check Load Use
 if (
+	!memWrite &&	// lw sw, Store Used1의 경우 Stall하지 않기 위해 확인한다. 
 	ID/EX.memRead &&
 	(
-		IF/ID.rs == ID/EX.writeReg ||
-		IF/ID.rt == ID/EX.writeReg
+		rs == ID/EX.writeReg ||
+		rt == D/EX.writeReg
 	)
 )
+{
+	stall = true;
+}
 {
 	bStall = true;
 }
