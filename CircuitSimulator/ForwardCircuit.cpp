@@ -121,8 +121,8 @@ void ForwardCircuit::updateOutput()
 		m_exMemAluReg.Value() == m_rs.Value()
 	)	// EX/MEM에서 가져와야 하는 경우
 	{
-		setOutputDataByValue(0, 0b01);
-		m_iForwardA = 0b01;
+		setOutputDataByValue(0, 0b10);
+		m_iForwardA = 0b10;
 	}
 	else if (
 		m_memWbRegWrite.Value() == 1 &&
@@ -130,8 +130,8 @@ void ForwardCircuit::updateOutput()
 		m_memWbAluReg.Value() == m_rs.Value()
 	)	// MEM/WB에서 가져와야 하는 경우
 	{
-		setOutputDataByValue(0, 0b10);
-		m_iForwardA = 0b10;
+		setOutputDataByValue(0, 0b01);
+		m_iForwardA = 0b01;
 	}
 	else   // 레지스터에 읽은 값 그대로 사용
 	{
@@ -146,8 +146,8 @@ void ForwardCircuit::updateOutput()
 		m_exMemAluReg.Value() == m_rt.Value()
 	)	// EX/MEM에서 가져와야 하는 경우
 	{
-		setOutputDataByValue(1, 0b01);
-		m_iForwardB = 0b01;
+		setOutputDataByValue(1, 0b10);
+		m_iForwardB = 0b10;
 	}
 	else if (
 		m_memWbRegWrite.Value() == 1 &&
@@ -155,8 +155,8 @@ void ForwardCircuit::updateOutput()
 		m_memWbAluReg.Value() == m_rt.Value()
 	)	// MEM/WB에서 가져와야 하는 경우
 	{
-		setOutputDataByValue(1, 0b10);
-		m_iForwardB = 0b10;
+		setOutputDataByValue(1, 0b01);
+		m_iForwardB = 0b01;
 	}
 	else   // 레지스터에 읽은 값 그대로 사용
 	{
