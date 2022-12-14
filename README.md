@@ -206,7 +206,7 @@ if (
 	EX/MEM.RegWrite &&
 	EX/MEM.WriteReg != 0 &&
 	EX/MEM.WriteReg == rs
-)	// EXE/MEM에서 가져와야 하는 경우
+)	// EX/MEM에서 가져와야 하는 경우
 {
 	ForwardA = 0b01;
 }
@@ -228,7 +228,7 @@ if (
 	EX/MEM.RegWrite &&
 	EX/MEM.WriteReg == 0 &&
 	EX/MEM.WriteReg == rt
-)	// EXE/MEM에서 가져와야 하는 경우
+)	// EX/MEM에서 가져와야 하는 경우
 {
 	ForwardB = 0b01;
 }
