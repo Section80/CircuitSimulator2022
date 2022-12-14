@@ -203,16 +203,18 @@ add $t2, $t0, $t1    # 3: EX
 ``` c++
 // update ForwardA
 if (
-	MEM/WB.RegWrite &&
-	MEM/WB.WriteReg == rs
-)	// MEM/WB에서 가져와야 하는 경우
+	EX/MEM.RegWrite &&
+	EX/MEM.WriteReg != 0 &&
+	EX/MEM.WriteReg == rs
+)	// EXE/MEM에서 가져와야 하는 경우
 {
 	ForwardA = 0b01;
 }
 else if (
-	EX/MEM.RegWrite &&
-	EX/MEM.WriteReg == rs
-)	// EXE/MEM에서 가져와야 하는 경우
+	MEM/WB.RegWrite &&
+	MEM/WB.WriteReg != 0 &&
+	MEM/WB.WriteReg == rs
+)	// MEM/WB에서 가져와야 하는 경우
 {
 	m_iForwardA = 0b10;
 }
@@ -223,16 +225,17 @@ else   // 레지스터에 읽은 값 그대로 사용
 
 // update ForwardB
 if (
-	MEM/WB.RegWrite &&
-	MEM/WB.WriteReg == rs
-)	// MEM/WB에서 가져와야 하는 경우
+	EX/MEM.RegWrite &&
+	EX/MEM.WriteReg == 0 &&
+	EX/MEM.WriteReg == rt
+)	// EXE/MEM에서 가져와야 하는 경우
 {
 	ForwardB = 0b01;
 }
 else if (
-	EX/MEM.RegWrite &&
-	EX/MEM.WriteReg == rt
-)	// EXE/MEM에서 가져와야 하는 경우
+	MEM/WB.RegWrite &&
+	MEM/WB.WriteReg == rs
+)	// MEM/WB에서 가져와야 하는 경우
 {
 	ForwardB = 0b10;
 }
@@ -415,9 +418,6 @@ if (
 		rt == D/EX.writeReg
 	)
 )
-{
-	stall = true;
-}
 {
 	bStall = true;
 }
