@@ -119,7 +119,7 @@ void ForwardCircuit::updateOutput()
 		m_exMemRegWrite.Value() == 1 &&
 		m_exMemAluReg.Value() != 0 &&
 		m_exMemAluReg.Value() == m_rs.Value()
-	)	// EXE/MEM에서 가져와야 하는 경우
+	)	// EX/MEM에서 가져와야 하는 경우
 	{
 		setOutputDataByValue(0, 0b01);
 		m_iForwardA = 0b01;
@@ -144,7 +144,7 @@ void ForwardCircuit::updateOutput()
 		m_exMemRegWrite.Value() == 1 &&
 		m_exMemAluReg.Value() != 0 &&
 		m_exMemAluReg.Value() == m_rt.Value()
-	)	// EXE/MEM에서 가져와야 하는 경우
+	)	// EX/MEM에서 가져와야 하는 경우
 	{
 		setOutputDataByValue(1, 0b01);
 		m_iForwardB = 0b01;
