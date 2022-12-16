@@ -2,6 +2,8 @@
 #include "Convert.h"
 #include "ProgramCounterCircuit.h"
 
+ProgramCounterCircuit* ProgramCounterCircuit::Instance = nullptr;
+
 ProgramCounterCircuit::ProgramCounterCircuit()
 	: Circuit("Program Counter", ECircuitType::ProgramCounter, 3, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
 	, m_inAddr(*this, "inAddr", 32)
@@ -10,7 +12,9 @@ ProgramCounterCircuit::ProgramCounterCircuit()
 	, m_outAddr(*this, "addr", 0, 32)
 	, m_bLastClock(false)
 	, m_addr(0x00400024)
-{}
+{
+	ProgramCounterCircuit::Instance = this;
+}
 
 ProgramCounterCircuit::ProgramCounterCircuit(float x, float y)
 	: ProgramCounterCircuit()

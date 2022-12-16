@@ -15,6 +15,16 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	inline void SetAddress(int address) 
+	{ 
+		m_addr = address; 
+		updateOutput();
+		afterUpdateOutput();
+	}
+
+public:
+	static ProgramCounterCircuit* Instance;
+
 private:
 	void updateOutput() override;
 

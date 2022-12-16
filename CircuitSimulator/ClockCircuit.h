@@ -16,6 +16,11 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	inline void ResetDelay() { resetDelay(); };
+
+public:
+	static ClockCircuit* Instance;
+
 protected:
 	void afterUpdateOutput() override;
 

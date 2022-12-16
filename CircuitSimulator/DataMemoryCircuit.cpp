@@ -5,6 +5,8 @@
 #include "PlayButton.h"
 #include "Global.h"
 #include "Parse.h"
+#include "ClockCircuit.h"
+#include "ProgramCounterCircuit.h"
 
 DataMemoryCircuit::DataMemoryCircuit()
 	: Circuit("Data Memory", ECircuitType::DataMemory, 5, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
@@ -54,6 +56,13 @@ void DataMemoryCircuit::Render()
 				PlayButton::Instance->Pause();
 				puts(outPath);
 				this->LoadData(outPath);
+
+				ClockCircuit::Instance->ResetDelay();
+				ProgramCounterCircuit::Instance->SetAddress(0x00400024);
+				global::updated_time = 0;
+				Circuit::UpdateAll(2.9f);
+				global::updated_time += 2.9;
+				ProgramCounterCircuit::Instance->SetAddress(0x00400024);
 				
 				free(outPath);
 			}

@@ -2,11 +2,14 @@
 #include "Convert.h"
 #include "ClockCircuit.h"
 
+ClockCircuit* ClockCircuit::Instance = nullptr;
+
 ClockCircuit::ClockCircuit()
 	: Circuit("Clock", ECircuitType::Clock, 0, 1, &m_outBuf1, &m_outBuf2, 1, 3.0f)
 	, m_out(*this, "Clock", 0, 1)
 	, m_bVal(false)
 {
+	ClockCircuit::Instance = this;
 	resetDelay();
 }
 

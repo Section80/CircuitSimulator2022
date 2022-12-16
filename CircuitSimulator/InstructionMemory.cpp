@@ -6,6 +6,8 @@
 #include "PlayButton.h"
 #include "Global.h"
 #include "Parse.h"
+#include "ClockCircuit.h"
+#include "ProgramCounterCircuit.h"
 
 
 InstructionMemoryCircuit::InstructionMemoryCircuit()
@@ -64,6 +66,13 @@ void InstructionMemoryCircuit::Render()
 			puts(outPath);
 			this->LoadInstruction(outPath);
 			
+			ClockCircuit::Instance->ResetDelay();
+			ProgramCounterCircuit::Instance->SetAddress(0x00400024);
+			global::updated_time = 0;
+			Circuit::UpdateAll(2.9f);
+			global::updated_time += 2.9;
+			ProgramCounterCircuit::Instance->SetAddress(0x00400024);
+
 			free(outPath);
 		}
 		else if (result == NFD_CANCEL) {
@@ -122,6 +131,7 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 
 void InstructionMemoryCircuit::LoadInstruction(std::string path)
 {
+
 	bool bRes = ::LoadInstruction(path.c_str(), &m_map);
 	if (bRes)
 	{

@@ -22,7 +22,6 @@ std::vector<Circuit*> pCircuits;
 PlayButton playButton;
 float skip_sec = 6.0f;	// Clock аж╠Б
 int spawnId = 0;
-double updated_time = 0.0f;
 
 int main(int argc, char* argv[])
 {
@@ -64,7 +63,7 @@ bool onStart()
 	LoadCircuitsFromFile(loadPath.c_str(), &pCircuits);
 
 	Circuit::UpdateAll(2.9f);
-	updated_time += 2.9;
+	global::updated_time += 2.9;
 
 	return true;
 }
@@ -76,7 +75,7 @@ void onUpdate(double dt)
 	{
 		Circuit::UpdateAll(dt);
 		Sleep((int)(1.0f / 60.0f) * 1000);
-		updated_time += dt;
+		global::updated_time += dt;
 	}
 
 	// Render
@@ -91,7 +90,7 @@ void onUpdate(double dt)
 	ImGui::PopItemWidth();
 	ImGui::SameLine();
 
-	int cycle = int(updated_time / 6.0);
+	int cycle = int(global::updated_time / 6.0);
 	ImGui::Text("cycle: %d", cycle);
 	ImGui::SameLine();
 
@@ -107,7 +106,7 @@ void onUpdate(double dt)
 		{
 			Circuit::UpdateAll(skip_sec / div);
 		}
-		updated_time += skip_sec;
+		global::updated_time += skip_sec;
 	}
 	ImGui::SameLine();
 
