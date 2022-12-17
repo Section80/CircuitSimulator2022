@@ -9,7 +9,7 @@ main:
 	addi $t0, $0, 1   # t0: 1
 	nop
 	nop
-	addi $t1, $0, $t0	# read & write in one cycle
+	nop
 
 # ALU Hazard
 	add $t1, $0, $t0    # hazard. t1: 1

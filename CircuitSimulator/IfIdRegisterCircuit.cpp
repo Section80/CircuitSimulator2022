@@ -78,8 +78,8 @@ void IfIdRegisterCircuit::RenderWire(bool bSummary)
 
 void IfIdRegisterCircuit::RenderInspector()
 {
-	ImGui::Text("pc: %d", m_pc_out.Value());
-	ImGui::Text("instruction: %d", m_instruction_out.Value());
+	ImGui::Text("pc: %0#10x", m_pc_out.Value());
+	ImGui::Text("instruction: %0#10x", m_instruction_out.Value());
 	ImGui::Text("rs: %d", m_rs_out.Value());
 	ImGui::Text("rt: %d", m_rt_out.Value());
 	ImGui::Text("rd: %d", m_rd_out.Value());

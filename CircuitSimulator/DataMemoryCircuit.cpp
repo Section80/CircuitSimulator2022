@@ -152,7 +152,7 @@ void DataMemoryCircuit::updateOutput()
 
 	if (m_memRead.ReadAt(0))
 	{
-		uint32_t addr = ReadToUint32(m_addr, 32);
+		uint32_t addr = m_addr.Value();
 		uint32_t bits = m_dataMemory.ReadWord(addr);
 
 		setOutputDataByValue(m_rData, bits);
@@ -168,10 +168,18 @@ void DataMemoryCircuit::updateOutput()
 		if (m_memWrite.ReadAt(0))
 		{
 			// update edge triggred part here
-			uint32_t addr = ReadToUint32(m_addr, 32);
+			uint32_t addr = m_addr.Value();
 
 			m_lastChanged = addr;
-			int val = ReadToUint32(m_wData, 32);
+			int val = m_wData.Value();
+
+			if (val == 0x10008000)
+			{
+				printf("%x", addr);
+				int a = 0;
+				a++;
+			}
+
 			m_dataMemory.SetWord(addr, val);
 			m_dataMemory.SetLastChangd(addr);
 
