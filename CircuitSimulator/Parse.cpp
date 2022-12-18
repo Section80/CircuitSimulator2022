@@ -11,12 +11,14 @@ int strToRegisterIndex(std::string& str);
 bool strToInt(std::string& str, int* pOut);
 
 
-bool LoadInstruction(const char* path, std::map<int, int>* pMap)
+bool LoadInstruction(const char* path, std::map<int, int>* pMap, std::map<int, std::string>* pStringMap)
 {
 	using namespace std;
 
 	std::map<int, int>& map = *pMap;
 	map.clear();
+
+	std::map<int, string>& stringMap = *pStringMap;
 	
 	// 코드 참고
 	// https://stackoverflow.com/questions/7868936/read-file-line-by-line-using-ifstream-in-c
@@ -158,6 +160,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x24);
 				map[lastKey += 4] = i.Get();
+
+				string inst("and ");
+				inst.append(op1);
+				inst.append(", ");
+				inst.append(op2);
+				inst.append(", ");
+				inst.append(op3);
+				stringMap[lastKey] = inst;
 			}
 			else if (word.compare("or") == 0)
 			{
@@ -175,6 +185,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x25);
 				map[lastKey += 4] = i.Get();
+
+				string inst("or ");
+				inst.append(op1);
+				inst.append(", ");
+				inst.append(op2);
+				inst.append(", ");
+				inst.append(op3);
+				stringMap[lastKey] = inst;
 			}
 			else if (word.compare("add") == 0)
 			{
@@ -192,6 +210,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x20);
 				map[lastKey += 4] = i.Get();
+
+				string inst("add ");
+				inst.append(op1);
+				inst.append(", ");
+				inst.append(op2);
+				inst.append(", ");
+				inst.append(op3);
+				stringMap[lastKey] = inst;
 			}
 			else if (word.compare("addi") == 0)
 			{
@@ -208,6 +234,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0x8).SetRT(rt).SetRS(rs).SetLow16(imm);
 				map[lastKey += 4] = i.Get();
+
+				char buff[256] = { 0 };
+				snprintf(
+					buff, sizeof(buff), 
+					"addi %s, %s, %0#10x", 
+					op1.c_str(), op2.c_str(), imm
+				);
+				stringMap[lastKey] = string(buff);
 			}
 			else if (word.compare("sub") == 0)
 			{
@@ -225,6 +259,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x22);
 				map[lastKey += 4] = i.Get();
+
+				string inst("sub ");
+				inst.append(op1);
+				inst.append(", ");
+				inst.append(op2);
+				inst.append(", ");
+				inst.append(op3);
+				stringMap[lastKey] = inst;
 			}
 			else if (word.compare("slt") == 0)
 			{
@@ -242,6 +284,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0).SetRS(rs).SetRT(rt).SetRD(rd).SetFunct(0x2a);
 				map[lastKey += 4] = i.Get();
+
+				string inst("slt ");
+				inst.append(op1);
+				inst.append(", ");
+				inst.append(op2);
+				inst.append(", ");
+				inst.append(op3);
+				stringMap[lastKey] = inst;
 			}
 			else if (word.compare("lw") == 0)
 			{
@@ -266,6 +316,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0x23).SetRT(rt).SetRS(rs).SetLow16(imm);
 				map[lastKey += 4] = i.Get();
+
+				char buff[256] = { 0 };
+				snprintf(
+					buff, sizeof(buff),
+					"lw %s, %d(%s)",
+					op1.c_str(), imm, rsStr.c_str()
+				);
+				stringMap[lastKey] = string(buff);
 			}
 			else if (word.compare("sw") == 0)
 			{
@@ -290,6 +348,14 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(0x2b).SetRT(rt).SetRS(rs).SetLow16(imm);
 				map[lastKey += 4] = i.Get();
+
+				char buff[256] = { 0 };
+				snprintf(
+					buff, sizeof(buff),
+					"sw %s, %d(%s)",
+					op1.c_str(), imm, rsStr.c_str()
+				);
+				stringMap[lastKey] = string(buff);
 			}
 			else if (word.compare("beq") == 0)
 			{
@@ -304,9 +370,10 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				int rt = strToRegisterIndex(op2);
 
 				int imm = 0;
+				int targetPC = 0;
 				if (labelMap.count(op3) != 0) 
 				{
-					int targetPC = labelMap[op3];
+					targetPC = labelMap[op3];
 					int curPC = lastKey + 4;
 
 					imm = (targetPC - curPC - 4) / 4;
@@ -319,14 +386,24 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(4).SetRS(rs).SetRT(rt).SetLow16(imm);
 				map[lastKey += 4] = i.Get();
+
+				char buff[256] = { 0 };
+				snprintf(
+					buff, sizeof(buff),
+					"beq %s, %s, %0#10x",
+					op1.c_str(), op2.c_str(), targetPC
+				);
+				stringMap[lastKey] = string(buff);
 			}
 			else if (word.compare("j") == 0)
 			{
 				string op;
 				ss >> op;
+				int targetPC = 0;
 				int addr = 0;
 				if (labelMap.count(op) != 0) {
-					addr = labelMap[op];
+					targetPC = labelMap[op];
+					addr = targetPC;
 					addr &= 0b00001111111111111111111111111111;
 					// printf("%s: %0#10x \n", op.c_str(), addr);
 					addr = addr >> 2;
@@ -339,15 +416,27 @@ bool LoadInstruction(const char* path, std::map<int, int>* pMap)
 				Instruction i;
 				i.SetOpcode(2).SetAddress(addr);
 				map[lastKey += 4] = i.Get();
+
+				char buff[256] = { 0 };
+				snprintf(
+					buff, sizeof(buff),
+					"j %0#10x",
+					targetPC
+				);
+				stringMap[lastKey] = string(buff);
 			}
 			else if (word.compare("nop") == 0)
 			{
 				map[lastKey += 4] = 0;
+				stringMap[lastKey] = string("nop");
 			}
-
-			break;
 		}
 	}
+
+	// for (auto& pair : stringMap)
+	// {
+	// 	printf("[%0#10x]: %s \n", pair.first, pair.second.c_str());
+	// }
 
 	return true;
 }

@@ -9,7 +9,7 @@
 #include "ProgramCounterCircuit.h"
 
 DataMemoryCircuit::DataMemoryCircuit()
-	: Circuit("Data Memory", ECircuitType::DataMemory, 5, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
+	: Circuit("Data Memory", ECircuitType::DataMemory, 5, 1, m_outBuf1, m_outBuf2, 32, 0.6f)
 	, m_addr(*this, "addr", 32)
 	, m_wData(*this, "wData", 32)
 	, m_clock(*this, "clock", 1)

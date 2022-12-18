@@ -148,7 +148,6 @@
     <ClCompile Include="InstructionMemory.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
-    <ClCompile Include="AluControlCircuit.cpp" />
     <ClCompile Include="MuxCircuit.cpp">
       <Filter>소스 파일\Identifiable\Circuit\imple\Primitive</Filter>
     </ClCompile>
@@ -202,6 +201,9 @@
     </ClCompile>
     <ClCompile Include="DataMemory.cpp">
       <Filter>소스 파일\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="AluControlCircuit.cpp">
+      <Filter>소스 파일\Identifiable\Circuit\imple\Combinational</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

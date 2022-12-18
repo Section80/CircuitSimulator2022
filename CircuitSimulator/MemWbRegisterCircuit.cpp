@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "Convert.h"
+#include "IfIdRegisterCircuit.h"
+#include "IdExRegisterCircuit.h"
+#include "ExMemRegisterCircuit.h"
 #include "MemWbRegisterCircuit.h"
+#include "InstructionMemory.h"
+
+MemWbRegisterCircuit* MemWbRegisterCircuit::Instance = nullptr;
 
 MemWbRegisterCircuit::MemWbRegisterCircuit()
 	: Circuit("MEM/WB Register", ECircuitType::MemWb, 6, 5, m_outBuf1, m_outBuf2, 71, 0.5f)
@@ -15,8 +21,10 @@ MemWbRegisterCircuit::MemWbRegisterCircuit()
 	, m_readData_out(*this, "rData", 37, 32)
 	, m_aluResult_out(*this, "aluRes", 5, 32)
 	, m_writeReg_out(*this, "writeReg", 0, 5)
+	, CurrentInstruction("nop")
 {
 	memset(m_data, 0, sizeof(uint32_t) * 2);
+	MemWbRegisterCircuit::Instance = this;
 }
 
 MemWbRegisterCircuit::MemWbRegisterCircuit(float x, float y)
@@ -51,15 +59,48 @@ void MemWbRegisterCircuit::RenderWire(bool bSummary)
 	{
 		Circuit::RenderWire();
 	}
+
+
 }
 
 void MemWbRegisterCircuit::RenderInspector()
 {
+	ImGui::Text("Instruction: %s", CurrentInstruction.c_str());
 	ImGui::Text("  regWrite: %d", m_regWrite_out.Value());
 	ImGui::Text("  memToReg: %d", m_memToReg_out.Value());
-	ImGui::Text("  readData: %d", m_readData_out.Value());
-	ImGui::Text(" aluResult: %d", m_aluResult_out.Value());
+
+	int readDataOut = m_readData_out.Value();
+	if (readDataOut == 0)
+	{
+		ImGui::Text("  readData: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("  readData: %0#10x", m_readData_out.Value());
+	}
+	
+	int aluResultOut = m_aluResult_out.Value();
+	if (aluResultOut == 0)
+	{
+		ImGui::Text(" aluResult: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text(" aluResult: %0#10x", aluResultOut);
+	}
+
 	ImGui::Text("  writeReg: %d", m_writeReg_out.Value());
+
+	InstructionMemoryCircuit* im = InstructionMemoryCircuit::Instance;
+	int address = im->GetAddress();
+	std::string& str = im->GetInstructionString(address);
+
+	ImGui::NewLine();
+	ImGui::Text(" IF: %s", str.c_str());
+	ImGui::Text(" ID: %s", IfIdRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" EX: %s", IdExRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text("MEM: %s", ExMemRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" WB: %s", MemWbRegisterCircuit::Instance->CurrentInstruction.c_str());
 }
 
 InputPin* MemWbRegisterCircuit::GetInputPin(int index)

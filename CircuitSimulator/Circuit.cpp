@@ -4,6 +4,7 @@
 #include "Circuit.h"
 
 std::vector<Circuit*> Circuit::s_pCircuits;
+std::string stringBuffer;
 
 Circuit::Circuit(
 	const char* name, ECircuitType type,
@@ -54,7 +55,7 @@ void Circuit::RenderWire(bool bSummary)
 
 void Circuit::RenderInspector()
 {
-	ImGui::Text("Inspector is not implemented. ");
+	// ImGui::Text("Default Insepctor");
 	if (IsResolvable())
 	{
 		ImGui::Text("IsResolvable : true");
@@ -62,6 +63,89 @@ void Circuit::RenderInspector()
 	else
 	{
 		ImGui::Text("IsResolvable : false");
+	}
+
+	ImGui::Text("INPUT");
+	for (int i = 0; i < GetInputPinCount(); i++)
+	{
+		InputPin& in = *GetInputPin(i);
+		int value = in.Value();
+
+		int count = in.GetWireLineCount();
+		if (count > 10)	// 16진수 표현
+		{
+			if (value == 0)
+			{
+				ImGui::Text("    %s: 0x00000000", in.GetName());
+			}
+			else
+			{
+				ImGui::Text("    %s: %0#10x", in.GetName(), value);
+			}
+		}
+		else    // 2진수 표현
+		{
+			if (value == 0)
+			{
+				stringBuffer.assign("0b");
+				stringBuffer.append(count, '0');
+				
+				ImGui::Text(
+					"    %s: %s", 
+					in.GetName(), 
+					stringBuffer.c_str()
+				);
+			}
+			else
+			{
+				std::string valStr;
+				GetBinaryString(value, &valStr);
+				ImGui::Text(
+					"    %s: %s", in.GetName(), valStr.c_str()
+				);
+			}
+		}
+	}
+
+	ImGui::Text("OUTPUT");
+	for (int i = 0; i < GetOutputPinCount(); i++)
+	{
+		OutputPin& out = *GetOutputPin(i);
+		int value = out.Value();
+
+		int count = out.GetWireLineCount();
+		if (count > 10)	// 16진수 표현
+		{
+			if (value == 0)
+			{
+				ImGui::Text("    %s: 0x00000000", out.GetName());
+			}
+			else
+			{
+				ImGui::Text("    %s: %0#10x", out.GetName(), value);
+			}
+		}
+		else    // 2진수 표현
+		{
+			if (value == 0)
+			{
+				stringBuffer.assign("0b");
+				stringBuffer.append(count, '0');
+				ImGui::Text(
+					"    %s: %s", 
+					out.GetName(),
+					stringBuffer.c_str()
+				);
+			}
+			else
+			{
+				std::string valStr;
+				GetBinaryString(value, &valStr);
+				ImGui::Text(
+					"    %s: %s", out.GetName(), valStr.c_str()
+				);
+			}
+		}
 	}
 }
 

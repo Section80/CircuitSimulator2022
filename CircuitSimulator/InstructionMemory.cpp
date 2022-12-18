@@ -9,6 +9,7 @@
 #include "ClockCircuit.h"
 #include "ProgramCounterCircuit.h"
 
+InstructionMemoryCircuit* InstructionMemoryCircuit::Instance = nullptr;
 
 InstructionMemoryCircuit::InstructionMemoryCircuit()
 	: Circuit("Instruction Memory", ECircuitType::InstructionMemory, 1, 1, m_outBuf1, m_outBuf2, 32, 0.5f)
@@ -18,7 +19,10 @@ InstructionMemoryCircuit::InstructionMemoryCircuit()
 	, m_currentOutAddr(0)
 	, m_loadButtonId(Identifiable::GetNewId())
 	, m_path("NULL")
+	, m_checkBoxId(Identifiable::GetNewId())
+	, m_bShowHex(false)
 {
+	InstructionMemoryCircuit::Instance = this;
 }
 
 InstructionMemoryCircuit::InstructionMemoryCircuit(float x, float y)
@@ -89,16 +93,36 @@ void InstructionMemoryCircuit::Render()
 
 void InstructionMemoryCircuit::RenderInspector()
 {
+	ImGui::PushID(m_checkBoxId);
+	ImGui::Checkbox("show hex", &m_bShowHex);
+	ImGui::PopID();
+
 	for (const auto& pair : m_map)
 	{
 		if (pair.first == m_currentOutAddr)
 		{
 			// yellow
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "[%0#10x] %0#10x", pair.first, pair.second);
+			if (m_bShowHex)
+			{
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "[%0#10x] %0#10x", pair.first, pair.second);
+			}
+			else
+			{
+				std::string& str = m_stringMap[pair.first];
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "[%0#10x] %s", pair.first, str.c_str());
+			}
 		}
 		else
 		{
-			ImGui::Text("[%0#10x] %0#10x", pair.first, pair.second);
+			if (m_bShowHex)
+			{
+				ImGui::Text("[%0#10x] %0#10x", pair.first, pair.second);
+			}
+			else
+			{
+				std::string& str = m_stringMap[pair.first];
+				ImGui::Text("[%0#10x] %s", pair.first, str.c_str());
+			}
 		}
 	}
 }
@@ -132,7 +156,7 @@ OutputPin* InstructionMemoryCircuit::GetOutputPin(int index)
 void InstructionMemoryCircuit::LoadInstruction(std::string path)
 {
 
-	bool bRes = ::LoadInstruction(path.c_str(), &m_map);
+	bool bRes = ::LoadInstruction(path.c_str(), &m_map, &m_stringMap);
 	if (bRes)
 	{
 		m_path.assign(path);
@@ -140,6 +164,20 @@ void InstructionMemoryCircuit::LoadInstruction(std::string path)
 	else
 	{
 		m_path.assign("NULL");
+	}
+}
+
+std::string& InstructionMemoryCircuit::GetInstructionString(int address)
+{
+	static std::string nopString("nop");
+
+	if (m_stringMap.count(address))
+	{
+		return m_stringMap[address];
+	}
+	else
+	{
+		return nopString;
 	}
 }
 

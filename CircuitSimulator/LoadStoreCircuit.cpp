@@ -32,6 +32,7 @@ void LoadStoreCircuit::Render()
 	ImNode::EndNode();
 }
 
+/*
 void LoadStoreCircuit::RenderInspector()
 {
 	if (m_memWbRegWrite.GetFrom() != nullptr)
@@ -69,6 +70,7 @@ void LoadStoreCircuit::RenderInspector()
 		ImGui::Text("MEM/WB WriteRegister: 0");
 	}
 }
+*/
 
 InputPin* LoadStoreCircuit::GetInputPin(int index)
 {

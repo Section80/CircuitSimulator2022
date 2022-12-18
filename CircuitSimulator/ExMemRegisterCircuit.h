@@ -17,6 +17,11 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	std::string CurrentInstruction;
+
+public:
+	static ExMemRegisterCircuit* Instance;
+
 private:
 	void updateOutput() override;
 

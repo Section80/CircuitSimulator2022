@@ -18,16 +18,10 @@ int main()
 	// std::string str("11");
 	// printf("%ld", str.size());
 
-	std::string str1;
-	std::string str2;
-	std::stringstream ss;
-	ss << ".data";
-	ss >> str1;
-	ss >> str2;
-	
-	// printf("%d", str2.size());
 
-	
+	std::string str;
+	// GetBinaryString(32, &str);
+	printf("%s", str.c_str());
 
 	return 0;
 }

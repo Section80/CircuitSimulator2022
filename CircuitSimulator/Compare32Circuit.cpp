@@ -29,6 +29,7 @@ void Compare32Circuit::Render()
 	ImNode::EndNode();
 }
 
+/*
 void Compare32Circuit::RenderInspector()
 {
 	if (m_in1.GetFrom() != nullptr)
@@ -58,6 +59,7 @@ void Compare32Circuit::RenderInspector()
 		ImGui::Text("equal: false");
 	}
 }
+*/
 
 InputPin* Compare32Circuit::GetInputPin(int index)
 {

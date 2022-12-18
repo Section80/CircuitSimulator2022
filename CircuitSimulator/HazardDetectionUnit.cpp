@@ -1,5 +1,7 @@
 #include "HazardDetectionUnit.h"
 
+HazardDetectionUnit* HazardDetectionUnit::Instance = nullptr;
+
 HazardDetectionUnit::HazardDetectionUnit()
 	: Circuit(
 		"HazardDetectionUnit", ECircuitType::HarzardDetection,
@@ -25,6 +27,7 @@ HazardDetectionUnit::HazardDetectionUnit(float x, float y)
 	: HazardDetectionUnit()
 {
 	SetPos(x, y);
+	HazardDetectionUnit::Instance = this;
 }
 
 void HazardDetectionUnit::Render()
@@ -57,6 +60,7 @@ void HazardDetectionUnit::Render()
 	ImNode::EndNode();
 }
 
+/*
 void HazardDetectionUnit::RenderInspector()
 {
 	if (m_stall.Value() == 1)
@@ -86,6 +90,7 @@ void HazardDetectionUnit::RenderInspector()
 		ImGui::Text("ForwardB: false");
 	}
 }
+*/
 
 InputPin* HazardDetectionUnit::GetInputPin(int index)
 {

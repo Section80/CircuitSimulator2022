@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Convert.h"
 #include "ProgramCounterCircuit.h"
+#include "IfIdRegisterCircuit.h"
+#include "IdExRegisterCircuit.h"
+#include "ExMemRegisterCircuit.h"
+#include "MemWbRegisterCircuit.h"
+#include "InstructionMemory.h"
 
 ProgramCounterCircuit* ProgramCounterCircuit::Instance = nullptr;
 
@@ -39,6 +44,22 @@ void ProgramCounterCircuit::Render()
 		m_write.Render();
 		m_clock.Render();
 	ImNode::EndNode();
+}
+
+void ProgramCounterCircuit::RenderInspector()
+{
+	Circuit::RenderInspector();
+
+	InstructionMemoryCircuit* im = InstructionMemoryCircuit::Instance;
+	int address = im->GetAddress();
+	std::string& str = im->GetInstructionString(address);
+
+	ImGui::NewLine();
+	ImGui::Text(" IF: %s", str.c_str());
+	ImGui::Text(" ID: %s", IfIdRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" EX: %s", IdExRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text("MEM: %s", ExMemRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" WB: %s", MemWbRegisterCircuit::Instance->CurrentInstruction.c_str());
 }
 
 InputPin* ProgramCounterCircuit::GetInputPin(int index)

@@ -21,6 +21,12 @@ public:
 	void LoadInstruction(std::string path);
 	inline std::string& GetPath() { return m_path; }
 
+	std::string& GetInstructionString(int address);
+	inline int GetAddress() { return m_addr.Value(); }
+
+public:
+	static InstructionMemoryCircuit* Instance;
+
 private:
 	void updateOutput() override;
 
@@ -32,12 +38,16 @@ private:
 	bool m_outBuf2[32];
 
 	std::map<int, int> m_map;
+	std::map<int, std::string> m_stringMap;
 
 	int m_val;
 	int m_currentOutAddr;
 	int m_loadButtonId;
 
 	std::string m_path;
+
+	int m_checkBoxId;
+	bool m_bShowHex;
 };
 
 #endif

@@ -17,8 +17,16 @@ public:
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
 
+	std::string CurrentInstruction;
+
+public:
+	static IfIdRegisterCircuit* Instance;
+
 private:
 	void updateOutput() override;
+
+	// 각 스테이지에서 실행하고 있는 명령어 표기 업데이트
+	void updateInstructionForEachStage();
 
 private:
 	InputPin m_pc_in;				// 32bit

@@ -75,10 +75,10 @@ void RegisterCircuit::RenderInspector()
 	ImGui::Text("R17 [s1] = %0#10x", m_registers[17]);
 	ImGui::Text("R18 [s2] = %0#10x", m_registers[18]);
 	ImGui::Text("R19 [s3] = %0#10x", m_registers[19]);
-	ImGui::Text("R23 [s7] = %0#10x", m_registers[23]);
 	ImGui::Text("R20 [s4] = %0#10x", m_registers[20]);
 	ImGui::Text("R21 [s5] = %0#10x", m_registers[21]);
 	ImGui::Text("R22 [s6] = %0#10x", m_registers[22]);
+	ImGui::Text("R23 [s7] = %0#10x", m_registers[23]);
 	ImGui::Text("R24 [t8] = %0#10x", m_registers[24]);
 	ImGui::Text("R25 [t9] = %0#10x", m_registers[25]);
 	ImGui::Text("R26 [k0] = %0#10x", m_registers[26]);

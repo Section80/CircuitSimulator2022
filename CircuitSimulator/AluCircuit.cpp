@@ -66,7 +66,7 @@ void AluCircuit::RenderInspector()
 		break;
 	}
 
-	ImGui::Text("result: %d", m_lastResult);
+	Circuit::RenderInspector();
 }
 
 InputPin* AluCircuit::GetInputPin(int index)

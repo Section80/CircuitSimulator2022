@@ -43,6 +43,7 @@ void ForwardCircuit::Render()
 	ImNode::EndNode();
 }
 
+/*
 void ForwardCircuit::RenderInspector()
 {
 	if (m_iForwardA == 0b00)
@@ -71,6 +72,7 @@ void ForwardCircuit::RenderInspector()
 		ImGui::Text("ForwardB: 10");
 	}
 }
+*/
 
 InputPin* ForwardCircuit::GetInputPin(int index)
 {

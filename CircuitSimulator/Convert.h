@@ -15,4 +15,6 @@ void Copy(InputPin& inputPin, bool* pOut, int len);
 
 int EvaluateBoolBuffer(bool* pBuffer, int len);
 
+void GetBinaryString(unsigned value, std::string* out);
+
 #endif

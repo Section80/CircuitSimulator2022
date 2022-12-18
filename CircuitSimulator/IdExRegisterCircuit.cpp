@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "Convert.h"
+#include "IfIdRegisterCircuit.h"
 #include "IdExRegisterCircuit.h"
+#include "ExMemRegisterCircuit.h"
+#include "MemWbRegisterCircuit.h"
+#include "InstructionMemory.h"
+
+IdExRegisterCircuit* IdExRegisterCircuit::Instance = nullptr;
 
 IdExRegisterCircuit::IdExRegisterCircuit()
 	: Circuit("ID/EX Register", ECircuitType::IdEx, 14, 13, m_outBuf1, m_outBuf2, 119, 0.5f)
@@ -32,8 +38,10 @@ IdExRegisterCircuit::IdExRegisterCircuit()
 	, m_rt_out(*this, "rt", 5, 5)
 	, m_rd_out(*this, "rd", 0, 5)
 	, m_bLastClock(false)
+	, CurrentInstruction("nop")
 {
 	memset(m_data, 0, sizeof(uint32_t) * GetOutputPinCount());
+	IdExRegisterCircuit::Instance = this;
 }
 
 IdExRegisterCircuit::IdExRegisterCircuit(float x, float y)
@@ -76,6 +84,7 @@ void IdExRegisterCircuit::RenderWire(bool bSummary)
 
 void IdExRegisterCircuit::RenderInspector()
 {
+	ImGui::Text("Instruction: %s", CurrentInstruction.c_str());
 	ImGui::Text("regWrite: %d", m_regWrite_out.Value());
 	ImGui::Text("memToReg: %d", m_memToReg_out.Value());
 	ImGui::Text(" memRead: %d", m_memRead_out.Value());
@@ -83,12 +92,51 @@ void IdExRegisterCircuit::RenderInspector()
 	ImGui::Text(" regDest: %d", m_regDest_out.Value());
 	ImGui::Text("   aluOp: %d", m_aluOp_out.Value());
 	ImGui::Text("  aluSrc: %d", m_aluSrc_out.Value());
-	ImGui::Text("   read1: %d", m_read1_out.Value());
-	ImGui::Text("   read2: %d", m_read2_out.Value());
-	ImGui::Text("  signEx: %d", m_signExtended_out.Value());
+
+	int read1Out = m_read1_out.Value();
+	if (read1Out == 0)
+	{
+		ImGui::Text("   read1: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("   read1: %0#10x", read1Out);
+	}
+
+	int read2Out = m_read2_out.Value();
+	if (read2Out == 0)
+	{
+		ImGui::Text("   read2: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("   read2: %0#10x", read2Out);
+	}
+	
+	int signExtendedOut = m_signExtended_out.Value();
+	if (signExtendedOut == 0)
+	{
+		ImGui::Text("  signEx: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("  signEx: %0#10x", signExtendedOut);
+	}
+	
 	ImGui::Text("      rs: %d", m_rs_out.Value());
 	ImGui::Text("      rt: %d", m_rt_out.Value());
 	ImGui::Text("      rd: %d", m_rd_out.Value());
+
+	InstructionMemoryCircuit* im = InstructionMemoryCircuit::Instance;
+	int address = im->GetAddress();
+	std::string& str = im->GetInstructionString(address);
+
+	ImGui::NewLine();
+	ImGui::Text(" IF: %s", str.c_str());
+	ImGui::Text(" ID: %s", IfIdRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" EX: %s", IdExRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text("MEM: %s", ExMemRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" WB: %s", MemWbRegisterCircuit::Instance->CurrentInstruction.c_str());
 }
 
 InputPin* IdExRegisterCircuit::GetInputPin(int index)

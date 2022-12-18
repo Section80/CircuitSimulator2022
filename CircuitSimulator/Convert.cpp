@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include <assert.h>
+#include <string>
+#include <algorithm>
 #include "Convert.h"
 
 #pragma region BitMask
@@ -183,4 +185,21 @@ int EvaluateBoolBuffer(bool* pBuffer, int len)
 	}
 
 	return ret;
+}
+
+void GetBinaryString(unsigned value, std::string* out)
+{
+	assert(out != nullptr);
+
+	out->clear();
+
+	// Warning: this breaks for numbers with more than 64 bits
+	char buffer[64];
+	char* p = buffer + 64;
+	do
+	{
+		*--p = '0' + (value & 1);
+	} while (value >>= 1);
+	out->assign(p, buffer + 64);
+	out->insert(0, "0b");
 }

@@ -13,10 +13,15 @@ public:
 	HazardDetectionUnit(float x, float y);
 
 	void Render() override;
-	void RenderInspector() override;
+	// void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
+
+	inline bool IsStall() { return m_stall.Value() == 1; }
+
+public:
+	static HazardDetectionUnit* Instance;
 
 private:
 	void updateOutput() override;

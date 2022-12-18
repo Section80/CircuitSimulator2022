@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "Convert.h"
 #include "IfIdRegisterCircuit.h"
+#include "IdExRegisterCircuit.h"
+#include "ExMemRegisterCircuit.h"
+#include "MemWbRegisterCircuit.h"
+#include "InstructionMemory.h"
+#include "HazardDetectionUnit.h"
+
+IfIdRegisterCircuit* IfIdRegisterCircuit::Instance = nullptr;
 
 IfIdRegisterCircuit::IfIdRegisterCircuit()
 	: Circuit("IF/ID Register", ECircuitType::IfId, 5, 7, m_outBuf1, m_outBuf2, 64, 0.5f)
@@ -19,7 +26,9 @@ IfIdRegisterCircuit::IfIdRegisterCircuit()
 	, m_bLastClock(false)
 	, m_pc(0)
 	, m_instruction(0)
+	, CurrentInstruction("nop")
 {
+	IfIdRegisterCircuit::Instance = this;
 }
 
 IfIdRegisterCircuit::IfIdRegisterCircuit(float x, float y)
@@ -78,13 +87,63 @@ void IfIdRegisterCircuit::RenderWire(bool bSummary)
 
 void IfIdRegisterCircuit::RenderInspector()
 {
-	ImGui::Text("pc: %0#10x", m_pc_out.Value());
-	ImGui::Text("instruction: %0#10x", m_instruction_out.Value());
+	ImGui::Text("Instruction: %s", CurrentInstruction.c_str());
+	
+	int pcOut = m_pc_out.Value();
+	if (pcOut == 0)
+	{
+		ImGui::Text("pc: %0x00000000");
+	}
+	else
+	{
+		ImGui::Text("pc: %0#10x", pcOut);
+	}
+
+	int instructionOut = m_instruction_out.Value();
+	if (instructionOut == 0)
+	{
+		ImGui::Text("instruction: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("instruction: %0#10x", instructionOut);
+	}
+	
+	
 	ImGui::Text("rs: %d", m_rs_out.Value());
 	ImGui::Text("rt: %d", m_rt_out.Value());
 	ImGui::Text("rd: %d", m_rd_out.Value());
-	ImGui::Text("low16: %d", m_low16_out.Value());
-	ImGui::Text("addr: %d", m_addr_out.Value());
+	
+	int low16Out = m_low16_out.Value();
+	if (low16Out == 0)
+	{
+		ImGui::Text("low16: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("low16: %0#10x", low16Out);
+	}
+	
+	int addrOut = m_addr_out.Value();
+	if (addrOut == 0)
+	{
+		ImGui::Text("addr: 0x00000000");
+	}
+	else
+	{
+		ImGui::Text("addr: %0#10x", addrOut);
+	}
+	
+	InstructionMemoryCircuit* im = InstructionMemoryCircuit::Instance;
+	int address = im->GetAddress();
+	std::string& str = im->GetInstructionString(address);
+
+	ImGui::NewLine();
+	ImGui::Text(" IF: %s", str.c_str());
+	ImGui::Text(" ID: %s", IfIdRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" EX: %s", IdExRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text("MEM: %s", ExMemRegisterCircuit::Instance->CurrentInstruction.c_str());
+	ImGui::Text(" WB: %s", MemWbRegisterCircuit::Instance->CurrentInstruction.c_str());
 }
 
 InputPin* IfIdRegisterCircuit::GetInputPin(int index)
@@ -183,10 +242,7 @@ void IfIdRegisterCircuit::updateOutput()
 			else
 			{
 				// m_op_out;
-				m_instruction = ReadToUint32(
-					m_instruction_in,
-					m_instruction_in.GetWireLineCount()
-				);
+				m_instruction = m_instruction_in.Value();
 			}
 
 			// 입력이 변하지 않더라도 출력을 업데이트하도록
@@ -197,5 +253,44 @@ void IfIdRegisterCircuit::updateOutput()
 				resetDelay();
 			}
 		}
+
+		updateInstructionForEachStage();
 	}
+}
+
+void IfIdRegisterCircuit::updateInstructionForEachStage()
+{
+	// MEM -> WB
+	MemWbRegisterCircuit::Instance->CurrentInstruction.assign(
+		ExMemRegisterCircuit::Instance->CurrentInstruction
+	);
+
+	// EX -> MEM
+	ExMemRegisterCircuit::Instance->CurrentInstruction.assign(
+		IdExRegisterCircuit::Instance->CurrentInstruction
+	);
+
+	// ID -> EX
+	bool bStall = HazardDetectionUnit::Instance->IsStall();
+	if (bStall)	// stall 하는 경우
+	{
+		CurrentInstruction.append("[Bubble]");
+	}
+	IdExRegisterCircuit::Instance->CurrentInstruction.assign(
+		CurrentInstruction
+	);
+
+	// update ID
+	auto im = InstructionMemoryCircuit::Instance;
+	if (!bStall && m_flush.Value() == 1)	// flush 하는 경우
+	{
+		CurrentInstruction = "nop[Flush]";
+	}
+	else 
+	{
+		CurrentInstruction = im->GetInstructionString(m_pc - 4);
+	}
+
+	int address = im->GetAddress();
+	std::string& ifString = im->GetInstructionString(address);
 }

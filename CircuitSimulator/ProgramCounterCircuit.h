@@ -11,6 +11,7 @@ public:
 	ProgramCounterCircuit(float x, float y);
 
 	void Render() override;
+	void RenderInspector() override;
 
 	InputPin* GetInputPin(int index) override;
 	OutputPin* GetOutputPin(int index) override;
